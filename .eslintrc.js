@@ -15,3 +15,6 @@ module.exports = {
         parser: 'babel-eslint'
     }
 };
+
+// eslint-disable-next-line no-undef
+global.performance = window.performance;

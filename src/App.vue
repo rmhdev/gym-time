@@ -1,15 +1,18 @@
 <template>
   <div id="app">
     <Welcome msg="Welcome!"/>
+    <Clock/>
   </div>
 </template>
 
 <script>
 import Welcome from './components/Welcome.vue'
+import Clock from "./components/Clock";
 
 export default {
   name: 'app',
   components: {
+    Clock,
     Welcome
   }
 }
