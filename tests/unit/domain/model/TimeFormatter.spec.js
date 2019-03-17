@@ -10,7 +10,7 @@ describe('TimeFormatter', () => {
     });
     it('renders the time in 24H when defined', () => {
         const date = new Date('2019-03-16T01:23:45');
-        let formatter = new TimeFormatter(true);
+        let formatter = new TimeFormatter(false);
 
         expect(formatter.format(date)).eq('01:23')
     });

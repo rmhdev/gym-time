@@ -9,6 +9,6 @@ class TimeFormatter {
         if (this.hour12) {
             return date.toLocaleTimeString(this.locales, { 'hour12': this.hour12 }).replace(/:\d{2}\s/,' ');
         }
-        return date.toLocaleTimeString(this.locales, { 'hour12': this.hour12, hour: '2-digits', minute: '2-digits', second: undefined });
+        return date.toLocaleTimeString(this.locales, { 'hour12': this.hour12, hour: '2-digit', minute: '2-digit', second: undefined });
     }
 }

@@ -8,6 +8,6 @@ describe('Clock.vue', () => {
     const wrapper = shallowMount(Welcome, {
       propsData: { date }
     });
-    expect(wrapper.text()).eq('12:34 PM')
+    expect(wrapper.find('.local-time').text()).eq('12:34 PM')
   })
 });
