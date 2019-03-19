@@ -17,4 +17,5 @@ module.exports = {
 };
 
 // eslint-disable-next-line no-undef
-global.performance = window.performance;
+// See: https://github.com/vuejs/vue/issues/9698
+global.performance = (typeof window === "undefined") ? '' : window.performance;
