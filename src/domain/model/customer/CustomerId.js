@@ -15,6 +15,13 @@ class CustomerId {
         }
         this.value = id;
     }
+    equals(id) {
+        try {
+            return CustomerId.create(id).value === this.value;
+        } catch (e) {
+            return false;
+        }
+    }
     static create(value = null) {
         return new CustomerId((null === value)
             ? 'customer_id_' + Math.random().toString(16).substr(2)

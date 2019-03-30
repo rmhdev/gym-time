@@ -24,4 +24,9 @@ class CustomerRepository {
         }
         this.items.push(customer);
     }
+    findById(id) {
+        return this.items.find((customer) => {
+            return customer.id.equals(id);
+        });
+    }
 }

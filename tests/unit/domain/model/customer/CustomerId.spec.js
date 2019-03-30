@@ -26,4 +26,15 @@ describe('CustomerId', () => {
         };
         expect(newCustomerWithDateAsId).to.throw(TypeError);
     });
+    it('returns true when compared with the same value', () => {
+        const id = CustomerId.create('abcde');
+        expect(id.equals('abcde'), 'comparing equal id string').to.equal(true);
+        expect(id.equals(id), 'comparing equal id object').to.equal(true);
+    });
+    it('returns false when compared with different value', () => {
+        const id = CustomerId.create('abcde');
+        expect(id.equals('aaa'), 'comparing different id string').to.equal(false);
+        expect(id.equals(CustomerId.create('aaa')), 'comparing different id object').to.equal(false);
+        expect(id.equals(new Date()), 'comparing different instance').to.equal(false);
+    });
 });
