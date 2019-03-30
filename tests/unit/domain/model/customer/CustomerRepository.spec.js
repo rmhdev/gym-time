@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository"
 import { Customer } from "@/domain/model/customer/Customer";
+import { CustomerDataBuilder } from "./CustomerDataBuilder";
 
 describe('CustomerRepository', () => {
     it('should be empty when created', () => {
@@ -10,7 +11,7 @@ describe('CustomerRepository', () => {
     });
     it('adding a customer should be saved', () => {
         let repository = new CustomerRepository();
-        let customer = new Customer('Name One');
+        let customer = CustomerDataBuilder.aCustomer().withName('Name One').build();
         repository.add(customer);
         expect(repository.count()).to.equal(1);
         expect(repository.all()[0]).to.be.an.instanceof(Customer);

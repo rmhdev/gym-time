@@ -1,18 +1,42 @@
 import { expect } from 'chai'
-import { Customer } from '@/domain/model/customer/Customer'
+import { CustomerDataBuilder } from './CustomerDataBuilder'
 
 describe('Customer', () => {
+    it('throws exception if id is empty', () => {
+        expect(function () {
+            return CustomerDataBuilder.aCustomer().withId('').build();
+        }).to.throw(TypeError);
+    });
+    it('throws exception if id has empty values', () => {
+        expect(function () {
+            return CustomerDataBuilder.aCustomer().withId('  ').build();
+        }).to.throw(TypeError);
+    });
+    it('throws exception if id is not a string', () => {
+        let newCustomerWithDateAsId = function () {
+            return CustomerDataBuilder.aCustomer().withId(new Date()).build();
+        };
+        expect(newCustomerWithDateAsId).to.throw(TypeError);
+    });
     it('throws exception if no name is defined', () => {
-        let newCustomerWithNoName = function () { new Customer('') };
-        expect(newCustomerWithNoName).to.throw(TypeError);
+       let newCustomerWithNoName = function () {
+           return CustomerDataBuilder.aCustomer().withName(null).build();
+       };
+       expect(newCustomerWithNoName).to.throw(TypeError);
+    });
+    it('throws exception if name is not a string', () => {
+        let newCustomerWithDateAsName = function () {
+            return CustomerDataBuilder.aCustomer().withName(new Date()).build();
+        };
+        expect(newCustomerWithDateAsName).to.throw(TypeError);
     });
     it('defines a checkin date if left empty', () => {
-        let customer = new Customer('FakeName');
+        const customer = CustomerDataBuilder.aCustomer().withCheckIn(new Date()).build();
         expect(customer.checkIn()).to.be.a('Date');
     });
     it('returns the date defined as a new date', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
-        let customer = new Customer('FakeName', checkIn);
+        const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).build();
         expect(customer.checkIn()).to.be.a('Date');
         expect(customer.checkIn().toISOString()).eq('2019-03-19T12:00:00.000Z');
     });

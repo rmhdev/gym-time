@@ -1,7 +1,17 @@
 export { Customer }
 
 class Customer {
-    constructor(name = '', checkIn = null) {
+    constructor(id, name = '', checkIn = null) {
+        if (typeof id !== 'string') {
+            throw new TypeError('Customer: id must be string, `' + (typeof id) + '` received');
+        }
+        id = id.trim();
+        if ('' === id) {
+            throw new TypeError('Customer: empty id');
+        }
+        if (typeof name !== 'string') {
+            throw new TypeError('Customer: name cannot be empty');
+        }
         if (!name.length) {
             throw new TypeError('Customer: name cannot be empty');
         }
