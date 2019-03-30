@@ -1,12 +1,12 @@
 import { Customer } from "@/domain/model/customer/Customer";
-import { CustomerIdDataBuilder } from "./CustomerIdDataBuilder";
-import { CustomerName } from "../../../../../src/domain/model/customer/CustomerName";
+import { CustomerName } from "@/domain/model/customer/CustomerName";
+import { CustomerId } from "@/domain/model/customer/CustomerId";
 
 export { CustomerDataBuilder }
 
 class CustomerDataBuilder {
     constructor() {
-        this.id = CustomerIdDataBuilder.aCustomerId().build();
+        this.id = CustomerId.create('123456qwerty');
         this.name = CustomerName.create('My Name');
         this.checkIn = '2019-03-19T12:00:00.000Z';
     }
