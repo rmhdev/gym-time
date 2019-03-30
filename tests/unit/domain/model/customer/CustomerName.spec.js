@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { CustomerName } from "../../../../../src/domain/model/customer/CustomerName";
+import { CustomerName } from "@/domain/model/customer/CustomerName";
 
 describe('CustomerName', () => {
     it('throws exception if no name is defined', () => {
