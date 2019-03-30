@@ -2,22 +2,6 @@ import { expect } from 'chai'
 import { CustomerDataBuilder } from './CustomerDataBuilder'
 
 describe('Customer', () => {
-    it('throws exception if id is empty', () => {
-        expect(function () {
-            return CustomerDataBuilder.aCustomer().withId('').build();
-        }).to.throw(TypeError);
-    });
-    it('throws exception if id has empty values', () => {
-        expect(function () {
-            return CustomerDataBuilder.aCustomer().withId('  ').build();
-        }).to.throw(TypeError);
-    });
-    it('throws exception if id is not a string', () => {
-        let newCustomerWithDateAsId = function () {
-            return CustomerDataBuilder.aCustomer().withId(new Date()).build();
-        };
-        expect(newCustomerWithDateAsId).to.throw(TypeError);
-    });
     it('throws exception if no name is defined', () => {
        let newCustomerWithNoName = function () {
            return CustomerDataBuilder.aCustomer().withName(null).build();
