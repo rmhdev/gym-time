@@ -24,7 +24,7 @@ describe('CustomerRepository', () => {
         expect(() => { repository.add('Customer') }, 'Adding a string').to.throw(TypeError);
         expect(() => { repository.add(null) }, 'Adding a null').to.throw(TypeError);
     });
-    it('should find a customer by its id', () => {
+    it('returns a customer looking by id', () => {
         let repository = new CustomerRepository();
         const customer = CustomerDataBuilder.aCustomer().withId('111').withName('Lorem Ipsum').build();
         repository.add(customer);
@@ -32,5 +32,12 @@ describe('CustomerRepository', () => {
         const result = repository.findById('111');
         expect(result).to.be.an.instanceof(Customer);
         expect(result.name.value).to.equal('Lorem Ipsum');
+    });
+    it('throws error when no customer is found by id', () => {
+        let repository = new CustomerRepository();
+        const customer = CustomerDataBuilder.aCustomer().withId('111').withName('Lorem Ipsum').build();
+        repository.add(customer);
+
+        expect(() => { repository.findById('aaa') }).to.throw(Error);
     });
 });

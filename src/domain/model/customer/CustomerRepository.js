@@ -25,8 +25,12 @@ class CustomerRepository {
         this.items.push(customer);
     }
     findById(id) {
-        return this.items.find((customer) => {
+        const result = this.items.find((customer) => {
             return customer.id.equals(id);
         });
+        if (result) {
+            return result;
+        }
+        throw new Error('CustomerRepository: item with id `' + id.toString() + '` not found');
     }
 }
