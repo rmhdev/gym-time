@@ -20,4 +20,17 @@ describe('CustomerName', () => {
     it('returns the defined name, trimmed', () => {
         expect(CustomerName.create(' Name Surname  ').value).to.equal('Name Surname');
     });
+    it('throws exception when name is too long', () => {
+        expect(function () {
+            return CustomerName.create('a'.repeat(255));
+        }).to.throw(TypeError);
+    });
+    it('accepts long names', () => {
+        const maxLongName = 'b'.repeat(254);
+        expect(CustomerName.create(maxLongName)).to.be.instanceOf(CustomerName);
+        expect(
+            CustomerName.create(' ' + maxLongName + ' '),
+            'left and right padding should be ignored'
+        ).to.be.instanceOf(CustomerName);
+    });
 });
