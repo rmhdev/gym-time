@@ -8,6 +8,7 @@ class CustomerName {
             if (typeof name !== 'string') {
                 throw new TypeError('Customer name: expected string but `' + (typeof name) + '` received');
             }
+            name = name.trim();
             if (!name.length) {
                 throw new TypeError('Customer: name cannot be empty');
             }

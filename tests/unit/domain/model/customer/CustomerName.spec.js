@@ -7,9 +7,17 @@ describe('CustomerName', () => {
             return CustomerName.create('');
         }).to.throw(TypeError);
     });
+    it('throws exception if name has empty spaces', () => {
+        expect(function () {
+            return CustomerName.create('  ');
+        }).to.throw(TypeError);
+    });
     it('throws exception if name is not a string', () => {
         expect(function () {
             return CustomerName.create(new Date());
         }).to.throw(TypeError);
+    });
+    it('returns the defined name, trimmed', () => {
+        expect(CustomerName.create(' Name Surname  ').value).to.equal('Name Surname');
     });
 });
