@@ -16,24 +16,12 @@ describe('CustomerRepository', () => {
         expect(repository.count()).to.equal(1);
         expect(repository.all()[0]).to.be.an.instanceof(Customer);
     });
-    it('throws an exception when adding nothing', () => {
-        let repository = new CustomerRepository();
-        let repositoryAddEmpty= function () { repository.add() };
-        expect(repositoryAddEmpty).to.throw(TypeError);
-    });
-    it('throws an exception when adding a null value', () => {
-        let repository = new CustomerRepository();
-        let repositoryAddNull = function () { repository.add(null) };
-        expect(repositoryAddNull).to.throw(TypeError);
-    });
-    it('throws an exception when adding a non object', () => {
-        let repository = new CustomerRepository();
-        let repositoryAddString = function () { repository.add('Customer') };
-        expect(repositoryAddString).to.throw(TypeError);
-    });
     it('throws an exception when adding an element different to Customer', () => {
         let repository = new CustomerRepository();
-        let repositoryAddDate = function () { repository.add(new Date()) };
-        expect(repositoryAddDate).to.throw(TypeError);
+
+        expect(function () { repository.add() }, 'Adding nothing').to.throw(TypeError);
+        expect(function () { repository.add(new Date()) }, 'Adding an object Date ').to.throw(TypeError);
+        expect(function () { repository.add('Customer') }, 'Adding a string').to.throw(TypeError);
+        expect(function () { repository.add(null) }, 'Adding a null').to.throw(TypeError);
     });
 });
