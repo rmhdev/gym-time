@@ -11,7 +11,7 @@ describe('CustomerRepository', () => {
         expect(repository.count()).to.equal(0);
         expect(repository.all()).to.be.an('Array').that.is.empty;
     });
-    it('should saved a customer when added', () => {
+    it('should save a customer when added', () => {
         let repository = new CustomerRepository();
         let customer = CustomerDataBuilder.aCustomer().withName('Name One').build();
         repository.add(customer);
