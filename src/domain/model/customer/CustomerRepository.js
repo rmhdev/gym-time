@@ -1,4 +1,5 @@
 import { Customer } from '@/domain/model/customer/Customer'
+import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 
 export { CustomerRepository }
 
@@ -24,6 +25,15 @@ class CustomerRepository {
         }
         this.items.push(customer);
     }
+    remove(id) {
+        const index = this.items.findIndex((customer) => {
+            return customer.id.equals(id);
+        });
+        if (-1 === index) {
+            throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
+        }
+        this.items.splice(index, 1);
+    }
     findById(id) {
         const result = this.items.find((customer) => {
             return customer.id.equals(id);
@@ -31,6 +41,6 @@ class CustomerRepository {
         if (result) {
             return result;
         }
-        throw new Error('CustomerRepository: item with id `' + id.toString() + '` not found');
+        throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
     }
 }

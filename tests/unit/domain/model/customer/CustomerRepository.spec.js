@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository"
 import { Customer } from "@/domain/model/customer/Customer";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
+import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 
 describe('CustomerRepository', () => {
     it('should be empty when created', () => {
@@ -38,6 +39,25 @@ describe('CustomerRepository', () => {
         const customer = CustomerDataBuilder.aCustomer().withId('111').withName('Lorem Ipsum').build();
         repository.add(customer);
 
-        expect(() => { repository.findById('aaa') }).to.throw(Error);
+        expect(() => { repository.findById('aaa') }).to.throw(CustomerNoFoundException);
+    });
+    it('removes a customer by id', () => {
+        let repository = new CustomerRepository();
+        const customer = CustomerDataBuilder.aCustomer().withId('111').build();
+
+        repository.add(customer);
+        expect(repository.count(), 'The customer is added correctly').to.equal(1);
+
+        repository.remove('111');
+        expect(repository.count(), 'The customer is removed correctly').to.equal(0);
+    });
+    it('throws error when trying to remove a non existing customer', () => {
+        let repository = new CustomerRepository();
+        const customer = CustomerDataBuilder.aCustomer().withId('111').build();
+
+        repository.add(customer);
+        expect(repository.count(), 'The customer is added correctly').to.equal(1);
+
+        expect(() => { repository.remove('222') }).to.throw(CustomerNoFoundException);
     });
 });
