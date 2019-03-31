@@ -3,6 +3,7 @@ import { CustomerRepository } from "@/domain/model/customer/CustomerRepository"
 import { Customer } from "@/domain/model/customer/Customer";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
+import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
 
 describe('CustomerRepository', () => {
     it('should be empty when created', () => {
@@ -59,5 +60,12 @@ describe('CustomerRepository', () => {
         expect(repository.count(), 'The customer is added correctly').to.equal(1);
 
         expect(() => { repository.remove('222') }).to.throw(CustomerNoFoundException);
+    });
+    it('throws error when adding a customer which id is already in the repository', () => {
+        let repository = new CustomerRepository();
+        const customer = CustomerDataBuilder.aCustomer().withId('111').build();
+        repository.add(customer);
+
+        expect(() => { repository.add(customer) }).to.throw(CustomerIdNotUniqueException);
     });
 });

@@ -1,5 +1,6 @@
 import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
+import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
 
 export { CustomerRepository }
 
@@ -23,7 +24,15 @@ class CustomerRepository {
         if (customer.constructor.name !== Customer.name) {
             throw new TypeError('CustomerRepository: cannot add an object `' + customer.constructor.name + '`');
         }
-        this.items.push(customer);
+        try {
+            this.findById(customer.id);
+        } catch (CustomerNotFoundException) {
+            this.items.push(customer);
+            return;
+        }
+        throw new CustomerIdNotUniqueException(
+            'CustomerRepository: cannot add customer with id `' + '´ because it already exists'
+        );
     }
     remove(id) {
         const index = this.items.findIndex((customer) => {
