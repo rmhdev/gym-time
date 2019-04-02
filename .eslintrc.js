@@ -15,7 +15,3 @@ module.exports = {
         parser: 'babel-eslint'
     }
 };
-
-// eslint-disable-next-line no-undef
-// See: https://github.com/vuejs/vue/issues/9698
-global.performance = (typeof window === "undefined") ? '' : window.performance;
