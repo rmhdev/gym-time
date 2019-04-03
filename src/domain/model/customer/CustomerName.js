@@ -1,8 +1,9 @@
+import { CustomerNameTooLongException } from "./CustomerNameTooLongException";
+import { CustomerNameEmptyException } from "./CustomerNameEmptyException";
+
 export { CustomerName }
 
 class CustomerName {
-
-
     constructor(name) {
         if (name instanceof CustomerName) {
             name = name.value;
@@ -12,16 +13,10 @@ class CustomerName {
             }
             name = name.trim();
             if (!name.length) {
-                throw new TypeError('Customer: name cannot be empty');
+                throw new CustomerNameEmptyException();
             }
             if (CustomerName.maxLength() <= name.length) {
-                throw new TypeError('Customer: name is too long. `'
-                    + name.substr(0, 10)
-                    + '...` is '
-                    + name.length
-                    + ' but max length is '
-                    + CustomerName.maxLength()
-                );
+                throw new CustomerNameTooLongException(name);
             }
         }
         this.value = name;

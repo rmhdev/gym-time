@@ -1,16 +1,18 @@
 import { expect } from 'chai'
 import { CustomerName } from "@/domain/model/customer/CustomerName";
+import { CustomerNameTooLongException } from "@/domain/model/customer/CustomerNameTooLongException";
+import { CustomerNameEmptyException } from "@/domain/model/customer/CustomerNameEmptyException";
 
 describe('CustomerName', () => {
     it('throws exception if no name is defined', () => {
         expect(function () {
             return CustomerName.create('');
-        }).to.throw(TypeError);
+        }).to.throw(CustomerNameEmptyException);
     });
     it('throws exception if name has empty spaces', () => {
         expect(function () {
             return CustomerName.create('  ');
-        }).to.throw(TypeError);
+        }).to.throw(CustomerNameEmptyException);
     });
     it('throws exception if name is not a string', () => {
         expect(function () {
@@ -23,7 +25,7 @@ describe('CustomerName', () => {
     it('throws exception when name is too long', () => {
         expect(function () {
             return CustomerName.create('a'.repeat(255));
-        }).to.throw(TypeError);
+        }).to.throw(CustomerNameTooLongException);
     });
     it('accepts long names', () => {
         const maxLongName = 'b'.repeat(254);

@@ -12,6 +12,10 @@
 </template>
 
 <script>
+import { CustomerName } from "@/domain/model/customer/CustomerName";
+import { CustomerNameTooLongException } from "@/domain/model/customer/CustomerNameTooLongException";
+import { CustomerNameEmptyException } from "@/domain/model/customer/CustomerNameEmptyException";
+
 export default {
   name: 'Checkin',
   props: {},
@@ -23,12 +27,22 @@ export default {
   },
   methods: {
     validate () {
-      if (this.customerName.length) {
-        this.error = '';
-        return true;
-      }
-      this.error = 'Name cannot be empty';
-      return false;
+        try {
+            this.customerName = CustomerName.create(this.customerName).value;
+            this.error = '';
+
+            return true;
+        } catch (e) {
+            if (e instanceof CustomerNameTooLongException) {
+                this.error = 'Name is too long';
+            } else if (e instanceof CustomerNameEmptyException) {
+                this.error = 'Name cannot be empty';
+            } else {
+                this.error = 'Incorrect name';
+            }
+        }
+
+        return false;
     },
     validateContent () {
       if (!this.error) {
