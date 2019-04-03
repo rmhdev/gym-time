@@ -8,7 +8,7 @@
 
     <div class="row justify-content-md-center">
       <div class="col-3">
-        <a href="#" class="btn btn-block btn-primary btn-lg">Check-in</a>
+        <checkin></checkin>
       </div>
       <div class="col-1"></div>
       <div class="col-3">
@@ -22,12 +22,14 @@
 import './styles/main.scss'
 import Welcome from './components/Welcome.vue'
 import Clock from "./components/Clock";
+import Checkin from "./components/Checkin";
 
 export default {
   name: 'app',
   components: {
     Clock,
-    Welcome
+    Welcome,
+    Checkin
   }
 }
 </script>
