@@ -12,4 +12,7 @@ class Customer {
     checkIn() {
         return new Date(this.checkInTimestamp);
     }
+    static create(name = '') {
+        return new Customer(CustomerId.create(), name);
+    }
 }
