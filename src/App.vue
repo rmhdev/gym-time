@@ -12,6 +12,7 @@
       </div>
       <div class="col-1"></div>
       <div class="col-3">
+        <customers></customers>
         <a href="#" class="btn btn-block btn-danger btn-lg">Check-out</a>
       </div>
     </div>
@@ -23,13 +24,15 @@ import './styles/main.scss'
 import Welcome from './components/Welcome.vue'
 import Clock from "./components/Clock";
 import Checkin from "./components/Checkin";
+import Customers from "./components/Customers";
 
 export default {
   name: 'app',
   components: {
     Clock,
     Welcome,
-    Checkin
+    Checkin,
+    Customers
   }
 }
 </script>
