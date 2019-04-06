@@ -97,7 +97,7 @@
                 }
                 if (this.validate()) {
                     this.status = 'valid';
-                    this.$emit('add-customer', Customer.create(this.customerName));
+                    this.$emit('new-customer-created', Customer.create(this.customerName));
 
                     return true;
                 }

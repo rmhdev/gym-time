@@ -74,7 +74,7 @@ describe('Checkin.vue', () => {
     expect(wrapper.find('input.is-valid').exists(), 'Input has no feedback class by default').eq(false);
 
     wrapper.find('input').setValue('Lorem Ipsum');
-    wrapper.find("input").trigger("keyup.enter");
+    wrapper.find("form").trigger("submit");
 
     expect(wrapper.find('input.is-valid').exists(), 'Input has feedback class when valid').eq(true);
   });
@@ -84,7 +84,7 @@ describe('Checkin.vue', () => {
     wrapper.find('input').setValue('Lorem Ipsum');
     wrapper.find("form").trigger("submit");
 
-    expect(wrapper.emitted('add-customer').length).eq(1);
-    expect(wrapper.emitted('add-customer')[0][0]).to.be.instanceOf(Customer);
+    expect(wrapper.emitted('new-customer-created').length).eq(1);
+    expect(wrapper.emitted('new-customer-created')[0][0]).to.be.instanceOf(Customer);
   });
 });
