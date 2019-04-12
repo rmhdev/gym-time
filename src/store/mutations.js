@@ -1,5 +1,7 @@
+import { Customer } from "@/domain/model/customer/Customer";
+
 export default {
-    addCustomer(state, customer) {
-        state.customerRepository.add(customer);
+    addCustomer(state, payload) {
+        state.customerRepository.add(Customer.create(payload.name));
     }
 }
