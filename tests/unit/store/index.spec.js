@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import store from '@/store/store'
+import store from '@/store/index'
 import cloneDeep from 'lodash.clonedeep'
 
-describe('store.js', () => {
+describe('store', () => {
     it('should have an empty repository of customers when created', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import actions from '@/store/actions'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
 
-describe('actions.js', () => {
+describe('store actions', () => {
 
     // Taken from https://github.com/vuejs/vuex/blob/dev/docs/guide/testing.md
     //

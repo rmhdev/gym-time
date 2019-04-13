@@ -3,7 +3,7 @@ import mutations from '@/store/mutations'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
 import { Customer } from "@/domain/model/customer/Customer";
 
-describe('mutations.js', () => {
+describe('store mutations', () => {
     it('should add a new customer in the repository', () => {
         const state = {
             customerRepository: new CustomerRepository()
