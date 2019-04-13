@@ -2,7 +2,6 @@ import {expect} from 'chai'
 import {shallowMount} from '@vue/test-utils'
 import Checkin from '@/components/Checkin.vue'
 import {CustomerName} from "../../src/domain/model/customer/CustomerName";
-import {Customer} from "@/domain/model/customer/Customer";
 
 describe('Checkin.vue', () => {
 
@@ -69,12 +68,12 @@ describe('Checkin.vue', () => {
         expect(wrapper.find('input.is-valid').exists(), 'Input has feedback class when valid').eq(true);
     });
 
-    it('emits new Customer event when correct name is submitted', () => {
+    it('emits new customer event when correct name is submitted', () => {
         const wrapper = shallowMount(Checkin);
         wrapper.find('input').setValue('Lorem Ipsum');
         wrapper.find("form").trigger("submit");
 
         expect(wrapper.emitted('new-customer-created').length).eq(1);
-        expect(wrapper.emitted('new-customer-created')[0][0]).to.be.instanceOf(Customer);
+        expect(wrapper.emitted('new-customer-created')[0][0].name).equal('Lorem Ipsum');
     });
 });

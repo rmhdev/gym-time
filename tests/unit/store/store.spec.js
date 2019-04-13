@@ -12,14 +12,14 @@ describe('store.js', () => {
 
         expect(localStore.state.customerRepository.count()).eq(0);
     });
-    it('should be able to commit a new customer', () => {
-        const localVue = createLocalVue();
-        localVue.use(Vuex);
-        const localStore = new Vuex.Store(cloneDeep(store));
-        expect(localStore.state.customerRepository.count(), 'New repo should be empty').eq(0);
-
-        localStore.commit('addCustomer', { 'name': 'Lorem Store' });
-        expect(localStore.state.customerRepository.count()).eq(1);
-        expect(localStore.state.customerRepository.all()[0].name.value).eq('Lorem Store');
-    });
+    //it('should be able to commit a new customer', () => {
+    //    const localVue = createLocalVue();
+    //    localVue.use(Vuex);
+    //    const localStore = new Vuex.Store(cloneDeep(store));
+    //    expect(localStore.state.customerRepository.count(), 'New repo should be empty').eq(0);
+    //
+    //    localStore.commit('addCustomer', { 'name': 'Lorem Store' });
+    //    expect(localStore.state.customerRepository.count()).eq(1);
+    //    expect(localStore.state.customerRepository.all()[0].name.value).eq('Lorem Store');
+    //});
 });

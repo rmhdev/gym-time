@@ -21,7 +21,6 @@
 </template>
 
 <script>
-    import {Customer} from "@/domain/model/customer/Customer";
     import {CustomerName} from "@/domain/model/customer/CustomerName";
     import {CustomerNameTooLongException} from "@/domain/model/customer/CustomerNameTooLongException";
     import {CustomerNameEmptyException} from "@/domain/model/customer/CustomerNameEmptyException";
@@ -97,7 +96,7 @@
                 }
                 if (this.validate()) {
                     this.status = 'valid';
-                    this.$emit('new-customer-created', Customer.create(this.customerName));
+                    this.$emit('new-customer-created', { 'name': this.customerName });
 
                     return true;
                 }
