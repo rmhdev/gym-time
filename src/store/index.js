@@ -1,13 +1,7 @@
-import mutations from './mutations'
-import actions from './actions'
-import getters from './getters'
-import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import config from './config'
 
-export default {
-    state: {
-        customerRepository: new CustomerRepository()
-    },
-    mutations,
-    actions,
-    getters
-}
+Vue.use(Vuex);
+
+export default new Vuex.Store(config);

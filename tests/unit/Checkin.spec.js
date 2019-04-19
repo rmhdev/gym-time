@@ -1,9 +1,30 @@
 import {expect} from 'chai'
-import {shallowMount} from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
+import Vuex from 'vuex'
 import Checkin from '@/components/Checkin.vue'
 import {CustomerName} from "../../src/domain/model/customer/CustomerName";
+import chai from 'chai';
+import spies from 'chai-spies';
+
+const localVue = createLocalVue();
+
+localVue.use(Vuex);
+
+chai.use(spies);
 
 describe('Checkin.vue', () => {
+
+    let actions;
+    let store;
+
+    beforeEach(() => {
+        actions = {
+            createAndAddNewCustomer: chai.spy()
+        };
+        store = new Vuex.Store({
+            actions
+        });
+    });
 
     it('renders a form with a button', () => {
         const wrapper = shallowMount(Checkin, {});
@@ -68,12 +89,20 @@ describe('Checkin.vue', () => {
         expect(wrapper.find('input.is-valid').exists(), 'Input has feedback class when valid').eq(true);
     });
 
-    it('emits new customer event when correct name is submitted', () => {
-        const wrapper = shallowMount(Checkin);
+    //it('emits new customer event when correct name is submitted', () => {
+    //    const wrapper = shallowMount(Checkin);
+    //    wrapper.find('input').setValue('Lorem Ipsum');
+    //    wrapper.find("form").trigger("submit");
+    //
+    //    expect(wrapper.emitted('new-customer-created').length).eq(1);
+    //    expect(wrapper.emitted('new-customer-created')[0][0].name).equal('Lorem Ipsum');
+    //});
+
+    it('dispatches "createAndAddNewCustomer" when clicking on button', () => {
+        const wrapper = shallowMount(Checkin, { store, localVue });
         wrapper.find('input').setValue('Lorem Ipsum');
         wrapper.find("form").trigger("submit");
 
-        expect(wrapper.emitted('new-customer-created').length).eq(1);
-        expect(wrapper.emitted('new-customer-created')[0][0].name).equal('Lorem Ipsum');
-    });
+        expect(actions.createAndAddNewCustomer).to.have.been.called();
+    })
 });
