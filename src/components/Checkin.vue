@@ -96,10 +96,7 @@
                 }
                 if (this.validate()) {
                     this.status = 'valid';
-
                     this.$store.dispatch('createAndAddNewCustomer', { 'name': this.customerName });
-
-                    this.$emit('new-customer-created', { 'name': this.customerName });
 
                     return true;
                 }
