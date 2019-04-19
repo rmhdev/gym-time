@@ -7,13 +7,12 @@
     </div>
 
     <div class="row justify-content-md-center">
-      <div class="col-3">
+      <div class="col-5">
         <checkin></checkin>
       </div>
       <div class="col-1"></div>
-      <div class="col-3">
+      <div class="col-6">
         <customers></customers>
-        <a href="#" class="btn btn-block btn-danger btn-lg">Check-out</a>
       </div>
     </div>
   </div>
