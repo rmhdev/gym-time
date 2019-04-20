@@ -1,14 +1,14 @@
 <template>
-    <div :class="customClass">
+    <a :class="customClass" @click.prevent="checkout" href="#">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="gym-customer-name mb-1 text-nowrap">
+            <h5 class="gym-customer-name mb-1">
                 {{ customer.name.value }}
             </h5>
             <time class="gym-customer-checkin text-nowrap" :datetime="customer.checkIn().toISOString()">
                 {{ renderCheckinTime }}
             </time>
         </div>
-    </div>
+    </a>
 </template>
 
 <script>
@@ -24,6 +24,11 @@
         computed: {
             renderCheckinTime() {
                 return (new TimeFormatter()).format(this.customer.checkIn());
+            }
+        },
+        methods: {
+            checkout() {
+                this.$emit('checkout', this.customer.id.value);
             }
         }
     }
