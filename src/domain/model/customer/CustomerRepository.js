@@ -12,6 +12,17 @@ class CustomerRepository {
         return this.items.length;
     }
     all() {
+        this.items.sort(function (a, b) {
+            // Latter is first
+            if (a.checkIn() < b.checkIn()) {
+                return 1;
+            }
+            if (a.checkIn() > b.checkIn()) {
+                return -1;
+            }
+            return 0;
+        });
+
         return this.items;
     }
     add(customer) {

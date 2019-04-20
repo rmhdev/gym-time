@@ -26,7 +26,7 @@ class CustomerDataBuilder {
         return this;
     }
     build() {
-        return new Customer(this.id, this.name, this.checkIn);
+        return new Customer(this.id, this.name, new Date(this.checkIn));
     }
     static aCustomer() {
         return new CustomerDataBuilder();

@@ -68,4 +68,16 @@ describe('CustomerRepository', () => {
 
         expect(() => { repository.add(customer) }).to.throw(CustomerIdNotUniqueException);
     });
+    it('should return the list of all customers sorted by checkin date, latest first', () => {
+        let repository = new CustomerRepository();
+
+        repository.add(CustomerDataBuilder.aCustomer().withId('1').withName('First').withCheckIn('2019-03-19T12:10:00.000Z').build());
+        repository.add(CustomerDataBuilder.aCustomer().withId('2').withName('Second').withCheckIn('2019-03-19T12:20:00.000Z').build());
+        repository.add(CustomerDataBuilder.aCustomer().withId('3').withName('Third').withCheckIn('2019-03-19T12:30:00.000Z').build());
+        const all = repository.all();
+
+        expect(all[0].name.value, 'Customer ' + all[0].id.value + ', checkin: ' + all[0].checkIn().toString()).eq('Third');
+        expect(all[1].name.value, 'Customer ' + all[1].id.value + ', checkin: ' + all[1].checkIn().toString()).eq('Second');
+        expect(all[2].name.value, 'Customer ' + all[2].id.value + ', checkin: ' + all[2].checkIn().toString()).eq('First');
+    });
 });
