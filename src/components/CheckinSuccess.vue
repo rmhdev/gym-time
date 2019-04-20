@@ -1,10 +1,16 @@
 <template>
     <div>
-        <div class="gym-customer-added alert alert-info" role="alert">
-            <h4 class="gym-title alert-heading">Success</h4>
-            <p>Enjoy your Gym Time!</p>
-
-            <a class="gym-feedback-button btn btn-success" role="button" @click.prevent="close">Ok</a>
+        <div class="gym-customer-added card" role="alert">
+            <div class="card-body">
+                <h5 class="gym-title card-title">Success</h5>
+                <p class="card-text">Enjoy your Gym Time!</p>
+                <a
+                    class="gym-feedback-button btn btn-lg btn-primary"
+                    role="button"
+                    @click.prevent="close"
+                    href="#"
+                >Ok</a>
+            </div>
         </div>
     </div>
 </template>

@@ -21,7 +21,7 @@
                 >
                 <div class="feedback" :class="feedbackClass">{{ feedback }}</div>
             </div>
-            <button type="submit" class="btn btn-block btn-primary btn-lg">Check-in</button>
+            <button type="submit" class="btn btn-block btn-success btn-lg">Check-in</button>
         </form>
     </div>
 </template>
