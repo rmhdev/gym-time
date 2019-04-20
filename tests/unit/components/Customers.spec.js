@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Customers from '@/components/Customers.vue'
-import {CustomerDataBuilder} from "./domain/model/customer/CustomerDataBuilder";
+import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilder";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
 import Vuex from "vuex";
