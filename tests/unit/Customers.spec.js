@@ -17,10 +17,13 @@ describe('Customers.vue', () => {
         store = new Vuex.Store(cloneDeep(storeConfig));
     });
 
-    it('renders an empty list by default', () => {
+    it('renders a message when the customers list is empty', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
-        expect(wrapper.findAll('.customers').length).eq(1);
-        expect(wrapper.findAll('.customers .customer').length).eq(0);
+        expect(wrapper.findAll('.gym-customers').length).eq(1);
+        expect(wrapper.findAll('.gym-customers .gym-customer').length).eq(0);
+
+        expect(wrapper.findAll('.gym-empty').length).eq(1);
+        expect(wrapper.findAll('.gym-empty .gym-title').length).eq(1);
     });
 
     it('renders a list with a single customer', () => {
@@ -36,9 +39,16 @@ describe('Customers.vue', () => {
 
         const wrapper = shallowMount(Customers, {store, localVue});
 
-        expect(wrapper.findAll('.customers .customer').length).eq(1);
+        expect(wrapper.findAll('.gym-customers .gym-customer').length).eq(1);
         expect(
-            wrapper.findAll('.customers .customer time').at(0).attributes('datetime')
+            wrapper.findAll('.gym-customers .gym-customer time').at(0).attributes('datetime')
         ).eq(dateString);
+    });
+
+    it('should not show the empty message when the list has customers', () => {
+        store.state.customerRepository.add(CustomerDataBuilder.aCustomer().build());
+        const wrapper = shallowMount(Customers, {store, localVue});
+
+        expect(wrapper.findAll('.gym-empty').length).eq(0);
     });
 });
