@@ -37,11 +37,6 @@ describe('Checkin.vue', () => {
         wrapper.find('form').trigger('submit');
         expect(wrapper.find('input.is-invalid').exists(), 'Input must have class when invalid').eq(true);
         expect(wrapper.find('.invalid-feedback').isEmpty(), 'Invalid feedback message must have content').eq(false);
-
-        wrapper.find("input").setValue("a");
-        wrapper.find("input").trigger("submit");
-        expect(wrapper.find('input.is-invalid').exists(), 'Input does not have class when valid').eq(false);
-        expect(wrapper.find('.invalid-feedback').text(), 'Invalid feedback message must be empty').eq('');
     });
 
     it('hides an error if user writes something', () => {
@@ -76,12 +71,11 @@ describe('Checkin.vue', () => {
     });
 
     it('shows a success message when name is added correctly', () => {
-        expect(wrapper.find('input.is-valid').exists(), 'Input has no feedback class by default').eq(false);
-
         wrapper.find('input').setValue('Lorem Ipsum');
         wrapper.find("form").trigger("submit");
 
-        expect(wrapper.find('input.is-valid').exists(), 'Input has feedback class when valid').eq(true);
+        expect(wrapper.find('form').exists(), 'Form disappears when adding a correct customer').eq(false);
+        expect(wrapper.find('.gym-customer-added').exists(), 'Checkin has feedback message when success').eq(true);
     });
 
     it('dispatches "createAndAddNewCustomer" when clicking on button', () => {

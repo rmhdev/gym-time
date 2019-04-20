@@ -1,6 +1,10 @@
 <template>
     <div id="checkin">
-        <form @submit.prevent="submit" class="needs-validation" autocomplete="off">
+        <div v-if="isValid" class="gym-customer-added alert alert-info" role="alert">
+            <h4 class="gym-title alert-heading">Success</h4>
+            <p>Enjoy your Gym Time!</p>
+        </div>
+        <form v-else @submit.prevent="submit" class="needs-validation" autocomplete="off">
             <div class="form-group">
                 <label for="checkin_name">Your name is</label>
                 <input
@@ -36,6 +40,9 @@
             }
         },
         computed: {
+            isValid() {
+                return 'valid' === this.status;
+            },
             feedbackClass() {
                 switch (this.status) {
                     case 'valid':
