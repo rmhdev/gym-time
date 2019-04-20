@@ -75,7 +75,7 @@ describe('Checkin.vue', () => {
         wrapper.find("form").trigger("submit");
 
         expect(wrapper.find('form').exists(), 'Form disappears when adding a correct customer').eq(false);
-        expect(wrapper.find('.gym-customer-added').exists(), 'Checkin has feedback message when success').eq(true);
+        expect(wrapper.find('.gym-checkin-success').exists(), 'Checkin has feedback message when success').eq(true);
     });
 
     it('dispatches "createAndAddNewCustomer" when clicking on button', () => {
@@ -83,5 +83,15 @@ describe('Checkin.vue', () => {
         wrapper.find("form").trigger("submit");
 
         expect(localStoreConfig.actions.createAndAddNewCustomer).to.have.been.called();
-    })
+    });
+
+    it('shows the form after closing the feedback message', () => {
+        wrapper.find('input').setValue('Lorem Ipsum');
+        wrapper.find("form").trigger("submit");
+        expect(wrapper.find('form').exists(), 'Form disappears when adding a correct customer').eq(false);
+
+        wrapper.find('.gym-checkin-success').vm.$emit('close');
+        expect(wrapper.find('form').exists(), 'Form appears again').eq(true);
+        expect(wrapper.find('input').element.value, 'The input should be empty').eq('');
+    });
 });

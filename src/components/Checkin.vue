@@ -1,9 +1,11 @@
 <template>
     <div id="checkin">
-        <div v-if="isValid" class="gym-customer-added alert alert-info" role="alert">
-            <h4 class="gym-title alert-heading">Success</h4>
-            <p>Enjoy your Gym Time!</p>
-        </div>
+        <checkin-success
+            class="gym-checkin-success"
+            v-if="isValid"
+            @close="restartForm"
+        ></checkin-success>
+
         <form v-else @submit.prevent="submit" class="needs-validation" autocomplete="off">
             <div class="form-group">
                 <label for="checkin_name">Your name is</label>
@@ -28,9 +30,13 @@
     import {CustomerName} from "@/domain/model/customer/CustomerName";
     import {CustomerNameTooLongException} from "@/domain/model/customer/CustomerNameTooLongException";
     import {CustomerNameEmptyException} from "@/domain/model/customer/CustomerNameEmptyException";
+    import CheckinSuccess from "@/components/CheckinSuccess.vue";
 
     export default {
         name: 'Checkin',
+        components: {
+            CheckinSuccess
+        },
         props: {},
         data() {
             return {
@@ -65,6 +71,10 @@
             }
         },
         methods: {
+            restartForm() {
+                this.status = '';
+                this.customerName = '';
+            },
             validate() {
                 try {
                     this.customerName = CustomerName.create(this.customerName).value;
