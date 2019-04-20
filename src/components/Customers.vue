@@ -1,30 +1,31 @@
 <template>
-    <div id="customers">
+    <div>
         <div class="list-group gym-customers">
             <div v-if="isEmpty" class="gym-empty alert alert-info text-center" role="alert">
                 <h4 class="gym-title alert-heading">Gym is empty!</h4>
                 <p>Looks like you'll be the first one!</p>
             </div>
 
-            <a
+            <customer
                 v-else
-                href="#"
-                class="gym-customer list-group-item list-group-item-action"
+                class="gym-customer"
+                custom-class="list-group-item list-group-item-action"
                 v-for="customer in customers"
                 :key="customer.id.value"
-            >
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ customer.name.value }}</h5>
-                    <time :datetime="customer.checkIn().toISOString()">hi</time>
-                </div>
-            </a>
+                :customer="customer"
+            ></customer>
         </div>
     </div>
 </template>
 
 <script>
+    import Customer from "@/components/Customer";
+
     export default {
         name: 'Customers',
+        components: {
+            Customer
+        },
         computed: {
             customers() {
                 return this.$store.getters.getRepository.all();

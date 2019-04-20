@@ -27,22 +27,10 @@ describe('Customers.vue', () => {
     });
 
     it('renders a list with a single customer', () => {
-        const dateString = '2019-04-06T12:34:56.000Z';
-        const customer = CustomerDataBuilder.aCustomer()
-            .withId('123')
-            .withName('Single Customer')
-            .withCheckIn(new Date(dateString))
-            .build()
-        ;
-
-        store.state.customerRepository.add(customer);
-
+        store.state.customerRepository.add(CustomerDataBuilder.aCustomer().build());
         const wrapper = shallowMount(Customers, {store, localVue});
 
-        expect(wrapper.findAll('.gym-customers .gym-customer').length).eq(1);
-        expect(
-            wrapper.findAll('.gym-customers .gym-customer time').at(0).attributes('datetime')
-        ).eq(dateString);
+        expect(wrapper.findAll('.gym-customer').length).eq(1);
     });
 
     it('should not show the empty message when the list has customers', () => {
