@@ -1,6 +1,7 @@
 import {expect} from 'chai'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Customers from '@/components/Customers.vue'
+import Customer from '@/components/Customer.vue'
 import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilder";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
@@ -38,5 +39,14 @@ describe('Customers.vue', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
 
         expect(wrapper.findAll('.gym-empty').length).eq(0);
+    });
+
+    it('re-emits the checkout event emitted by a customer', () => {
+        store.state.customerRepository.add(CustomerDataBuilder.aCustomer().withId('987z').build());
+        const wrapper = shallowMount(Customers, {store, localVue});
+        wrapper.find(Customer).vm.$emit('checkout', { id: 'myId' });
+
+        expect(wrapper.emitted('checkout').length, 'Checkout event from Customer must be re-emitted').eq(1);
+        expect(wrapper.emitted('checkout')[0][0]['id'], 'Checkout event must emit the customer id').eq('myId');
     });
 });

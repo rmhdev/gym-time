@@ -13,6 +13,7 @@
                 v-for="customer in customers"
                 :key="customer.id.value"
                 :customer="customer"
+                @checkout="onCustomerCheckout"
             ></customer>
         </div>
     </div>
@@ -25,6 +26,11 @@
         name: 'Customers',
         components: {
             Customer
+        },
+        methods: {
+            onCustomerCheckout(event) {
+                this.$emit('checkout', event);
+            }
         },
         computed: {
             customers() {

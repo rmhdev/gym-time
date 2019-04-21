@@ -42,6 +42,6 @@ describe('Customer.vue', () => {
         wrapper.find('a').trigger('click');
 
         expect(wrapper.emitted('checkout').length, 'Checkout event must be emitted').eq(1);
-        expect(wrapper.emitted('checkout')[0][0], 'Checkout event must emit the customer id').eq('abc123');
+        expect(wrapper.emitted('checkout')[0][0]['id'], 'Checkout event must emit the customer id').eq('abc123');
     });
 });
