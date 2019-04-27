@@ -80,4 +80,22 @@ describe('CustomerRepository', () => {
         expect(all[1].name.value, 'Customer ' + all[1].id.value + ', checkin: ' + all[1].checkIn().toString()).eq('Second');
         expect(all[2].name.value, 'Customer ' + all[2].id.value + ', checkin: ' + all[2].checkIn().toString()).eq('First');
     });
+
+    it('allows updating a customer', () => {
+       const customer = CustomerDataBuilder.aCustomer()
+           .withId('1')
+           .withName('First')
+           .withCheckIn('2019-03-19T12:10:00.000Z')
+           .withCheckOut(null)
+           .build();
+       let repository = new CustomerRepository();
+       repository.add(customer);
+
+       const checkOut = new Date('2019-03-19T12:55:33.000Z');
+       const updatedCustomer = customer.updateCheckOut(checkOut);
+       repository.update(updatedCustomer);
+
+        expect(repository.count()).eq(1);
+        expect(repository.findById(1).checkOut().toISOString()).eq(checkOut.toISOString());
+    });
 });
