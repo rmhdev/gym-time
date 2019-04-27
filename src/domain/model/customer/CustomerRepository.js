@@ -1,7 +1,7 @@
 import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
-import { CustomerTypeException } from "./CustomerTypeException";
+import { CustomerTypeException } from "@/domain/model/customer/CustomerTypeException";
 
 export { CustomerRepository }
 
