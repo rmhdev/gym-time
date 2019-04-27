@@ -22,10 +22,10 @@ describe('CustomerRepository', () => {
     it('throws an exception when adding an element different to Customer', () => {
         let repository = new CustomerRepository();
 
-        expect(() => { repository.add() }, 'Adding nothing').to.throw(TypeError);
-        expect(() => { repository.add(new Date()) }, 'Adding an object Date ').to.throw(TypeError);
-        expect(() => { repository.add('Customer') }, 'Adding a string').to.throw(TypeError);
-        expect(() => { repository.add(null) }, 'Adding a null').to.throw(TypeError);
+        expect(() => { repository.add() }, 'Adding nothing').to.throw(CustomerTypeException);
+        expect(() => { repository.add(new Date()) }, 'Adding an object Date ').to.throw(CustomerTypeException);
+        expect(() => { repository.add('Customer') }, 'Adding a string').to.throw(CustomerTypeException);
+        expect(() => { repository.add(null) }, 'Adding a null').to.throw(CustomerTypeException);
     });
     it('returns a customer looking by id', () => {
         let repository = new CustomerRepository();
@@ -108,7 +108,6 @@ describe('CustomerRepository', () => {
 
         expect(() => { repository.update(newCustomer) }).to.throw(CustomerNoFoundException);
     });
-
     it('throws error when trying to update something different from a customer', () => {
         let repository = new CustomerRepository();
 

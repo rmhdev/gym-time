@@ -1,7 +1,7 @@
 import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
-import {CustomerTypeException} from "./CustomerTypeException";
+import { CustomerTypeException } from "./CustomerTypeException";
 
 export { CustomerRepository }
 
@@ -28,13 +28,13 @@ class CustomerRepository {
     }
     add(customer) {
         if (customer === null) {
-            throw new TypeError('CustomerRepository: cannot add a null item');
+            throw new CustomerTypeException('CustomerRepository::add, null item');
         }
         if (typeof customer !== 'object') {
-            throw new TypeError('CustomerRepository: cannot add an item of type `' + (typeof customer) + '`');
+            throw new CustomerTypeException('CustomerRepository::add, incorrect type `' + (typeof customer) + '`');
         }
         if (customer.constructor.name !== Customer.name) {
-            throw new TypeError('CustomerRepository: cannot add an object `' + customer.constructor.name + '`');
+            throw new CustomerTypeException('CustomerRepository::add, incorrect object `' + customer.constructor.name + '`');
         }
         try {
             this.findById(customer.id);
