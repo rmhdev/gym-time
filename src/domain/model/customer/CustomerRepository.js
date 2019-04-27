@@ -1,6 +1,7 @@
 import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
+import {CustomerTypeException} from "./CustomerTypeException";
 
 export { CustomerRepository }
 
@@ -62,5 +63,21 @@ class CustomerRepository {
             return result;
         }
         throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
+    }
+    update(customer) {
+        if (!(customer instanceof Customer)) {
+            throw new CustomerTypeException(
+                'CustomerRepository::update, expected Customer, got ' + (typeof customer)
+            );
+        }
+        const index = this.items.findIndex((item) => {
+            return item.id.equals(customer.id);
+        });
+        if (index === -1) {
+            throw new CustomerNoFoundException(
+                'CustomerRepository: unable to update customer with id `' + customer.id.value + '`: not found'
+            )
+        }
+        this.items[index] = customer;
     }
 }

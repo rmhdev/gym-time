@@ -4,6 +4,7 @@ import { Customer } from "@/domain/model/customer/Customer";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
+import { CustomerTypeException } from "@/domain/model/customer/CustomerTypeException";
 
 describe('CustomerRepository', () => {
     it('should be empty when created', () => {
@@ -96,6 +97,22 @@ describe('CustomerRepository', () => {
        repository.update(updatedCustomer);
 
         expect(repository.count()).eq(1);
-        expect(repository.findById(1).checkOut().toISOString()).eq(checkOut.toISOString());
+        expect(repository.findById(customer.id).checkOut().toISOString()).eq(checkOut.toISOString());
+    });
+    it('throws error when updating a non existing customer', () => {
+        let repository = new CustomerRepository();
+        repository.add(
+            CustomerDataBuilder.aCustomer().withId('111').build()
+        );
+        const newCustomer = CustomerDataBuilder.aCustomer().withId('zzz').build();
+
+        expect(() => { repository.update(newCustomer) }).to.throw(CustomerNoFoundException);
+    });
+
+    it('throws error when trying to update something different from a customer', () => {
+        let repository = new CustomerRepository();
+
+        expect(() => { repository.update() }, 'Updating undefined customer').to.throw(CustomerTypeException);
+        expect(() => { repository.update(new Date()) }, 'Updating a Date instead of a Customer').to.throw(CustomerTypeException);
     });
 });
