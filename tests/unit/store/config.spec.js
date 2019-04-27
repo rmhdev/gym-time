@@ -32,4 +32,10 @@ describe('store config', () => {
         expect(localStore.getters.getRepository.count()).eq(1);
         expect(localStore.getters.getRepository.all()[0].name.value).eq('Lorem Commit');
     });
+    it('should have an empty list of customer ready to be checked out', () => {
+        const localVue = createLocalVue();
+        localVue.use(Vuex);
+        const store = new Vuex.Store(cloneDeep(config));
+        expect(store.getters.getCheckoutCustomers).to.eql([]);
+    });
 });

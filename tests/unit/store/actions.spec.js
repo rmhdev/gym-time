@@ -48,4 +48,17 @@ describe('store actions', () => {
             done
         )
     });
+    it('should add a new customer to the checkout list', done => {
+        testAction(
+            actions.addCheckoutCustomer,
+            { 'id': '123abc' },
+            {
+                checkoutCustomers: []
+            },
+            [
+                { type: 'addCheckoutCustomer' }
+            ],
+            done
+        )
+    });
 });
