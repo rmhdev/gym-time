@@ -9,6 +9,7 @@ class CustomerDataBuilder {
         this.id = CustomerId.create('123456qwerty');
         this.name = CustomerName.create('My Name');
         this.checkIn = '2019-03-19T12:00:00.000Z';
+        this.checkOut = null;
     }
     withId(id) {
         this.id = id;
@@ -25,8 +26,13 @@ class CustomerDataBuilder {
 
         return this;
     }
+    withCheckOut(checkOut) {
+        this.checkOut = checkOut;
+
+        return this;
+    }
     build() {
-        return new Customer(this.id, this.name, new Date(this.checkIn));
+        return new Customer(this.id, this.name, new Date(this.checkIn), this.checkOut);
     }
     static aCustomer() {
         return new CustomerDataBuilder();
