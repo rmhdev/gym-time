@@ -6,5 +6,8 @@ export default {
     },
     addCheckoutCustomer({ commit }, payload) {
         commit('addCheckoutCustomer', payload);
+    },
+    persistCheckoutCustomers({ commit }, payload) {
+        commit('persistCheckoutCustomers', payload);
     }
 }

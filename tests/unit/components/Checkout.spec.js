@@ -18,4 +18,19 @@ describe('Checkout.vue', () => {
         expect(wrapper.find('.gym-customer-name').text()).eq('Mr. Checkout');
         expect(wrapper.findAll('time').length).eq(1);
     });
+
+    // it('displays a cancel button that closes the message', () => {
+    //     const customer = CustomerDataBuilder.aCustomer()
+    //         .withName('Mr. Checkout')
+    //         .withCheckIn('2019-04-20T12:00:00.000Z')
+    //         .build();
+    //     const wrapper = shallowMount(Checkout, {
+    //         propsData: {
+    //             customer: customer
+    //         }
+    //     });
+    //     expect(wrapper.find('.gym-checkout-alert').length).eq(1);
+    //     wrapper.find('.gym-checkout-cancel').trigger('click');
+    //     expect(wrapper.find('.gym-checkout-alert').length).eq(0);
+    // })
 });

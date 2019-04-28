@@ -40,7 +40,8 @@ describe('store actions', () => {
             actions.createAndAddNewCustomer,
             { 'name': 'Ms Action' },
             {
-                customerRepository: new CustomerRepository()
+                customerRepository: new CustomerRepository(),
+                checkoutCustomers: []
             },
             [
                 { type: 'addCustomer' }
@@ -53,10 +54,25 @@ describe('store actions', () => {
             actions.addCheckoutCustomer,
             { 'id': '123abc' },
             {
+                customerRepository: new CustomerRepository(),
                 checkoutCustomers: []
             },
             [
                 { type: 'addCheckoutCustomer' }
+            ],
+            done
+        )
+    });
+    it('should persist checkout customers', done => {
+        testAction(
+            actions.persistCheckoutCustomers,
+            {},
+            {
+                customerRepository: new CustomerRepository(),
+                checkoutCustomers: []
+            },
+            [
+                { type: 'persistCheckoutCustomers' }
             ],
             done
         )
