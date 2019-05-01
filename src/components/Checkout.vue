@@ -1,39 +1,54 @@
 <template>
-    <div v-if="customerCheckout">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-4">Checkout</h1>
-                <p class="lead">
-                    <span class="gym-customer-name">{{ customerCheckout.name.value }}</span>
-                    <time class="gym-customer-checkin text-nowrap" :datetime="customerCheckout.checkIn().toISOString()">
-                        {{ renderCheckinTime }}
-                    </time>
-                </p>
-            </div>
+    <div class="card gym-checkout">
+        <h2 class="card-header">Checkout</h2>
+        <div
+            v-if="isEmpty"
+            class="alert alert-warning gym-checkout-empty"
+            role="alert"
+        >
+            Select customers from the list!
         </div>
+        <ul
+            v-else
+            class="list-group list-group-flush gym-checkout-customers"
+        >
+            <li
+                class="list-group-item gym-checkout-customer"
+                v-for="customer in checkoutCustomers"
+                :key="customer.id"
+                :id="'gym-customer-checkout-' + customer.id"
+            >
+                {{ customer.id }}
+
+                <button
+                    type="button"
+                    class="float-right close gym-customer-checkout-cancel"
+                    aria-label="Remove"
+                    @click.prevent="removeCustomer(customer.id)"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </li>
+        </ul>
     </div>
+
+
 </template>
 
 <script>
-    import {TimeFormatter} from "@/domain/model/TimeFormatter";
-    import {Customer} from "@/domain/model/customer/Customer";
-
     export default {
         name: 'Checkout',
-        data() {
-            return {
-                customerCheckout: this.customer
-            }
-        },
-        props: {
-            customer: {
-                type: Customer,
-                default: null
-            }
-        },
         computed: {
-            renderCheckinTime() {
-                return (new TimeFormatter()).format(this.customerCheckout.checkIn());
+            isEmpty() {
+                return this.checkoutCustomers.length === 0;
+            },
+            checkoutCustomers() {
+                return this.$store.getters.getCheckoutCustomers;
+            }
+        },
+        methods: {
+            removeCustomer(id) {
+                return this.$store.dispatch('toggleCheckoutCustomer', { id: id });
             }
         }
     }
