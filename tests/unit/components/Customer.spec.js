@@ -39,7 +39,6 @@ describe('Customer.vue', () => {
     it('marks the customer when clicked', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
 
-        // TODO: continue here
         expect(
             wrapper.findAll('.gym-customer-selected').length,
             'By default the customer should not be selected'

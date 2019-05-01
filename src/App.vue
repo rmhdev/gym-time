@@ -19,9 +19,7 @@
       </div>
       <div class="col-1"></div>
       <div class="col-6">
-        <customers
-            @checkout="onCustomerCheckout"
-        ></customers>
+        <customers></customers>
       </div>
     </div>
   </div>
@@ -33,32 +31,15 @@ import Clock from "./components/Clock";
 import Checkin from "./components/Checkin";
 import Checkout from "./components/Checkout";
 import Customers from "./components/Customers";
-import {Customer} from "@/domain/model/customer/Customer";
 
 export default {
   name: 'app',
-  data() {
-    return {
-      customerCheckout: this.customer
-    }
-  },
-  props: {
-    customer: {
-      type: Customer,
-      default: null
-    }
-  },
   computed: {
     hasCheckoutCustomer() {
-      return null !== this.customerCheckout;
+      return this.$store.getters.getCheckoutCustomers.length > 0;
     },
     getCheckoutCustomer() {
-      return this.customerCheckout;
-    }
-  },
-  methods: {
-    onCustomerCheckout(event) {
-      this.customerCheckout = this.$store.getters.getRepository.findById(event.id);
+      return this.$store.getters.getCheckoutCustomers;
     }
   },
   components: {

@@ -6,7 +6,6 @@ import {CustomerDataBuilder} from "./domain/model/customer/CustomerDataBuilder";
 import Checkout from "@/components/Checkout.vue";
 import Vuex from "vuex";
 import cloneDeep from "lodash.clonedeep";
-import Customers from "../../src/components/Customers";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -22,10 +21,12 @@ describe('App.vue', () => {
     it('shows a message for a customer ready to checkout', () => {
         const customer = CustomerDataBuilder.aCustomer().withId('qwerty1').build();
         store.state.customerRepository.add(customer);
-
+        store.state.checkoutCustomers.push({ id: 'qwerty1' });
         const wrapper = shallowMount(App, {store, localVue});
-        wrapper.find(Customers).vm.$emit('checkout', { id: 'qwerty1' });
 
-        expect(wrapper.findAll(Checkout).length).eq(1);
+        expect(
+            wrapper.findAll(Checkout).length,
+            'The Checkout component should be visible'
+        ).eq(1);
     });
 });
