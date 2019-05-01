@@ -41,14 +41,14 @@ describe('Customer.vue', () => {
 
         // TODO: continue here
         expect(
-            wrapper.find('.gym-customer-selected',
+            wrapper.findAll('.gym-customer-selected').length,
             'By default the customer should not be selected'
-        ).length).eq(0);
+        ).eq(0);
 
         wrapper.find('a').trigger('click');
         expect(
-            wrapper.find('.gym-customer-selected',
+            wrapper.findAll('.gym-customer-selected').length,
             'The customer should be marked as selected'
-        ).length).eq(1);
+        ).eq(1);
     });
 });
