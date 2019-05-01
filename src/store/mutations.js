@@ -11,14 +11,16 @@ export default {
             let customer = null;
             try {
                 customer = state.customerRepository.findById(element.id);
+                state.customerRepository.update(
+                    customer.updateCheckOut(new Date())
+                );
             } catch (e) {
-                return;
+                //return;
             }
-            state.customerRepository.update(
-                customer.updateCheckOut(new Date())
-            );
-            state.checkoutCustomers.splice(i, 1);
         }
+        this.emptyCheckoutCustomers(state);
+    },
+    emptyCheckoutCustomers(state) {
         state.checkoutCustomers = [];
     }
 }
