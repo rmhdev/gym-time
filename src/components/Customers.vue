@@ -29,7 +29,7 @@
         },
         methods: {
             onCustomerCheckout(event) {
-                this.$emit('checkout', event);
+                //this.$emit('checkout', event);
             }
         },
         computed: {

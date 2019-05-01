@@ -31,17 +31,4 @@ describe('Customer.vue', () => {
         expect(wrapper.find('time').attributes('datetime')).eq('2019-03-19T12:00:00.000Z');
         expect(wrapper.find('time').text()).eq(formatter.format(customer.checkIn()));
     });
-
-    it('emits an event when a customer is clicked', () => {
-        const customer = CustomerDataBuilder.aCustomer().withId('abc123').build();
-        const wrapper = shallowMount(Customer, {
-            propsData: {
-                customer: customer
-            }
-        });
-        wrapper.find('a').trigger('click');
-
-        expect(wrapper.emitted('checkout').length, 'Checkout event must be emitted').eq(1);
-        expect(wrapper.emitted('checkout')[0][0]['id'], 'Checkout event must emit the customer id').eq('abc123');
-    });
 });

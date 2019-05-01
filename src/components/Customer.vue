@@ -28,7 +28,7 @@
         },
         methods: {
             checkout() {
-                this.$emit('checkout', { id: this.customer.id.value });
+                //this.$emit('checkout', { id: this.customer.id.value });
             }
         }
     }
