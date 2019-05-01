@@ -1,5 +1,5 @@
 <template>
-    <a :class="customClass" @click.prevent="checkout" href="#">
+    <a :class="customerClass" @click.prevent="toggle" href="#">
         <div class="d-flex w-100 justify-content-between">
             <h5 class="gym-customer-name mb-1">
                 {{ customer.name.value }}
@@ -24,11 +24,18 @@
         computed: {
             renderCheckinTime() {
                 return (new TimeFormatter()).format(this.customer.checkIn());
+            },
+            customerClass() {
+                return this.customClass
+                    + (this.$store.getters.isCheckoutCustomer({id: this.customer.id.value })
+                        ? ' gym-customer-selected'
+                        : ''
+                    );
             }
         },
         methods: {
-            checkout() {
-                //this.$emit('checkout', { id: this.customer.id.value });
+            toggle() {
+                this.$store.dispatch('toggleCheckoutCustomer', { id: this.customer.id.value });
             }
         }
     }

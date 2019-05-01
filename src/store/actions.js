@@ -4,8 +4,8 @@ export default {
     createAndAddNewCustomer({ commit }, payload) {
         commit('addCustomer', Customer.create(payload.name));
     },
-    addCheckoutCustomer({ commit }, payload) {
-        commit('addCheckoutCustomer', payload);
+    toggleCheckoutCustomer({ commit }, payload) {
+        commit('toggleCheckoutCustomer', payload);
     },
     persistCheckoutCustomers({ commit }, payload) {
         commit('persistCheckoutCustomers', payload);

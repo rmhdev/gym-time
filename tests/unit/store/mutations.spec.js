@@ -24,8 +24,21 @@ describe('store mutations', () => {
             checkoutCustomers: []
         };
         const payload = { id: customer.id.value };
-        mutations.addCheckoutCustomer(state, payload);
+        mutations.toggleCheckoutCustomer(state, payload);
         expect(state.checkoutCustomers, 'Checkout single customer').to.eql([{id: 'checkout123'}]);
+    });
+    it('should remove a customer from the checkout list', () => {
+        let repository = new CustomerRepository();
+        const customer = CustomerDataBuilder.aCustomer().withId('checkout123').build();
+        repository.add(customer);
+        const state = {
+            customerRepository: repository,
+            checkoutCustomers: []
+        };
+        const payload = { id: customer.id.value };
+        mutations.toggleCheckoutCustomer(state, payload);
+        mutations.toggleCheckoutCustomer(state, payload);
+        expect(state.checkoutCustomers, 'Customer should not be in Checkout list').to.eql([]);
     });
     it('persists customers in the repository, marked as checkout', () => {
         let repository = new CustomerRepository();
@@ -54,7 +67,7 @@ describe('store mutations', () => {
             customerRepository: repository,
             checkoutCustomers: []
         };
-        mutations.addCheckoutCustomer(state, { id: 'fake000' });
+        mutations.toggleCheckoutCustomer(state, { id: 'fake000' });
         expect(
             state.checkoutCustomers,
             'Add info of a customer that does not exist in the repository'
@@ -75,8 +88,8 @@ describe('store mutations', () => {
             customerRepository: repository,
             checkoutCustomers: []
         };
-        mutations.addCheckoutCustomer(state, { id: 'qwerty123' });
-        mutations.addCheckoutCustomer(state, { id: 'fake000' });
+        mutations.toggleCheckoutCustomer(state, { id: 'qwerty123' });
+        mutations.toggleCheckoutCustomer(state, { id: 'fake000' });
         mutations.emptyCheckoutCustomers(state);
 
         expect(

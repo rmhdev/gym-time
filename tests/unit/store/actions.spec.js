@@ -51,14 +51,14 @@ describe('store actions', () => {
     });
     it('should add a new customer to the checkout list', done => {
         testAction(
-            actions.addCheckoutCustomer,
+            actions.toggleCheckoutCustomer,
             { 'id': '123abc' },
             {
                 customerRepository: new CustomerRepository(),
                 checkoutCustomers: []
             },
             [
-                { type: 'addCheckoutCustomer' }
+                { type: 'toggleCheckoutCustomer' }
             ],
             done
         )

@@ -1,9 +1,19 @@
+import { CustomerId } from "@/domain/model/customer/CustomerId";
+
 export default {
     addCustomer(state, customer) {
         state.customerRepository.add(customer);
     },
-    addCheckoutCustomer(state, customer) {
-        state.checkoutCustomers.push(customer);
+    toggleCheckoutCustomer(state, customer) {
+        const id = CustomerId.create(customer.id);
+        const position = state.checkoutCustomers.findIndex(function (item) {
+            return id.equals(item.id);
+        });
+        if (position === -1) {
+            state.checkoutCustomers.push(customer);
+            return;
+        }
+        state.checkoutCustomers.splice(position, 1);
     },
     persistCheckoutCustomers(state) {
         for (let i = 0; i < state.checkoutCustomers.length; i++) {
