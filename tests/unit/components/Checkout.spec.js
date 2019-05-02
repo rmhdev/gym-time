@@ -8,22 +8,22 @@ import cloneDeep from "lodash.clonedeep";
 import chai from 'chai';
 import spies from 'chai-spies';
 
-chai.use(spies);
 const localVue = createLocalVue();
 localVue.use(Vuex);
+chai.use(spies);
 
 describe('Checkout.vue', () => {
 
     let localStoreConfig;
-    let store;
+    //let store;
 
     beforeEach(() => {
         localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.actions.toggleCheckoutCustomer = chai.spy();
-        store = new Vuex.Store(cloneDeep(storeConfig));
     });
 
-    it('shows a message when the checkout list os empty', () => {
+    it('shows a message when the checkout list is empty', () => {
+        const store = new Vuex.Store(cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
 
         expect(
@@ -37,23 +37,24 @@ describe('Checkout.vue', () => {
     });
 
     it('allows adding customers to the list', () => {
-        store.state.customerRepository.add(
+        localStoreConfig.state.customerRepository.add(
             CustomerDataBuilder.aCustomer()
                 .withId('qwerty1')
                 .withName('Mr. Checkout')
                 .withCheckIn('2019-04-20T12:00:00.000Z')
                 .build()
         );
-        store.state.customerRepository.add(
+        localStoreConfig.state.customerRepository.add(
             CustomerDataBuilder.aCustomer()
                 .withId('other2')
                 .withName('Ms. Session Finished')
                 .withCheckIn('2019-04-20T12:00:00.000Z')
                 .build()
         );
+        localStoreConfig.state.checkoutCustomers.push({ id: 'qwerty1' });
+        const store = new Vuex.Store(cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
 
-        store.state.checkoutCustomers.push({ id: 'qwerty1' });
         expect(
             wrapper.findAll('.gym-checkout-customer').length,
             'A single customer should be available'
@@ -67,21 +68,24 @@ describe('Checkout.vue', () => {
     });
 
     it('allows removing customers from the list', () => {
-        store.state.customerRepository.add(
+        localStoreConfig.state.customerRepository.add(
             CustomerDataBuilder.aCustomer()
                 .withId('cancel1')
                 .withName('Ms. Cancel Checkout')
                 .withCheckIn('2019-04-20T12:00:00.000Z')
                 .build()
         );
-
+        localStoreConfig.state.checkoutCustomers.push({ id: 'cancel1' });
+        const store = new Vuex.Store(cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
-        store.state.checkoutCustomers.push({ id: 'cancel1' });
         wrapper.find(
             '#gym-customer-checkout-cancel1 .gym-customer-checkout-cancel'
         ).trigger('click');
 
-        expect(localStoreConfig.actions.toggleCheckoutCustomer).to.have.been.called();
+        expect(
+            localStoreConfig.actions.toggleCheckoutCustomer,
+            'Action should be dispatched'
+        ).to.have.been.called();
     });
 
     // it('displays a cancel button that closes the message', () => {
