@@ -8,28 +8,35 @@
         >
             Select customers from the list!
         </div>
-        <ul
-            v-else
-            class="list-group list-group-flush gym-checkout-customers"
-        >
-            <li
-                class="list-group-item gym-checkout-customer"
-                v-for="customer in checkoutCustomers"
-                :key="customer.id"
-                :id="'gym-customer-checkout-' + customer.id"
+        <div v-else>
+            <ul
+                class="list-group list-group-flush gym-checkout-customers"
             >
-                {{ customer.id }}
-
-                <button
-                    type="button"
-                    class="float-right close gym-customer-checkout-cancel"
-                    aria-label="Remove"
-                    @click.prevent="removeCustomer(customer.id)"
+                <li
+                    class="list-group-item gym-checkout-customer"
+                    v-for="customer in checkoutCustomers"
+                    :key="customer.id"
+                    :id="'gym-customer-checkout-' + customer.id"
                 >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </li>
-        </ul>
+                    {{ customer.id }}
+
+                    <button
+                        type="button"
+                        class="float-right close gym-customer-checkout-cancel"
+                        aria-label="Remove"
+                        @click.prevent="removeCustomer(customer.id)"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
+            </ul>
+
+            <a
+                href="#"
+                class="btn btn-danger gym-checkout-cancel"
+                @click.prevent="cancel"
+            >Cancel</a>
+        </div>
     </div>
 
 
@@ -49,6 +56,9 @@
         methods: {
             removeCustomer(id) {
                 return this.$store.dispatch('toggleCheckoutCustomer', { id: id });
+            },
+            cancel() {
+                return this.$store.dispatch('emptyCheckoutCustomers');
             }
         }
     }

@@ -15,11 +15,11 @@ chai.use(spies);
 describe('Checkout.vue', () => {
 
     let localStoreConfig;
-    //let store;
 
     beforeEach(() => {
         localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.actions.toggleCheckoutCustomer = chai.spy();
+        localStoreConfig.actions.emptyCheckoutCustomers = chai.spy();
     });
 
     it('shows a message when the checkout list is empty', () => {
@@ -88,18 +88,24 @@ describe('Checkout.vue', () => {
         ).to.have.been.called();
     });
 
-    // it('displays a cancel button that closes the message', () => {
-    //     const customer = CustomerDataBuilder.aCustomer()
-    //         .withName('Mr. Checkout')
-    //         .withCheckIn('2019-04-20T12:00:00.000Z')
-    //         .build();
-    //     const wrapper = shallowMount(Checkout, {
-    //         propsData: {
-    //             customer: customer
-    //         }
-    //     });
-    //     expect(wrapper.find('.gym-checkout-alert').length).eq(1);
-    //     wrapper.find('.gym-checkout-cancel').trigger('click');
-    //     expect(wrapper.find('.gym-checkout-alert').length).eq(0);
-    // })
+    it('displays a cancel button that empties the list', () => {
+        localStoreConfig.state.customerRepository.add(
+            CustomerDataBuilder.aCustomer()
+                .withId('cancel1')
+                .withName('Ms. Cancel Checkout')
+                .withCheckIn('2019-04-20T12:00:00.000Z')
+                .build()
+        );
+        localStoreConfig.state.checkoutCustomers.push({ id: 'cancel1' });
+        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const wrapper = shallowMount(Checkout, {store, localVue});
+        wrapper.find(
+            '.gym-checkout-cancel'
+        ).trigger('click');
+
+        expect(
+            localStoreConfig.actions.emptyCheckoutCustomers,
+            'Action should be dispatched'
+        ).to.have.been.called();
+    })
 });
