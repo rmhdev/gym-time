@@ -3,3 +3,70 @@
 body {
   background-color: pink;
 }
+
+.gym-customers {
+
+  .list-group-item {
+    padding: 0.50rem 1.00rem;
+    line-height: 1.90rem;
+  }
+
+  .gym-customer {
+
+    .gym-customer-name {
+      margin-bottom: 0;
+      line-height: 1.90rem;
+    }
+
+    .gym-customer-initials {
+      border-radius: 50%;
+      font-size: 1.4rem;
+      width: 2.0rem;
+      height: 2.0rem;
+      line-height: 1.90rem;
+      text-align: center;
+      background-color: lightgrey;
+    }
+
+    &:hover {
+      .gym-customer-initials {
+        background-color: $secondary;
+        color: $white;
+
+        .gym-customer-initials-value {
+          display: none;
+        }
+        &:after {
+          content: '✓';
+          color: white;
+        }
+      }
+    }
+
+    &.gym-customer-selected {
+      .gym-customer-initials {
+        background-color: $secondary;
+        color: $white;
+
+        &:after {
+          content: '✓';
+          color: white;
+        }
+      }
+      &:hover {
+        .gym-customer-initials {
+          background-color: $warning;
+          color: $white;
+
+          &:after {
+            content: '×';
+            color: $gray-700;
+          }
+        }
+      }
+      .gym-customer-initials-value {
+        display: none;
+      }
+    }
+  }
+}

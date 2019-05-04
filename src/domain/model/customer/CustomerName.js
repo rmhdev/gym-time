@@ -21,6 +21,9 @@ class CustomerName {
         }
         this.value = name;
     }
+    initials() {
+        return String.fromCodePoint(this.value.codePointAt(0)).toUpperCase();
+    }
     static create(value = null) {
         return new CustomerName(value);
     }

@@ -35,4 +35,10 @@ describe('CustomerName', () => {
             'left and right padding should be ignored'
         ).to.be.instanceOf(CustomerName);
     });
+    it('returns the initials', () => {
+        expect(CustomerName.create('Name Surname').initials()).to.equal('N');
+        expect(CustomerName.create('name Other').initials(), 'Initials mus be always uppercase').to.equal('N');
+        expect(CustomerName.create('名称').initials(), 'Initials in Chinese').to.equal('名');
+        expect(CustomerName.create('😀 Hi!').initials(), 'Initials in emoticons').to.equal('😀');
+    });
 });

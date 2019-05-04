@@ -1,7 +1,12 @@
 <template>
     <a :class="customerClass" @click.prevent="toggle" href="#">
         <div class="d-flex w-100 justify-content-between">
-            <h5 class="gym-customer-name mb-1">
+            <span class="gym-customer-initials" aria-hidden="true">
+                <span class="gym-customer-initials-value">
+                    {{ customer.name.initials() }}
+                </span>
+            </span>
+            <h5 class="gym-customer-name">
                 {{ customer.name.value }}
             </h5>
             <time class="gym-customer-checkin text-nowrap" :datetime="customer.checkIn().toISOString()">
@@ -25,12 +30,13 @@
             renderCheckinTime() {
                 return (new TimeFormatter()).format(this.customer.checkIn());
             },
+            isSelected() {
+                return this.$store.getters.isCheckoutCustomer({id: this.customer.id.value });
+            },
             customerClass() {
                 return this.customClass
-                    + (this.$store.getters.isCheckoutCustomer({id: this.customer.id.value })
-                        ? ' gym-customer-selected'
-                        : ''
-                    );
+                    + (this.isSelected ? ' gym-customer-selected' : '')
+                ;
             }
         },
         methods: {
