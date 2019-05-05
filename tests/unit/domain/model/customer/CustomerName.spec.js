@@ -35,6 +35,16 @@ describe('CustomerName', () => {
             'left and right padding should be ignored'
         ).to.be.instanceOf(CustomerName);
     });
+    it('removes extra spaces', () => {
+        expect(CustomerName.create(' Lorem   Ipsum ').value).to.equal('Lorem Ipsum');
+        expect(CustomerName.create(' Lorem  \n\t Ipsum ').value, 'Other whitespaces').to.equal('Lorem Ipsum');
+    });
+    it('removes specials chars', () => {
+        expect(
+            CustomerName.create('-_*(¡!@#$%^&*()_-={}[]:\\"<>,.¿?/~´` Hello').value,
+            'Basic chars from the keyboard'
+        ).to.equal('Hello');
+    });
     it('returns the initials', () => {
         expect(CustomerName.create('Name Surname').initials()).to.equal('N');
         expect(CustomerName.create('name Other').initials(), 'Initials mus be always uppercase').to.equal('N');

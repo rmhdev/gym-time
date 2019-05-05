@@ -11,7 +11,11 @@ class CustomerName {
             if (typeof name !== 'string') {
                 throw new TypeError('Customer name: expected string but `' + (typeof name) + '` received');
             }
-            name = name.trim();
+            name = name
+                .replace(/[´`~¡!@#$%^&*()_|+\-=¿?;:'",.<>{}[\]\\/]/g, '')
+                .replace(/\s\s+/g, ' ')
+                .trim()
+            ;
             if (!name.length) {
                 throw new CustomerNameEmptyException();
             }
