@@ -34,6 +34,10 @@ describe('Customer', () => {
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut(12345).build();
         expect(customer.checkOut()).eq(null);
     });
+    it('sets category to null when type is incorrect', () => {
+        const customer = CustomerDataBuilder.aCustomer().withCategory(new Date()).build();
+        expect(customer.category).eq(null);
+    });
     it('allows updating the checkout date, maintaining immutability', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
         let checkOut = new Date('2019-03-19T12:45:12+0000');

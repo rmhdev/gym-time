@@ -1,15 +1,17 @@
 import { CustomerId } from "./CustomerId";
 import { CustomerName } from "./CustomerName";
 import {CustomerStatus} from "./CustomerStatus";
+import {CustomerCategory} from "./CustomerCategory";
 
 export { Customer }
 
 class Customer {
-    constructor(id, name = '', checkIn = null, checkOut = null) {
+    constructor(id, name = '', checkIn = null, checkOut = null, category = null) {
         this.id = new CustomerId(id);
         this.name = new CustomerName(name);
         this.checkInTimestamp = (checkIn instanceof Date) ? checkIn.getTime() : Date.now();
         this.checkOutTimestamp = (checkOut instanceof Date) ? checkOut.getTime() : null;
+        this.category = (category instanceof CustomerCategory) ? category : null;
     }
     checkIn() {
         return new Date(this.checkInTimestamp);

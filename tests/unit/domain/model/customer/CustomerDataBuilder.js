@@ -1,6 +1,7 @@
 import { Customer } from "@/domain/model/customer/Customer";
 import { CustomerName } from "@/domain/model/customer/CustomerName";
 import { CustomerId } from "@/domain/model/customer/CustomerId";
+import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
 
 export { CustomerDataBuilder }
 
@@ -10,6 +11,7 @@ class CustomerDataBuilder {
         this.name = CustomerName.create('My Name');
         this.checkIn = '2019-03-19T12:00:00.000Z';
         this.checkOut = null;
+        this.category = new CustomerCategory('public');
     }
     withId(id) {
         this.id = id;
@@ -18,6 +20,11 @@ class CustomerDataBuilder {
     }
     withName(name) {
         this.name = name;
+
+        return this;
+    }
+    withCategory(category) {
+        this.category = category;
 
         return this;
     }
@@ -32,7 +39,7 @@ class CustomerDataBuilder {
         return this;
     }
     build() {
-        return new Customer(this.id, this.name, new Date(this.checkIn), this.checkOut);
+        return new Customer(this.id, this.name, new Date(this.checkIn), this.checkOut, this.category);
     }
     static aCustomer() {
         return new CustomerDataBuilder();

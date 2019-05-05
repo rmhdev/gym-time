@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 describe('CustomerCategory', () => {
-    it('creates a category with id and name', () => {
+    it('creates a category with value and name', () => {
         const category = new CustomerCategory('lorem', 'Lorem Ipsum');
         expect(category.value).to.equal('lorem');
         expect(category.name).to.equal('Lorem Ipsum');
