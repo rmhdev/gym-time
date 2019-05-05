@@ -13,17 +13,21 @@ body {
 
   .gym-customer {
 
+
     .gym-customer-name {
       margin-bottom: 0;
-      line-height: 1.90rem;
+      line-height: 2.40rem;
+    }
+    time {
+      line-height: 2.40rem;
     }
 
     .gym-customer-initials {
       border-radius: 50%;
       font-size: 1.4rem;
-      width: 2.0rem;
-      height: 2.0rem;
-      line-height: 1.90rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
       text-align: center;
       background-color: lightgrey;
     }
