@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import config from '@/store/config'
 import cloneDeep from 'lodash.clonedeep'
 import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder";
+import {CustomerCategory} from "../../../src/domain/model/customer/CustomerCategory";
 
 describe('store config', () => {
     it('should have an empty repository of customers when created', () => {
@@ -37,5 +38,13 @@ describe('store config', () => {
         localVue.use(Vuex);
         const store = new Vuex.Store(cloneDeep(config));
         expect(store.getters.getCheckoutCustomers).to.eql([]);
+    });
+    it('should have default list of categories', () => {
+        const localVue = createLocalVue();
+        localVue.use(Vuex);
+        const store = new Vuex.Store(cloneDeep(config));
+        expect(store.getters.getCategories).to.eql([
+            new CustomerCategory('public')
+        ]);
     });
 });

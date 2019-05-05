@@ -1,4 +1,5 @@
 import {CustomerId} from "@/domain/model/customer/CustomerId";
+import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
 
 export default {
     getRepository: (state) => {
@@ -13,5 +14,8 @@ export default {
         return state.checkoutCustomers.find(function (item) {
             return id.equals(item.id);
         }) !== undefined;
-    }
+    },
+    getCategories: (state) => {
+        return state.categories.map(category => new CustomerCategory(category));
+    },
 }
