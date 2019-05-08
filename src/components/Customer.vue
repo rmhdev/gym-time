@@ -6,9 +6,14 @@
                     {{ customer.name.initials() }}
                 </span>
             </span>
-            <h5 class="gym-customer-name">
-                {{ customer.name.value }}
-            </h5>
+            <div>
+                <h5 class="gym-customer-name">
+                    {{ customer.name.value }}
+                </h5>
+                <small v-if="customer.category" class="badge badge-pill badge-secondary gym-customer-category">
+                    {{ customer.category.name }}
+                </small>
+            </div>
             <time class="gym-customer-checkin text-nowrap" :datetime="customer.checkIn().toISOString()">
                 {{ renderCheckinTime }}
             </time>

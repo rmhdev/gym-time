@@ -38,7 +38,7 @@ class Customer {
         }
         return CustomerStatus.createActive();
     }
-    static create(name = '') {
-        return new Customer(CustomerId.create(), name);
+    static create(name = '', category = null) {
+        return new Customer(CustomerId.create(), name, null, null, category);
     }
 }

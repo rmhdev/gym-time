@@ -19,7 +19,10 @@ describe('store config', () => {
         const localStore = new Vuex.Store(cloneDeep(config));
 
         expect(localStore.getters.getRepository.count(), 'Initial repository should be empty').eq(0);
-        localStore.dispatch('createAndAddNewCustomer', { 'name': 'Lorem Store' });
+        localStore.dispatch('createAndAddNewCustomer', {
+            name: 'Lorem Store',
+            category: 'random'
+        });
         expect(localStore.getters.getRepository.count()).eq(1);
         expect(localStore.getters.getRepository.all()[0].name.value).eq('Lorem Store');
     });

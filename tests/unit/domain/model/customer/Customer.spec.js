@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import { CustomerDataBuilder } from './CustomerDataBuilder'
 import { Customer } from "@/domain/model/customer/Customer";
 import {CustomerStatus} from "@/domain/model/customer/CustomerStatus";
+import {CustomerCategory} from "../../../../../src/domain/model/customer/CustomerCategory";
 
 describe('Customer', () => {
     it('defines a checkin date if left empty', () => {
@@ -14,10 +15,11 @@ describe('Customer', () => {
         expect(customer.checkIn()).to.be.a('Date');
         expect(customer.checkIn().toISOString()).eq('2019-03-19T12:00:00.000Z');
     });
-    it('creates a new customer with only the name', () => {
-        const customer = Customer.create('Lorem Ipsum');
+    it('creates a new customer info given by the user', () => {
+        const customer = Customer.create('Lorem Ipsum', new CustomerCategory('category'));
         expect(customer).to.be.instanceOf(Customer);
         expect(customer.name.value).eq('Lorem Ipsum');
+        expect(customer.category.value).eq('category');
     });
     it('defines null as default checkout date', () => {
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(new Date()).build();

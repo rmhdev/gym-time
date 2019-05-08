@@ -21,6 +21,29 @@
                 >
                 <div class="feedback" :class="feedbackClass">{{ feedback }}</div>
             </div>
+
+            <div class="form-group">
+                <div
+                    v-for="category in categories"
+                    :key="category.value"
+                    class="form-check form-check-inline gym-checkin-category"
+                >
+                    <input
+                        type="radio"
+                        class="form-check-input"
+                        :id="'checkin_category_' + category.value"
+                        name="checkin[category]"
+                        :value="category.value"
+                        :checked="customerCategory === category.value"
+                        required="required"
+                        @change="customerCategory = category.value"
+                    ><label
+                        class="form-check-label"
+                        :for="'checkin_category_' + category.value"
+                    >{{ category.name }}</label>
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-block btn-success btn-lg">Check-in</button>
         </form>
     </div>
@@ -42,7 +65,8 @@
             return {
                 feedback: '',
                 status: '',
-                customerName: ''
+                customerName: '',
+                customerCategory: ''
             }
         },
         computed: {
@@ -68,6 +92,9 @@
                     default:
                         return '';
                 }
+            },
+            categories() {
+                return this.$store.getters.getCategories;
             }
         },
         methods: {
@@ -113,11 +140,20 @@
                 }
                 if (this.validate()) {
                     this.status = 'valid';
-                    this.$store.dispatch('createAndAddNewCustomer', { 'name': this.customerName });
+                    this.$store.dispatch('createAndAddNewCustomer', {
+                        name: this.customerName,
+                        category: this.customerCategory
+                    });
 
                     return true;
                 }
                 return false;
+            }
+        },
+        mounted() {
+            if (this.categories) {
+                const categories = this.categories;
+                this.customerCategory = categories[0].value;
             }
         }
     }

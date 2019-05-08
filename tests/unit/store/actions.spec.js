@@ -38,7 +38,7 @@ describe('store actions', () => {
     it('should create and add a new customer to the repository', done => {
         testAction(
             actions.createAndAddNewCustomer,
-            { 'name': 'Ms Action' },
+            { name: 'Ms Action', category: 'lorem' },
             {
                 customerRepository: new CustomerRepository(),
                 checkoutCustomers: []

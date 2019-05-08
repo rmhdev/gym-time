@@ -28,6 +28,11 @@ describe('Customer.vue', () => {
         expect(wrapper.find('.gym-customer-name').text()).eq('Ms Customer');
     });
 
+    it('shows the category of the customer', () => {
+        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
+        expect(wrapper.find('.gym-customer-category').text()).eq(customer.category.value);
+    });
+
     it('shows the checkin time of the customer', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
         const formatter = new TimeFormatter();
