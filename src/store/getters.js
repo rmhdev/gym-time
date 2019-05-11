@@ -1,5 +1,6 @@
 import {CustomerId} from "@/domain/model/customer/CustomerId";
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
+import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
 
 export default {
     getRepository: (state) => {
@@ -17,5 +18,8 @@ export default {
     },
     getCategories: (state) => {
         return state.categories.map(category => new CustomerCategory(category));
+    },
+    getCustomerQuery: (state) => {
+        return CustomerQuery.fromJSON(state.customerQuery);
     },
 }

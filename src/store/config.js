@@ -6,8 +6,9 @@ import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
 export default {
     state: {
         customerRepository: new CustomerRepository(),
+        customerQuery: { value: { checkOut: false }, sortBy: { checkIn: 'desc' } },
         checkoutCustomers: [],
-        categories: ['public']
+        categories: ['public'],
     },
     mutations,
     actions,
