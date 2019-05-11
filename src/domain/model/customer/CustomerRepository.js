@@ -2,6 +2,7 @@ import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
 import { CustomerTypeException } from "@/domain/model/customer/CustomerTypeException";
+import {CustomerQuery} from "./CustomerQuery";
 
 export { CustomerRepository }
 
@@ -63,6 +64,12 @@ class CustomerRepository {
             return result;
         }
         throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
+    }
+    find(customerQuery) {
+        if (customerQuery instanceof CustomerQuery) {
+            return this.items.filter((customer) => customerQuery.isAccepted(customer));
+        }
+        throw new TypeError('Find by query: expected CustomerType but `' + (typeof customerQuery) + '` received');
     }
     update(customer) {
         if (!(customer instanceof Customer)) {

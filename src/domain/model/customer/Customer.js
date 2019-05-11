@@ -10,7 +10,13 @@ class Customer {
         this.id = new CustomerId(id);
         this.name = new CustomerName(name);
         this.checkInTimestamp = (checkIn instanceof Date) ? checkIn.getTime() : Date.now();
-        this.checkOutTimestamp = (checkOut instanceof Date) ? checkOut.getTime() : null;
+        let out = null;
+        if (checkOut instanceof Date) {
+            out = checkOut;
+        } else if (typeof checkOut === 'string' || Number.isInteger(checkOut)) {
+            out = new Date(checkOut);
+        }
+        this.checkOutTimestamp = out;
         this.category = (category instanceof CustomerCategory) ? category : null;
     }
     checkIn() {

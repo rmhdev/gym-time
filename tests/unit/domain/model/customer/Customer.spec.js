@@ -33,7 +33,7 @@ describe('Customer', () => {
     });
     it('incorrect types in checkout values defaults to null', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
-        const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut(12345).build();
+        const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut({}).build();
         expect(customer.checkOut()).eq(null);
     });
     it('sets category to null when type is incorrect', () => {

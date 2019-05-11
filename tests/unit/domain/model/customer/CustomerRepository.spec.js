@@ -5,6 +5,7 @@ import { CustomerDataBuilder } from "./CustomerDataBuilder";
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
 import { CustomerTypeException } from "@/domain/model/customer/CustomerTypeException";
+import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 
 describe('CustomerRepository', () => {
     it('should be empty when created', () => {
@@ -114,22 +115,31 @@ describe('CustomerRepository', () => {
         expect(() => { repository.update() }, 'Updating undefined customer').to.throw(CustomerTypeException);
         expect(() => { repository.update(new Date()) }, 'Updating a Date instead of a Customer').to.throw(CustomerTypeException);
     });
-    //it('allows filtering results by query', () => {
-    //    const customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('First').withCheckIn('2019-03-19T12:10:00.000Z').build();
-    //    const customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Second').withCheckIn('2019-03-19T12:20:00.000Z').withCheckOut('2019-03-19T12:45:00.000Z').build();
-    //    const customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('Third').withCheckIn('2019-03-19T12:30:00.000Z').build();
-    //    const customer4 = CustomerDataBuilder.aCustomer().withId('4').withName('Fourth').withCheckIn('2019-03-19T12:40:00.000Z').build();
-    //    let repository = new CustomerRepository();
-    //    repository.add(customer1);
-    //    repository.add(customer2);
-    //    repository.add(customer3);
-    //    repository.add(customer4);
-    //
-    //    expect(
-    //        repository.find(CustomerQuery.fromJSON()),
-    //        'Empty filter results all results'
-    //    ).to.eql([customer1, customer2, customer3, customer4]);
-    //
-    //
-    //});
+    it('allows filtering results by query', () => {
+        const customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('First').withCheckIn('2019-03-19T12:10:00.000Z').build();
+        const customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Second').withCheckIn('2019-03-19T12:20:00.000Z').withCheckOut('2019-03-19T12:45:00.000Z').build();
+        const customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('Third').withCheckIn('2019-03-19T12:30:00.000Z').build();
+        const customer4 = CustomerDataBuilder.aCustomer().withId('4').withName('Fourth').withCheckIn('2019-03-19T12:40:00.000Z').build();
+        let repository = new CustomerRepository();
+        repository.add(customer1);
+        repository.add(customer2);
+        repository.add(customer3);
+        repository.add(customer4);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON()),
+            'Empty filter results all results'
+        ).to.eql([customer1, customer2, customer3, customer4]);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON({ value: { status: 'active' } })),
+            'Filter by status: only active users'
+        ).to.eql([customer1, customer3, customer4]);
+    });
+    it('throws error when trying to find with an incorrect query type', () => {
+        let repository = new CustomerRepository();
+
+        expect(() => { repository.find(new Date()) }, 'Find with incorrect query type "Date"').to.throw(TypeError);
+        expect(() => { repository.find() }, 'Find with undefined query type').to.throw(TypeError);
+    });
 });
