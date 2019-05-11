@@ -28,6 +28,13 @@ class CustomerName {
     initials() {
         return String.fromCodePoint(this.value.codePointAt(0)).toUpperCase();
     }
+    isSimilar(name = '') {
+        try {
+            return this.value.toLowerCase().includes((new CustomerName(name)).value.trim().toLowerCase());
+        } catch (e) {
+            return false;
+        }
+    }
     static create(value = null) {
         return new CustomerName(value);
     }

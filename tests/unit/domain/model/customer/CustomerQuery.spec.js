@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
+import { CustomerDataBuilder } from "./CustomerDataBuilder";
 
 describe('CustomerQuery', () => {
     it('is empty by default', () => {
@@ -78,5 +79,32 @@ describe('CustomerQuery', () => {
         const queryUpdated2 = query.removeSortBy('does-not-exist');
         expect(queryUpdated2).to.be.an.instanceof(CustomerQuery);
         expect(queryUpdated2, 'Same value as original').to.eql(query);
+    });
+    it('checks if a customer complies with the query', () => {
+        const customer = CustomerDataBuilder.aCustomer()
+            .withId('123')
+            .withName('Lorem Ipsum')
+            .withCheckIn('2019-03-19T12:00:00+0000')
+            .withCheckOut(null).build();
+
+        const queries = [
+            { value: {}, expected: true, description: 'No filter' },
+            { value: { id: '123' }, expected: true, description: 'Same id' },
+            { value: { id: '1234' }, expected: false, description: 'Different id' },
+            { value: { status: 'out' }, expected: false, description: 'Has checked out?' },
+            { value: { status: 'active' }, expected: true, description: 'Is still active?' },
+            { value: { status: 'deleted' }, expected: false, description: 'Has been deleted?' },
+            { value: { name: 'Mr Unknown' }, expected: false, description: 'Different name' },
+            { value: { name: 'lorem ipsum' }, expected: true, description: 'Same name' },
+            { value: { name: 'LOREM' }, expected: true, description: 'First part of name' },
+            { value: { name: 'iPSuM' }, expected: true, description: 'Last part of name' },
+        ];
+
+        queries.forEach(function (query) {
+            expect(
+                CustomerQuery.fromJSON({ value: query.value }).isAccepted(customer),
+                query.description
+            ).eq(query.expected);
+        });
     });
 });

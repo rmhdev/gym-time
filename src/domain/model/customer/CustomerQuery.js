@@ -1,7 +1,10 @@
+import {Customer} from "./Customer";
+
 export { CustomerQuery }
 
 class CustomerQuery {
     constructor(value = {}, sortBy = {}) {
+        //this.value.constructor === Object
         this.value = value;
         this.sortBy = sortBy;
     }
@@ -58,6 +61,32 @@ class CustomerQuery {
         }
 
         return CustomerQuery.fromJSON(json);
+    }
+    isAccepted(customer) {
+        if (customer instanceof Customer) {
+            if (Object.entries(this.value).length === 0) {
+                return true;
+            }
+            let result = true;
+            let checks = 0;
+            if (this.has('id')) {
+                checks += 1;
+                result = result && customer.id.equals(this.get('id'));
+            }
+            if (this.has('status')) {
+                checks += 1;
+                result = result && customer.status().equals(this.get('status'));
+            }
+            if (this.has('name')) {
+                checks += 1;
+                result = result && customer.name.isSimilar(this.get('name'));
+            }
+            if (0 === checks) {
+                return false;
+            }
+
+            return result;
+        }
     }
     static fromJSON(queryJSON) {
         if (undefined === queryJSON) {
