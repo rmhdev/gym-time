@@ -59,6 +59,32 @@ describe('Customer', () => {
         expect(updatedCustomer.checkOut().toISOString(), 'Customer has updated the checkout date').eq(checkOut.toISOString());
         expect(updatedCustomer, 'it is the same customer, but with checkout date').to.eql(expected);
     });
+    it('allows updating to null the checkout date, maintaining immutability', () => {
+        let checkIn = new Date('2019-03-19T12:00:00+0000');
+        let checkOut = new Date('2019-03-19T12:45:12+0000');
+        const initialCustomer = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withCheckIn(checkIn)
+            .withCheckOut(checkOut)
+            .build();
+        const updatedCustomer = initialCustomer.updateCheckOut(null);
+        const expected = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withCheckIn(checkIn)
+            .withCheckOut(null)
+            .build();
+
+        expect(initialCustomer.checkOut().toISOString(), 'Initial customer has a checkout date').eq(checkOut.toISOString());
+        expect(updatedCustomer.checkOut(), 'Customer has updated the checkout date as null').eq(null);
+        expect(updatedCustomer, 'it is the same customer, but with null checkout date').to.eql(expected);
+    });
+    it('throws exception when updating the checkout date with incorrect type', () => {
+        const customer = CustomerDataBuilder.aCustomer().withCheckIn('2019-03-19T12:00:00+0000').withCheckOut(null).build();
+
+        expect(() => { customer.updateCheckOut('hello') }, 'Update checkout with string').to.throw(TypeError);
+        expect(() => { customer.updateCheckOut(123456) }, 'Update checkout with number').to.throw(TypeError);
+        expect(() => { customer.updateCheckOut({}) }, 'Update checkout with object').to.throw(TypeError);
+    });
     it('throws exception when checkout not greater than checkin', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut(null).build();

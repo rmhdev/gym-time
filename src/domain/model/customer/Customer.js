@@ -23,7 +23,7 @@ class Customer {
         return new Date(this.checkInTimestamp);
     }
     checkOut() {
-        return this.checkOutTimestamp ? new Date(this.checkOutTimestamp) : this.checkOutTimestamp;
+        return this.checkOutTimestamp ? new Date(this.checkOutTimestamp) : null;
     }
     updateCheckOut(checkoutDate) {
         if (checkoutDate instanceof Date) {
@@ -35,6 +35,8 @@ class Customer {
                     + '(in) ' + this.checkIn().toISOString()
                 );
             }
+        } else if (null !== checkoutDate) {
+            throw new TypeError('UpdateCheckout: expected Date or null, got `' + (typeof name) + '`');
         }
         return new Customer(this.id, this.name, this.checkIn(), checkoutDate, this.category);
     }
