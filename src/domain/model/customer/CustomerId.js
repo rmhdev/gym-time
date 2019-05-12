@@ -22,6 +22,21 @@ class CustomerId {
             return false;
         }
     }
+    inArray(ids) {
+        const searchIds = Array.isArray(ids) ? ids : [ids];
+        let isInArray = false;
+        searchIds.forEach((searchId) => {
+            let isFound = false;
+            try {
+                isFound = this.equals(searchId);
+            } catch (e) {
+                isFound = false;
+            }
+            isInArray = isInArray || isFound;
+        });
+
+        return isInArray;
+    }
     static create(value = null) {
         return new CustomerId((null === value)
             ? 'customer_id_' + Math.random().toString(16).substr(2)

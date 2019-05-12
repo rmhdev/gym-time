@@ -34,8 +34,7 @@ describe('CustomerRepository', () => {
         repository.add(customer);
 
         const result = repository.findById('111');
-        expect(result).to.be.an.instanceof(Customer);
-        expect(result.name.value).to.equal('Lorem Ipsum');
+        expect(result).to.eql(customer);
     });
     it('throws error when no customer is found by id', () => {
         let repository = new CustomerRepository();
@@ -43,6 +42,17 @@ describe('CustomerRepository', () => {
         repository.add(customer);
 
         expect(() => { repository.findById('aaa') }).to.throw(CustomerNoFoundException);
+    });
+    it('returns a list of customers looking by ids', () => {
+        let repository = new CustomerRepository();
+        const customer1 = CustomerDataBuilder.aCustomer().withId('111').withName('Lorem 1').build();
+        const customer2 = CustomerDataBuilder.aCustomer().withId('222').withName('Lorem 2').build();
+        const customer3 = CustomerDataBuilder.aCustomer().withId('333').withName('Lorem 3').build();
+        repository.add(customer1);
+        repository.add(customer2);
+        repository.add(customer3);
+        const result = repository.findById(['111', '333']);
+        expect(result).to.eql([customer1, customer3]);
     });
     it('removes a customer by id', () => {
         let repository = new CustomerRepository();

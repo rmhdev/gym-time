@@ -37,4 +37,17 @@ describe('CustomerId', () => {
         expect(id.equals(CustomerId.create('aaa')), 'comparing different id object').to.equal(false);
         expect(id.equals(new Date()), 'comparing different instance').to.equal(false);
     });
+    it('returns true when value is in array', () => {
+        const id = CustomerId.create('abcde');
+        expect(id.inArray(['abcde']), 'comparing equal id string in array').to.equal(true);
+        expect(id.inArray('abcde'), 'comparing equal id string').to.equal(true);
+        expect(id.inArray([id]), 'comparing equal id object in array').to.equal(true);
+    });
+    it('returns false when value is not in array', () => {
+        const id = CustomerId.create('abcde');
+        expect(id.inArray(['aaa']), 'comparing different id string in array').to.equal(false);
+        expect(id.inArray([CustomerId.create('aaa')]), 'comparing different id object in array').to.equal(false);
+        expect(id.inArray([new Date()]), 'comparing different instance in array').to.equal(false);
+        expect(id.inArray(new Date()), 'comparing different instance').to.equal(false);
+    });
 });

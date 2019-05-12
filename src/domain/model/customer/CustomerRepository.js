@@ -57,6 +57,11 @@ class CustomerRepository {
         this.items.splice(index, 1);
     }
     findById(id) {
+        if (Array.isArray(id)) {
+            return this.items.filter((customer) => {
+                return customer.id.inArray(id);
+            });
+        }
         const result = this.items.find((customer) => {
             return customer.id.equals(id);
         });
