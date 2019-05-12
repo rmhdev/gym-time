@@ -79,14 +79,14 @@ describe('store actions', () => {
     });
     it('should empty the list of checkout customers', done => {
         testAction(
-            actions.emptyCheckoutCustomers,
+            actions.initialiseCheckoutCustomers,
             {},
             {
                 customerRepository: new CustomerRepository(),
                 checkoutCustomers: []
             },
             [
-                { type: 'emptyCheckoutCustomers' }
+                { type: 'initialiseCheckoutCustomers' }
             ],
             done
         )

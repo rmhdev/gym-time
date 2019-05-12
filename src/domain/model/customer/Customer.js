@@ -12,9 +12,9 @@ class Customer {
         this.checkInTimestamp = (checkIn instanceof Date) ? checkIn.getTime() : Date.now();
         let out = null;
         if (checkOut instanceof Date) {
-            out = checkOut;
+            out = checkOut.getTime();
         } else if (typeof checkOut === 'string' || Number.isInteger(checkOut)) {
-            out = new Date(checkOut);
+            out = (new Date(checkOut)).getTime();
         }
         this.checkOutTimestamp = out;
         this.category = (category instanceof CustomerCategory) ? category : null;
@@ -36,7 +36,7 @@ class Customer {
                 );
             }
         }
-        return new Customer(this.id, this.name, this.checkIn(), checkoutDate);
+        return new Customer(this.id, this.name, this.checkIn(), checkoutDate, this.category);
     }
     status() {
         if (this.checkOutTimestamp) {

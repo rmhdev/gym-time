@@ -11,7 +11,7 @@ export default {
     persistCheckoutCustomers({ commit }, payload) {
         commit('persistCheckoutCustomers', payload);
     },
-    emptyCheckoutCustomers({ commit }) {
-        commit('emptyCheckoutCustomers');
+    initialiseCheckoutCustomers({ commit }) {
+        commit('initialiseCheckoutCustomers');
     }
 }

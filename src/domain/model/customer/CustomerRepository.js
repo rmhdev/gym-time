@@ -9,6 +9,7 @@ export { CustomerRepository }
 class CustomerRepository {
     constructor() {
         this.items = [];
+        this.updatedAtTimestamp = null;
     }
     count() {
         return this.items.length;
@@ -41,6 +42,7 @@ class CustomerRepository {
             this.findById(customer.id);
         } catch (CustomerNotFoundException) {
             this.items.push(customer);
+            this.updatedAtTimestamp = Date.now();
             return;
         }
         throw new CustomerIdNotUniqueException(
@@ -55,6 +57,7 @@ class CustomerRepository {
             throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
         }
         this.items.splice(index, 1);
+        this.updatedAtTimestamp = Date.now();
     }
     findById(id) {
         if (Array.isArray(id)) {
@@ -91,5 +94,6 @@ class CustomerRepository {
             )
         }
         this.items[index] = customer;
+        this.updatedAtTimestamp = Date.now();
     }
 }

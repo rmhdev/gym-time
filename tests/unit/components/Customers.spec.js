@@ -53,4 +53,21 @@ describe('Customers.vue', () => {
 
         expect(wrapper.findAll('.gym-customer').length).eq(1);
     });
+
+    it('updates the list when a customer changes', () => {
+        const checkin = '2019-03-16T01:00:11';
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).build();
+        store.state.customerRepository.add(customer1);
+        store.state.customerRepository.add(customer2);
+
+        const wrapper = shallowMount(Customers, {store, localVue});
+        expect(wrapper.findAll('.gym-customer').length).eq(2);
+        store.state.customerRepository.update(customer2.updateCheckOut(new Date('2019-03-16T01:45:22')));
+
+        expect(
+            wrapper.findAll('.gym-customer').length,
+            'Checkout customer should not be displayed by default'
+        ).eq(1);
+    });
 });

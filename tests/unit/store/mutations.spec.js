@@ -90,7 +90,7 @@ describe('store mutations', () => {
         };
         mutations.toggleCheckoutCustomer(state, { id: 'qwerty123' });
         mutations.toggleCheckoutCustomer(state, { id: 'fake000' });
-        mutations.emptyCheckoutCustomers(state);
+        mutations.initialiseCheckoutCustomers(state);
 
         expect(
             state.checkoutCustomers,

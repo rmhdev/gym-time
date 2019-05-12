@@ -28,9 +28,9 @@ export default {
                 //return;
             }
         }
-        this.emptyCheckoutCustomers(state);
+        state.checkoutCustomers = [];
     },
-    emptyCheckoutCustomers(state) {
+    initialiseCheckoutCustomers(state) {
         state.checkoutCustomers = [];
     }
 }

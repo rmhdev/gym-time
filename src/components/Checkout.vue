@@ -15,16 +15,16 @@
                 <li
                     class="list-group-item gym-checkout-customer"
                     v-for="customer in checkoutCustomers"
-                    :key="customer.id"
-                    :id="'gym-customer-checkout-' + customer.id"
+                    :key="customer.id.value"
+                    :id="'gym-customer-checkout-' + customer.id.value"
                 >
-                    {{ customer.id }}
+                    {{ customer.name.value }}
 
                     <button
                         type="button"
                         class="float-right close gym-customer-checkout-cancel"
                         aria-label="Remove"
-                        @click.prevent="removeCustomer(customer.id)"
+                        @click.prevent="removeCustomer(customer.id.value)"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -33,9 +33,14 @@
 
             <a
                 href="#"
-                class="btn btn-danger gym-checkout-cancel"
+                class="btn btn-link gym-checkout-cancel"
                 @click.prevent="cancel"
             >Cancel</a>
+            <a
+                href="#"
+                class="btn btn-danger gym-checkout-confirm"
+                @click.prevent="confirm"
+            >Confirm</a>
         </div>
     </div>
 
@@ -58,7 +63,10 @@
                 return this.$store.dispatch('toggleCheckoutCustomer', { id: id });
             },
             cancel() {
-                return this.$store.dispatch('emptyCheckoutCustomers');
+                return this.$store.dispatch('initialiseCheckoutCustomers');
+            },
+            confirm() {
+                return this.$store.dispatch('persistCheckoutCustomers');
             }
         }
     }

@@ -43,12 +43,21 @@ describe('Customer', () => {
     it('allows updating the checkout date, maintaining immutability', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
         let checkOut = new Date('2019-03-19T12:45:12+0000');
-        const initialCustomer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut(null).build();
+        const initialCustomer = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withCheckIn(checkIn)
+            .withCheckOut(null)
+            .build();
         const updatedCustomer = initialCustomer.updateCheckOut(checkOut);
+        const expected = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withCheckIn(checkIn)
+            .withCheckOut(checkOut)
+            .build();
 
         expect(initialCustomer.checkOut(), 'Initial customer has no checkout').eq(null);
         expect(updatedCustomer.checkOut().toISOString(), 'Customer has updated the checkout date').eq(checkOut.toISOString());
-        expect(updatedCustomer.id.equals(initialCustomer.id), 'it is the same customer').eq(true);
+        expect(updatedCustomer, 'it is the same customer, but with checkout date').to.eql(expected);
     });
     it('throws exception when checkout not greater than checkin', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');

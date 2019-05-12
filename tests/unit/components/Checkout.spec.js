@@ -19,7 +19,8 @@ describe('Checkout.vue', () => {
     beforeEach(() => {
         localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.actions.toggleCheckoutCustomer = chai.spy();
-        localStoreConfig.actions.emptyCheckoutCustomers = chai.spy();
+        localStoreConfig.actions.initialiseCheckoutCustomers = chai.spy();
+        localStoreConfig.actions.persistCheckoutCustomers = chai.spy();
     });
 
     it('shows a message when the checkout list is empty', () => {
@@ -104,8 +105,29 @@ describe('Checkout.vue', () => {
         ).trigger('click');
 
         expect(
-            localStoreConfig.actions.emptyCheckoutCustomers,
-            'Action should be dispatched'
+            localStoreConfig.actions.initialiseCheckoutCustomers,
+            'Action "cancel checkout" should be dispatched'
         ).to.have.been.called();
-    })
+    });
+
+    it('displays a confirm button that updates the status of the selected customers', () => {
+        localStoreConfig.state.customerRepository.add(
+            CustomerDataBuilder.aCustomer()
+                .withId('confirm1')
+                .withName('Ms. Confirm Checkout')
+                .withCheckIn('2019-04-20T12:00:00.000Z')
+                .build()
+        );
+        localStoreConfig.state.checkoutCustomers.push({ id: 'confirm1' });
+        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const wrapper = shallowMount(Checkout, {store, localVue});
+        wrapper.find(
+            '.gym-checkout-confirm'
+        ).trigger('click');
+
+        expect(
+            localStoreConfig.actions.persistCheckoutCustomers,
+            'Action "confirm checkout" should be dispatched'
+        ).to.have.been.called();
+    });
 });

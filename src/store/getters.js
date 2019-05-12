@@ -7,7 +7,9 @@ export default {
         return state.customerRepository;
     },
     getCheckoutCustomers: (state) => {
-        return state.checkoutCustomers;
+        return state.customerRepository.findById(
+            state.checkoutCustomers.map((payload) => { return payload.id })
+        );
     },
     isCheckoutCustomer: (state) => (customer) => {
         const id = CustomerId.create(customer.id);
@@ -23,6 +25,10 @@ export default {
         return CustomerQuery.fromJSON(state.customerQuery);
     },
     getFilteredCustomers: (state) => {
+        if (state.customerRepository.updatedAtTimestamp !== null) {
+            // hack to make vue detect a change in the repository
+        }
+
         return state.customerRepository.find(
             CustomerQuery.fromJSON(state.customerQuery)
         );
