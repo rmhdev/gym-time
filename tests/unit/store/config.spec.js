@@ -5,7 +5,7 @@ import config from '@/store/config'
 import cloneDeep from 'lodash.clonedeep'
 import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder";
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
-import {CustomerQuery} from "../../../src/domain/model/customer/CustomerQuery";
+import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
 
 describe('store config', () => {
     it('should have an empty repository of customers when created', () => {
@@ -56,7 +56,7 @@ describe('store config', () => {
         localVue.use(Vuex);
         const store = new Vuex.Store(cloneDeep(config));
         const expected = CustomerQuery.fromJSON({
-            value: { checkOut: false },
+            value: { status: 'active' },
             sortBy: { checkIn: 'desc' },
         });
         expect(store.getters.getCustomerQuery).to.eql(expected);

@@ -28,10 +28,10 @@
         },
         computed: {
             customers() {
-                return this.$store.getters.getRepository.all();
+                return this.$store.getters.getFilteredCustomers;
             },
             isEmpty() {
-                return this.$store.getters.getRepository.count() === 0;
+                return this.customers.length === 0;
             }
         }
     }

@@ -22,4 +22,9 @@ export default {
     getCustomerQuery: (state) => {
         return CustomerQuery.fromJSON(state.customerQuery);
     },
+    getFilteredCustomers: (state) => {
+        return state.customerRepository.find(
+            CustomerQuery.fromJSON(state.customerQuery)
+        );
+    },
 }

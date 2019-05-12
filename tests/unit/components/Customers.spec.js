@@ -39,4 +39,18 @@ describe('Customers.vue', () => {
 
         expect(wrapper.findAll('.gym-empty').length).eq(0);
     });
+
+    it('renders only active users by default', () => {
+        const checkin = '2019-03-16T01:00:11';
+        const checkout = '2019-03-16T01:45:22';
+        store.state.customerRepository.add(
+            CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).build()
+        );
+        store.state.customerRepository.add(
+            CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).withCheckOut(checkout).build()
+        );
+        const wrapper = shallowMount(Customers, {store, localVue});
+
+        expect(wrapper.findAll('.gym-customer').length).eq(1);
+    });
 });
