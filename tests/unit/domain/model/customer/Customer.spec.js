@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import { CustomerDataBuilder } from './CustomerDataBuilder'
 import { Customer } from "@/domain/model/customer/Customer";
-import {CustomerStatus} from "@/domain/model/customer/CustomerStatus";
-import {CustomerCategory} from "../../../../../src/domain/model/customer/CustomerCategory";
+import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
+import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 describe('Customer', () => {
     it('defines a checkin date if left empty', () => {

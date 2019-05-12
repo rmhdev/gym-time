@@ -152,4 +152,23 @@ describe('CustomerRepository', () => {
         expect(() => { repository.find(new Date()) }, 'Find with incorrect query type "Date"').to.throw(TypeError);
         expect(() => { repository.find() }, 'Find with undefined query type').to.throw(TypeError);
     });
+
+    it('logs the number of changes', () => {
+        const customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('First').withCheckIn('2019-03-19T12:10:00.000Z').build();
+        const customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Second').withCheckIn('2019-03-19T12:20:00.000Z').build();
+        let repository = new CustomerRepository();
+        expect(repository.version, 'New repository').equal(0);
+
+        repository.add(customer1);
+        expect(repository.version, 'Add first customer').equal(1);
+
+        repository.add(customer2);
+        expect(repository.version, 'Add second customer').equal(2);
+
+        repository.update(customer2.updateCheckOut(new Date('2019-03-19T12:55:22.000Z')));
+        expect(repository.version, 'Update second customer').equal(3);
+
+        repository.remove(customer2.id);
+        expect(repository.version, 'Remove second customer').equal(4);
+    })
 });

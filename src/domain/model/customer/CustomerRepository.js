@@ -2,14 +2,14 @@ import { Customer } from '@/domain/model/customer/Customer'
 import { CustomerNoFoundException } from "@/domain/model/customer/CustomerNotFoundException";
 import { CustomerIdNotUniqueException } from "@/domain/model/customer/CustomerIdNotUniqueException";
 import { CustomerTypeException } from "@/domain/model/customer/CustomerTypeException";
-import {CustomerQuery} from "./CustomerQuery";
+import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 
 export { CustomerRepository }
 
 class CustomerRepository {
     constructor() {
         this.items = [];
-        this.updatedAtTimestamp = null;
+        this.version = 0;
     }
     count() {
         return this.items.length;
@@ -42,7 +42,7 @@ class CustomerRepository {
             this.findById(customer.id);
         } catch (CustomerNotFoundException) {
             this.items.push(customer);
-            this.updatedAtTimestamp = Date.now();
+            this.version += 1;
             return;
         }
         throw new CustomerIdNotUniqueException(
@@ -57,7 +57,7 @@ class CustomerRepository {
             throw new CustomerNoFoundException('CustomerRepository: item with id `' + id.toString() + '` not found');
         }
         this.items.splice(index, 1);
-        this.updatedAtTimestamp = Date.now();
+        this.version += 1;
     }
     findById(id) {
         if (Array.isArray(id)) {
@@ -94,6 +94,6 @@ class CustomerRepository {
             )
         }
         this.items[index] = customer;
-        this.updatedAtTimestamp = Date.now();
+        this.version += 1;
     }
 }
