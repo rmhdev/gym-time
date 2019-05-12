@@ -1,5 +1,8 @@
 <template>
     <div>
+        <search
+            :categories="categories"
+        ></search>
         <div class="list-group gym-customers">
             <div v-if="isEmpty" class="gym-empty alert alert-info text-center" role="alert">
                 <h4 class="gym-title alert-heading">Gym is empty!</h4>
@@ -20,11 +23,13 @@
 
 <script>
     import Customer from "@/components/Customer";
+    import Search from "@/components/Search";
 
     export default {
         name: 'Customers',
         components: {
-            Customer
+            Customer,
+            Search
         },
         computed: {
             customers() {
@@ -32,6 +37,9 @@
             },
             isEmpty() {
                 return this.customers.length === 0;
+            },
+            categories() {
+                return this.$store.getters.getCategories;
             }
         }
     }

@@ -5,6 +5,7 @@ import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilde
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
 import Vuex from "vuex";
+import Search from "../../../src/components/Search";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -69,5 +70,10 @@ describe('Customers.vue', () => {
             wrapper.findAll('.gym-customer').length,
             'Checkout customer should not be displayed by default'
         ).eq(1);
+    });
+
+    it('renders a search component', () => {
+        const wrapper = shallowMount(Customers, {store, localVue});
+        expect(wrapper.findAll(Search).length).eq(1);
     });
 });
