@@ -97,4 +97,34 @@ describe('store mutations', () => {
             'The list of checkout customers should be empty'
         ).to.eql([]);
     });
+
+    it('allows updating a customer query value', () => {
+        let state = {
+            customerQuery: { value: { status: 'active' }, sortBy: { checkIn: 'desc' } },
+        };
+
+        mutations.updateCustomerQueryValue(state, { status: '' });
+        expect(
+            state.customerQuery,
+            'The status should be empty'
+        ).to.eql({ value: { status: '' }, sortBy: { checkIn: 'desc' } });
+
+        mutations.updateCustomerQueryValue(state, { status: 'out' });
+        expect(
+            state.customerQuery,
+            'The status should have changed'
+        ).to.eql({ value: { status: 'out' }, sortBy: { checkIn: 'desc' } });
+
+        mutations.updateCustomerQueryValue(state, { category: 'public' });
+        expect(
+            state.customerQuery,
+            'The status should have a new value "category"'
+        ).to.eql({ value: { status: 'out', category: 'public' }, sortBy: { checkIn: 'desc' } });
+
+        mutations.updateCustomerQueryValue(state, { category: 'other', lorem: 'ipsum' });
+        expect(
+            state.customerQuery,
+            'The status update multiple values'
+        ).to.eql({ value: { status: 'out', category: 'other', lorem: 'ipsum' }, sortBy: { checkIn: 'desc' } });
+    });
 });

@@ -13,5 +13,8 @@ export default {
     },
     initialiseCheckoutCustomers({ commit }) {
         commit('initialiseCheckoutCustomers');
-    }
+    },
+    updateCustomerQueryValue({ commit }, payload) {
+        commit('updateCustomerQueryValue', payload);
+    },
 }

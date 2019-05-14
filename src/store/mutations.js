@@ -32,5 +32,10 @@ export default {
     },
     initialiseCheckoutCustomers(state) {
         state.checkoutCustomers = [];
+    },
+    updateCustomerQueryValue(state, payload) {
+        Object.keys(payload).forEach(function(key) {
+            state.customerQuery.value[key] = payload[key];
+        });
     }
 }

@@ -91,4 +91,19 @@ describe('store actions', () => {
             done
         )
     });
+    it('should update a search query value', done => {
+        testAction(
+            actions.updateCustomerQueryValue,
+            {},
+            {
+                customerRepository: new CustomerRepository(),
+                checkoutCustomers: [],
+                customerQuery: {}
+            },
+            [
+                { type: 'updateCustomerQueryValue' }
+            ],
+            done
+        )
+    });
 });
