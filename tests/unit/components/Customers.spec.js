@@ -1,21 +1,26 @@
-import {expect} from 'chai'
+import chai, {expect} from 'chai'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Customers from '@/components/Customers.vue'
 import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilder";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
 import Vuex from "vuex";
-import Search from "../../../src/components/Search";
+import Search from "@/components/Search";
+import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('Customers.vue', () => {
 
+    let localStoreConfig;
     let store;
 
     beforeEach(() => {
-        store = new Vuex.Store(cloneDeep(storeConfig));
+        localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig.state.categories = ['cat1', 'cat2', 'cat3'];
+        localStoreConfig.actions.updateCustomerQueryValue = chai.spy();
+        store = new Vuex.Store(localStoreConfig);
     });
 
     it('renders a message when the customers list is empty', () => {
@@ -75,5 +80,27 @@ describe('Customers.vue', () => {
     it('renders a search component', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
         expect(wrapper.findAll(Search).length).eq(1);
+    });
+
+    it('updates the list when searching by category', () => {
+        const checkin = '2019-03-16T01:00:11';
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).withCategory(new CustomerCategory('cat1')).build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).withCategory(new CustomerCategory('cat2')).build();
+
+        store.state.customerRepository.add(customer1);
+        store.state.customerRepository.add(customer2);
+
+        const wrapper = shallowMount(Customers, {store, localVue});
+        wrapper.find(Search).vm.$emit('search:category', { value: 'cat1' });
+
+        expect(
+            localStoreConfig.actions.updateCustomerQueryValue,
+            'Action should be dispatched'
+        ).to.have.been.called();
+
+        expect(
+            wrapper.findAll('.gym-customer').length,
+            'Checkout customer should not be displayed by default'
+        ).eq(1);
     });
 });

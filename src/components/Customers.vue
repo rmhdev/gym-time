@@ -2,6 +2,7 @@
     <div>
         <search
             :categories="categories"
+            v-on:search:category="searchCategory($event)"
         ></search>
         <div class="list-group gym-customers">
             <div v-if="isEmpty" class="gym-empty alert alert-info text-center" role="alert">
@@ -40,6 +41,11 @@
             },
             categories() {
                 return this.$store.getters.getCategories;
+            }
+        },
+        methods: {
+            searchCategory(category) {
+                return this.$store.dispatch('updateCustomerQueryValue', { category: category });
             }
         }
     }
