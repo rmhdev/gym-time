@@ -1,4 +1,5 @@
 import { CustomerId } from "@/domain/model/customer/CustomerId";
+import {CustomerQuery} from "../domain/model/customer/CustomerQuery";
 
 export default {
     addCustomer(state, customer) {
@@ -37,5 +38,8 @@ export default {
         Object.keys(payload).forEach(function(key) {
             state.customerQuery.value[key] = payload[key];
         });
+    },
+    restartCustomerQuery(state) {
+        state.customerQuery = CustomerQuery.default().toJSON();
     }
 }

@@ -2,11 +2,12 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
+import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 
 export default {
     state: {
         customerRepository: new CustomerRepository(),
-        customerQuery: { value: { status: 'active' }, sortBy: { checkIn: 'desc' } },
+        customerQuery: CustomerQuery.default().toJSON(),
         checkoutCustomers: [],
         categories: ['public'],
     },

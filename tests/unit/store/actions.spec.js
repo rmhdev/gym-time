@@ -91,7 +91,7 @@ describe('store actions', () => {
             done
         )
     });
-    it('should update a search query value', done => {
+    it('should update a customer query value', done => {
         testAction(
             actions.updateCustomerQueryValue,
             {},
@@ -102,6 +102,21 @@ describe('store actions', () => {
             },
             [
                 { type: 'updateCustomerQueryValue' }
+            ],
+            done
+        )
+    });
+    it('should restart the customer query', done => {
+        testAction(
+            actions.restartCustomerQuery,
+            {},
+            {
+                customerRepository: new CustomerRepository(),
+                checkoutCustomers: [],
+                customerQuery: {}
+            },
+            [
+                { type: 'restartCustomerQuery' }
             ],
             done
         )

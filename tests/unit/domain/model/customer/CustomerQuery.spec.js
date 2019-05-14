@@ -107,4 +107,10 @@ describe('CustomerQuery', () => {
             ).eq(query.expected);
         });
     });
+    it('returns the default query', () => {
+        const expected = CustomerQuery.fromJSON(
+            { value: { status: 'active' }, sortBy: { checkIn: 'desc' } }
+        );
+        expect(CustomerQuery.default(), 'Default query').to.eql(expected);
+    });
 });

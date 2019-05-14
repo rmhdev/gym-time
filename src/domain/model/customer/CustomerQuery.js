@@ -88,6 +88,9 @@ class CustomerQuery {
             return result;
         }
     }
+    static default() {
+        return CustomerQuery.fromJSON({ value: { status: 'active' }, sortBy: { checkIn: 'desc' } });
+    }
     static fromJSON(queryJSON) {
         if (undefined === queryJSON) {
             return new CustomerQuery();

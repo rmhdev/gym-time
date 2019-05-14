@@ -17,4 +17,7 @@ export default {
     updateCustomerQueryValue({ commit }, payload) {
         commit('updateCustomerQueryValue', payload);
     },
+    restartCustomerQuery({ commit }) {
+        commit('restartCustomerQuery');
+    },
 }

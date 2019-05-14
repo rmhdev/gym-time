@@ -3,6 +3,7 @@ import mutations from '@/store/mutations'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
 import { CustomerDataBuilder } from "../domain/model/customer/CustomerDataBuilder";
 import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
+import {CustomerQuery} from "../../../src/domain/model/customer/CustomerQuery";
 
 describe('store mutations', () => {
     it('should add a new customer in the repository', () => {
@@ -126,5 +127,17 @@ describe('store mutations', () => {
             state.customerQuery,
             'The status update multiple values'
         ).to.eql({ value: { status: 'out', category: 'other', lorem: 'ipsum' }, sortBy: { checkIn: 'desc' } });
+    });
+
+    it('allows restarting the customer query value', () => {
+        let state = {
+            customerQuery: { value: { one: '1' }, sortBy: { two: '2' }},
+        };
+
+        mutations.restartCustomerQuery(state);
+        expect(
+            state.customerQuery,
+            'The status should have default values'
+        ).to.eql(CustomerQuery.default().toJSON());
     });
 });
