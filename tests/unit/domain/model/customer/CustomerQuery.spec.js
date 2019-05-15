@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
+import {CustomerCategory} from "../../../../../src/domain/model/customer/CustomerCategory";
 
 describe('CustomerQuery', () => {
     it('is empty by default', () => {
@@ -85,7 +86,10 @@ describe('CustomerQuery', () => {
             .withId('123')
             .withName('Lorem Ipsum')
             .withCheckIn('2019-03-19T12:00:00+0000')
-            .withCheckOut(null).build();
+            .withCheckOut(null)
+            .withCategory(new CustomerCategory('cat1'))
+            .build()
+        ;
 
         const queries = [
             { value: {}, expected: true, description: 'No filter' },
@@ -98,6 +102,13 @@ describe('CustomerQuery', () => {
             { value: { name: 'lorem ipsum' }, expected: true, description: 'Same name' },
             { value: { name: 'LOREM' }, expected: true, description: 'First part of name' },
             { value: { name: 'iPSuM' }, expected: true, description: 'Last part of name' },
+            { value: { category: 'cat1' }, expected: true, description: 'Same category' },
+            { value: { category: 'zero' }, expected: false, description: 'Different category' },
+            { value: { category: '' }, expected: true, description: 'Any category' },
+            { value: { status: 'out', category: 'zero' }, expected: false, description: 'None' },
+            { value: { status: 'active', category: 'cat1' }, expected: true, description: 'Both' },
+            { value: { status: 'active', category: 'zero' }, expected: false, description: 'Only first' },
+            { value: { status: 'out', category: 'cat1' }, expected: false, description: 'Only second' },
         ];
 
         queries.forEach(function (query) {

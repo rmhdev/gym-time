@@ -81,6 +81,13 @@ class CustomerQuery {
                 checks += 1;
                 result = result && customer.name.isSimilar(this.get('name'));
             }
+            if (this.has('category')) {
+                checks += 1;
+                result = result && (
+                    this.get('category') === ''
+                    || customer.category.equals(this.get('category'))
+                );
+            }
             if (0 === checks) {
                 return false;
             }
