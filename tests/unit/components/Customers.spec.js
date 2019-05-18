@@ -97,10 +97,25 @@ describe('Customers.vue', () => {
             localStoreConfig.actions.updateCustomerQueryValue,
             'Action should be dispatched'
         ).to.have.been.called();
+        // TODO: test payload.
+    });
+
+    it('updates the list when searching by status', () => {
+        const checkin = '2019-03-16T01:00:11';
+        const checkout = '2019-03-16T01:45:22';
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).withCheckOut(checkout).build();
+
+        store.state.customerRepository.add(customer1);
+        store.state.customerRepository.add(customer2);
+
+        const wrapper = shallowMount(Customers, {store, localVue});
+        wrapper.find(Search).vm.$emit('search:status', { value: 'out' });
 
         expect(
-            wrapper.findAll('.gym-customer').length,
-            'Show single customer with category "cat1"'
-        ).eq(1);
+            localStoreConfig.actions.updateCustomerQueryValue,
+            'Action should be dispatched'
+        ).to.have.been.called();
+        // TODO: test payload.
     });
 });

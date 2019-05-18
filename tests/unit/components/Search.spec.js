@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import { shallowMount } from '@vue/test-utils'
 import Search from "@/components/Search";
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
+import {CustomerStatus} from "../../../src/domain/model/customer/CustomerStatus";
 
 describe('Search.vue', () => {
 
@@ -24,7 +25,7 @@ describe('Search.vue', () => {
         });
         expect(
             wrapper.findAll('form input[name="search[category]"]').length,
-            'It shows 3 categories and also a default one'
+            'It shows all categories and also a default one'
         ).eq(4);
 
         expect(
@@ -40,7 +41,7 @@ describe('Search.vue', () => {
                     new CustomerCategory('two'),
                     new CustomerCategory('three'),
                 ],
-                checked: 'two'
+                category: 'two'
             }
         });
 
@@ -62,5 +63,43 @@ describe('Search.vue', () => {
 
         expect(wrapper.emitted('search:category').length, 'Event is emitted').eq(1);
         expect(wrapper.emitted('search:category')[0], 'Emitted event sends the correct value').to.eql(['one']);
+    });
+    it('renders the statuses as radio buttons', () => {
+        const wrapper = shallowMount(Search, {
+            propsData: {
+                statuses: [
+                    new CustomerStatus('alpha'),
+                    new CustomerStatus('beta'),
+                    new CustomerStatus('phi'),
+                ]
+            }
+        });
+        expect(
+            wrapper.findAll('form input[name="search[status]"]').length,
+            'It shows all statuses and also a default one'
+        ).eq(4);
+
+        expect(
+            wrapper.find('form input[name="search[status]"]:checked').element.value,
+            'By default, the first status must be checked'
+        ).eq('alpha');
+    });
+
+    it('allows checking by default a status', () => {
+        const wrapper = shallowMount(Search, {
+            propsData: {
+                statuses: [
+                    new CustomerCategory('one'),
+                    new CustomerCategory('two'),
+                    new CustomerCategory('three'),
+                ],
+                status: 'three'
+            }
+        });
+
+        expect(
+            wrapper.find('form input[name="search[status]"]:checked').element.value,
+            'A custom status must be checked'
+        ).eq('three');
     });
 });
