@@ -104,29 +104,23 @@ describe('store mutations', () => {
             customerQuery: { value: { status: 'active' }, sortBy: { checkIn: 'desc' } },
         };
 
-        mutations.updateCustomerQueryValue(state, { status: '' });
+        mutations.updateCustomerQueryValue(state, { name: 'status', value: '' });
         expect(
             state.customerQuery,
             'The status should be empty'
         ).to.eql({ value: { status: '' }, sortBy: { checkIn: 'desc' } });
 
-        mutations.updateCustomerQueryValue(state, { status: 'out' });
+        mutations.updateCustomerQueryValue(state, { name: 'status', value: 'out' });
         expect(
             state.customerQuery,
             'The status should have changed'
         ).to.eql({ value: { status: 'out' }, sortBy: { checkIn: 'desc' } });
 
-        mutations.updateCustomerQueryValue(state, { category: 'public' });
+        mutations.updateCustomerQueryValue(state, { name: 'category', value: 'public' });
         expect(
             state.customerQuery,
             'The status should have a new value "category"'
         ).to.eql({ value: { status: 'out', category: 'public' }, sortBy: { checkIn: 'desc' } });
-
-        mutations.updateCustomerQueryValue(state, { category: 'other', lorem: 'ipsum' });
-        expect(
-            state.customerQuery,
-            'The status update multiple values'
-        ).to.eql({ value: { status: 'out', category: 'other', lorem: 'ipsum' }, sortBy: { checkIn: 'desc' } });
     });
 
     it('allows restarting the customer query value', () => {

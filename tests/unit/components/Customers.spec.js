@@ -77,9 +77,9 @@ describe('Customers.vue', () => {
         ).eq(1);
     });
 
-    it('renders a search component', () => {
+    it('renders search components', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
-        expect(wrapper.findAll(Search).length).eq(1);
+        expect(wrapper.findAll(Search).length).eq(2);
     });
 
     it('updates the list when searching by category', () => {
@@ -91,7 +91,7 @@ describe('Customers.vue', () => {
         store.state.customerRepository.add(customer2);
 
         const wrapper = shallowMount(Customers, {store, localVue});
-        wrapper.find(Search).vm.$emit('search:category', { value: 'cat1' });
+        wrapper.find('#search_category').vm.$emit('search:by', 'cat1');
 
         expect(
             localStoreConfig.actions.updateCustomerQueryValue,
@@ -110,12 +110,26 @@ describe('Customers.vue', () => {
         store.state.customerRepository.add(customer2);
 
         const wrapper = shallowMount(Customers, {store, localVue});
-        wrapper.find(Search).vm.$emit('search:status', { value: 'out' });
+        wrapper.find('#search_status').vm.$emit('search:by', 'out');
 
         expect(
             localStoreConfig.actions.updateCustomerQueryValue,
             'Action should be dispatched'
         ).to.have.been.called();
         // TODO: test payload.
+    });
+
+    it('has the customer search filters by default', () => {
+        const wrapper = shallowMount(Customers, {store, localVue});
+
+        expect(
+            wrapper.find('#search_category').props().value,
+            'Filter by default category'
+        ).to.eq('');
+
+        expect(
+            wrapper.find('#search_status').props().value,
+            'Filter by default status'
+        ).to.eq('active');
     });
 });

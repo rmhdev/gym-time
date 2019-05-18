@@ -1,8 +1,6 @@
 import { expect } from 'chai'
 import { shallowMount } from '@vue/test-utils'
 import Search from "@/components/Search";
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
-import {CustomerStatus} from "../../../src/domain/model/customer/CustomerStatus";
 
 describe('Search.vue', () => {
 
@@ -13,93 +11,104 @@ describe('Search.vue', () => {
         expect(wrapper.findAll('form button[type=submit]').length).eq(1);
     });
 
-    it('renders the categories as radio buttons', () => {
+    it('renders the choices as radio buttons', () => {
         const wrapper = shallowMount(Search, {
             propsData: {
-                categories: [
-                    new CustomerCategory('one'),
-                    new CustomerCategory('two'),
-                    new CustomerCategory('three'),
+                name: 'search[custom]',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
                 ]
             }
         });
         expect(
-            wrapper.findAll('form input[name="search[category]"]').length,
-            'It shows all categories and also a default one'
+            wrapper.findAll('form input[name="search[custom]"]').length,
+            'It shows all choices'
+        ).eq(3);
+
+        expect(
+            wrapper.find('form input[name="search[custom]"]:checked').element.value,
+            'By default, the first choice must be checked'
+        ).eq('one');
+    });
+
+    it('renders names using the id if not defined', () => {
+        const wrapper = shallowMount(Search, {
+            propsData: {
+                id: 'customID',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
+                ]
+            }
+        });
+        expect(
+            wrapper.findAll('form input[name="customID"]').length,
+            'It shows all choices and also a default one'
+        ).eq(3);
+    });
+
+    it('renders an empty placeholder if defined', () => {
+        const wrapper = shallowMount(Search, {
+            propsData: {
+                name: 'search[custom]',
+                placeholder: 'all',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
+                ]
+            }
+        });
+        expect(
+            wrapper.findAll('form input[name="search[custom]"]').length,
+            'It shows all choices and also a default one'
         ).eq(4);
 
         expect(
-            wrapper.find('form input[name="search[category]"]:checked').element.value,
-            'By default, the empty category must be checked'
+            wrapper.find('form input[name="search[custom]"]:checked').element.value,
+            'By default, the empty choice must be checked'
         ).eq('');
     });
-    it('allows checking by default a category', () => {
+
+    it('allows checking by default a choice', () => {
         const wrapper = shallowMount(Search, {
             propsData: {
-                categories: [
-                    new CustomerCategory('one'),
-                    new CustomerCategory('two'),
-                    new CustomerCategory('three'),
+                name: 'search[custom]',
+                placeholder: 'all',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
                 ],
-                category: 'two'
+                value: 'two'
             }
         });
 
         expect(
-            wrapper.find('form input[name="search[category]"]:checked').element.value,
+            wrapper.find('form input[name="search[custom]"]:checked').element.value,
             'A custom category must be checked'
         ).eq('two');
     });
 
-    it('emits an event when a category is checked', () => {
+    it('emits an event when a choice is checked', () => {
         const wrapper = shallowMount(Search, {
             propsData: {
-                categories: [new CustomerCategory('one')]
+                name: 'search[custom]',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
+                ],
             }
         });
-        const radio = wrapper.find('input[value="one"]');
+        const radio = wrapper.find('input[value="two"]');
         radio.element.selected = true;
         radio.trigger('change');
 
-        expect(wrapper.emitted('search:category').length, 'Event is emitted').eq(1);
-        expect(wrapper.emitted('search:category')[0], 'Emitted event sends the correct value').to.eql(['one']);
-    });
-    it('renders the statuses as radio buttons', () => {
-        const wrapper = shallowMount(Search, {
-            propsData: {
-                statuses: [
-                    new CustomerStatus('alpha'),
-                    new CustomerStatus('beta'),
-                    new CustomerStatus('phi'),
-                ]
-            }
-        });
-        expect(
-            wrapper.findAll('form input[name="search[status]"]').length,
-            'It shows all statuses and also a default one'
-        ).eq(4);
-
-        expect(
-            wrapper.find('form input[name="search[status]"]:checked').element.value,
-            'By default, the first status must be checked'
-        ).eq('alpha');
-    });
-
-    it('allows checking by default a status', () => {
-        const wrapper = shallowMount(Search, {
-            propsData: {
-                statuses: [
-                    new CustomerCategory('one'),
-                    new CustomerCategory('two'),
-                    new CustomerCategory('three'),
-                ],
-                status: 'three'
-            }
-        });
-
-        expect(
-            wrapper.find('form input[name="search[status]"]:checked').element.value,
-            'A custom status must be checked'
-        ).eq('three');
+        expect(wrapper.emitted('search:by').length, 'Event is emitted').eq(1);
+        expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['two']);
     });
 });

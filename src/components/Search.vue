@@ -1,72 +1,40 @@
 <template>
-    <div id="search">
+    <div>
         <form>
             <div class="form-group">
-                <div class="form-check form-check-inline gym-search-category">
+                <div v-if="placeholder !== ''" class="form-check form-check-inline gym-search-choice">
                     <input
                         type="radio"
                         class="form-check-input"
-                        id="search_category_all"
-                        name="search[category]"
+                        :id="id + '_placeholder'"
+                        :name="defaultName"
                         value=""
-                        :checked="'' === category"
-                        @change="setCategory('')"
-                    ><label class="form-check-label" for="search_category_all">all</label>
+                        :checked="'' === currentValue"
+                        @change="setValue('')"
+                    ><label class="form-check-label" :for="id + '_placeholder'">{{ placeholder }}</label>
                 </div>
 
                 <div
-                    v-for="cat in categories"
-                    :key="cat.value"
-                    class="form-check form-check-inline gym-search-category"
+                    v-for="choice in choices"
+                    :key="choice.value"
+                    class="form-check form-check-inline gym-search-choice"
                 >
                     <input
                         type="radio"
                         class="form-check-input"
-                        :id="'search_category_' + cat.value"
-                        name="search[category]"
-                        :value="cat.value"
-                        :checked="cat.value === category"
-                        @change="setCategory(cat.value)"
+                        :id="id + '_' + choice.value"
+                        :name="defaultName"
+                        :value="choice.value"
+                        :checked="choice.value === currentValue"
+                        @change="setValue(choice.value)"
                     ><label
                         class="form-check-label"
-                        :for="'search_category_' + cat.value"
-                    >{{ cat.name }}</label>
+                        :for="id + '_' + choice.value"
+                    >{{ choice.value }}</label>
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="form-check form-check-inline gym-search-status">
-                    <input
-                            type="radio"
-                            class="form-check-input"
-                            id="search_status_all"
-                            name="search[status]"
-                            value=""
-                            :checked="'' === currentStatus"
-                            @change="setStatus('')"
-                    ><label class="form-check-label" for="search_status_all">all</label>
-                </div>
-                <div
-                    v-for="sta in statuses"
-                    :key="sta.value"
-                    class="form-check form-check-inline gym-search-status"
-                >
-                    <input
-                        type="radio"
-                        class="form-check-input"
-                        :id="'search_status_' + sta.value"
-                        name="search[status]"
-                        :value="sta.value"
-                        :checked="sta.value === currentStatus"
-                        @change="setStatus(sta.value)"
-                    ><label
-                        class="form-check-label"
-                        :for="'search_status_' + sta.value"
-                >{{ sta.value }}</label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-lg">Search</button>
+            <button type="submit" class="btn btn-success btn-sm">Search</button>
         </form>
     </div>
 </template>
@@ -75,38 +43,50 @@
     export default {
         name: 'Search',
         props: {
-            categories: Array,
-            statuses: Array,
-            category: {
+            id: {
+                type: String,
+                default() {
+                    return Math.random().toString(16).substring(2);
+                }
+            },
+            choices: {
+                type: Array,
+                default: function () {
+                    return [];
+                }
+            },
+            value: {
                 type: String,
                 default: ''
             },
-            status: {
+            placeholder: {
                 type: String,
-                default: null
-            }
+                default: ''
+            },
+            name: {
+                type: String,
+                default: ''
+            },
         },
         computed: {
-            currentStatus() {
-                if (this.status === '') {
-                    return '';
-                }
-                if (undefined === this.statuses) {
-                    return '';
-                }
-                if (null === this.status) {
-                    return this.statuses.length ? this.statuses[0].value : '';
+            defaultName() {
+                if (this.name !== null && this.name !== '') {
+                    return this.name;
                 }
 
-                return this.status;
+                return this.id;
+            },
+            currentValue() {
+                if (this.placeholder === '' && this.value === '') {
+                    return this.choices.length ? this.choices[0].value : '';
+                }
+
+                return this.value;
             }
         },
         methods: {
-            setCategory(value) {
-                this.$emit('search:category', value);
-            },
-            setStatus(value) {
-                this.$emit('search:status', value);
+            setValue(value) {
+                this.$emit('search:by', value);
             }
         }
     }

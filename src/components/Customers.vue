@@ -3,10 +3,12 @@
         <div class="card">
             <div class="card-header">
                 <search
-                    :categories="categories"
-                    :statuses="statuses"
-                    v-on:search:category="searchCategory($event)"
-                    v-on:search:status="searchStatus($event)"
+                    id="search_category"
+                    name="search[category]"
+                    :choices="categories"
+                    placeholder="all"
+                    :value="$store.getters.getCustomerQuery.get('category', '')"
+                    v-on:search:by="searchBy('category', $event)"
                 ></search>
             </div>
 
@@ -15,7 +17,6 @@
                     <h4 class="gym-title alert-heading">Gym is empty!</h4>
                     <p>Looks like you'll be the first one!</p>
                 </div>
-
                 <template v-else>
                     <div class="list-group list-group-flush">
                         <customer
@@ -26,14 +27,20 @@
                             :customer="customer"
                         ></customer>
                     </div>
-                    <div class="card-footer text-muted">
-                        test
-                    </div>
                 </template>
             </div>
+
+            <div class="card-footer text-muted">
+                <search
+                    id="search_status"
+                    name="search[status]"
+                    :choices="statuses"
+                    :value="$store.getters.getCustomerQuery.get('status', '')"
+                    placeholder="all"
+                    v-on:search:by="searchBy('status', $event)"
+                ></search>
+            </div>
         </div>
-
-
     </div>
 </template>
 
@@ -63,12 +70,9 @@
             }
         },
         methods: {
-            searchCategory(category) {
-                return this.$store.dispatch('updateCustomerQueryValue', { category: category });
+            searchBy(name, value) {
+                return this.$store.dispatch('updateCustomerQueryValue', { name: name, value: value });
             },
-            searchStatus(status) {
-                return this.$store.dispatch('updateCustomerQueryValue', { status: status });
-            }
         }
     }
 </script>

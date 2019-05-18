@@ -36,9 +36,7 @@ export default {
     },
     updateCustomerQueryValue(state, payload) {
         let updatedValue = state.customerQuery.value;
-        Object.keys(payload).forEach(function(key) {
-            updatedValue[key] = payload[key];
-        });
+        updatedValue[payload.name] = payload.value;
         state.customerQuery = { ...state.customerQuery, value: updatedValue };
     },
     restartCustomerQuery(state) {
