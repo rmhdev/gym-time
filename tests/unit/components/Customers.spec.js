@@ -100,7 +100,7 @@ describe('Customers.vue', () => {
 
         expect(
             wrapper.findAll('.gym-customer').length,
-            'Checkout customer should not be displayed by default'
+            'Show single customer with category "cat1"'
         ).eq(1);
     });
 });

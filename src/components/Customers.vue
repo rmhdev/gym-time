@@ -34,7 +34,7 @@
         },
         computed: {
             customers() {
-                return this.$store.getters.getFilteredCustomers;
+                return this.$store.getters.getFilteredCustomers
             },
             isEmpty() {
                 return this.customers.length === 0;

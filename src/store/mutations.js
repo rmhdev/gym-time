@@ -1,5 +1,5 @@
 import { CustomerId } from "@/domain/model/customer/CustomerId";
-import {CustomerQuery} from "../domain/model/customer/CustomerQuery";
+import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
 
 export default {
     addCustomer(state, customer) {
@@ -35,9 +35,11 @@ export default {
         state.checkoutCustomers = [];
     },
     updateCustomerQueryValue(state, payload) {
+        let updatedValue = state.customerQuery.value;
         Object.keys(payload).forEach(function(key) {
-            state.customerQuery.value[key] = payload[key];
+            updatedValue[key] = payload[key];
         });
+        state.customerQuery = { ...state.customerQuery, value: updatedValue };
     },
     restartCustomerQuery(state) {
         state.customerQuery = CustomerQuery.default().toJSON();

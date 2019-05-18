@@ -25,7 +25,7 @@ export default {
         return CustomerQuery.fromJSON(state.customerQuery);
     },
     getFilteredCustomers: (state) => {
-        if (state.customerRepository.version) {
+        if (state.customerRepository.version || state.customerQuery) {
             // hack to make vue detect a change in the repository
         }
 
