@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form action="#" method="get" @submit.prevent="submit">
+        <form action="#" method="get" @submit.prevent="submit" class="gym-search-radio-form">
             <div class="form-group">
                 <div v-if="placeholder !== ''" class="form-check form-check-inline gym-search-choice">
                     <input
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success btn-sm">Search</button>
+            <button type="submit" class="btn btn-success btn-sm sr-only">Search</button>
         </form>
     </div>
 </template>

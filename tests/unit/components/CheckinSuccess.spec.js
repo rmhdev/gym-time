@@ -16,4 +16,10 @@ describe('CheckinSuccess.vue', () => {
 
         expect(wrapper.emitted('close').length).eq(1);
     });
+
+    it('focuses the button', () => {
+        const wrapper = shallowMount(CheckinSuccess, {});
+
+        expect(wrapper.findAll('a:focus').length).eq(1);
+    });
 });

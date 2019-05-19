@@ -18,6 +18,7 @@
                     name="checkin[name]"
                     v-model="customerName"
                     @keyup="preValidate"
+                    ref="customerName"
                 >
                 <div class="feedback" :class="feedbackClass">{{ feedback }}</div>
             </div>
@@ -155,6 +156,7 @@
                 const categories = this.categories;
                 this.customerCategory = categories[0].value;
             }
+            this.$refs.customerName.focus();
         }
     }
 </script>

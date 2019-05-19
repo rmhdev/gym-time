@@ -9,6 +9,7 @@
                     role="button"
                     @click.prevent="close"
                     href="#"
+                    ref="button"
                 >Ok</a>
             </div>
         </div>
@@ -21,7 +22,13 @@
         methods: {
             close() {
                 this.$emit('close');
+            },
+            focus: function () {
+                this.$refs.button.focus();
             }
+        },
+        mounted() {
+            this.focus();
         }
     }
 </script>

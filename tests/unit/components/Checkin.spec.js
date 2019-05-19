@@ -31,6 +31,7 @@ describe('Checkin.vue', () => {
     it('renders a form with a button', () => {
         expect(wrapper.findAll('form').length).eq(1);
         expect(wrapper.findAll('form input[name="checkin[name]"]').length).eq(1);
+        expect(wrapper.findAll('form input[name="checkin[name]"]:focus').length, 'Focused by default').eq(1);
         expect(wrapper.findAll('form input[name="checkin[category]"]').length).eq(3);
         expect(wrapper.findAll('form button[type=submit]').length).eq(1);
     });
@@ -108,5 +109,6 @@ describe('Checkin.vue', () => {
         wrapper.find('.gym-checkin-success').vm.$emit('close');
         expect(wrapper.find('form').exists(), 'Form appears again').eq(true);
         expect(wrapper.find('input[name="checkin[name]"]').element.value, 'The input should be empty').eq('');
+        //expect(wrapper.findAll('input[name="checkin[name]"]:focus').length, 'The input should be focused').eq(1);
     });
 });
