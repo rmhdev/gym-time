@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form>
+        <form action="#" method="get" @submit.prevent="submit">
             <div class="form-group">
                 <div v-if="placeholder !== ''" class="form-check form-check-inline gym-search-choice">
                     <input
@@ -87,6 +87,9 @@
         methods: {
             setValue(value) {
                 this.$emit('search:by', value);
+            },
+            submit() {
+                this.setValue(this.value);
             }
         }
     }

@@ -111,4 +111,22 @@ describe('Search.vue', () => {
         expect(wrapper.emitted('search:by').length, 'Event is emitted').eq(1);
         expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['two']);
     });
+
+    it('emits an event when the form is submitted', () => {
+        const wrapper = shallowMount(Search, {
+            propsData: {
+                name: 'search[custom]',
+                choices: [
+                    { value: 'one' },
+                    { value: 'two' },
+                    { value: 'three' },
+                ],
+                value: 'three'
+            }
+        });
+        wrapper.find('form').trigger('submit');
+
+        expect(wrapper.emitted('search:by').length, 'Event is emitted').eq(1);
+        expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['three']);
+    });
 });
