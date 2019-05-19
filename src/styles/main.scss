@@ -6,6 +6,11 @@ body {
 
 .gym-customers {
 
+  .alert {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
   .list-group-item {
     padding: 0.50rem 1.00rem;
     line-height: 1.90rem;
@@ -72,5 +77,11 @@ body {
         display: none;
       }
     }
+  }
+}
+
+.gym-search-radio-form {
+  .form-group {
+    margin-bottom: 0;
   }
 }
