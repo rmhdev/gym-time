@@ -98,6 +98,7 @@ describe('CustomerQuery', () => {
             { value: { status: 'out' }, expected: false, description: 'Has checked out?' },
             { value: { status: 'active' }, expected: true, description: 'Is still active?' },
             { value: { status: 'deleted' }, expected: false, description: 'Has been deleted?' },
+            { value: { status: '' }, expected: true, description: 'Any status' },
             { value: { name: 'Mr Unknown' }, expected: false, description: 'Different name' },
             { value: { name: 'lorem ipsum' }, expected: true, description: 'Same name' },
             { value: { name: 'LOREM' }, expected: true, description: 'First part of name' },
@@ -109,6 +110,28 @@ describe('CustomerQuery', () => {
             { value: { status: 'active', category: 'cat1' }, expected: true, description: 'Both' },
             { value: { status: 'active', category: 'zero' }, expected: false, description: 'Only first' },
             { value: { status: 'out', category: 'cat1' }, expected: false, description: 'Only second' },
+        ];
+
+        queries.forEach(function (query) {
+            expect(
+                CustomerQuery.fromJSON({ value: query.value }).isAccepted(customer),
+                query.description
+            ).eq(query.expected);
+        });
+    });
+
+    it('checks if a checkout customer complies with the query', () => {
+        const customer = CustomerDataBuilder.aCustomer()
+            .withId('123')
+            .withName('Lorem Ipsum')
+            .withCheckIn('2019-03-19T12:00:00+0000')
+            .withCheckOut('2019-03-19T12:45:00+0000')
+            .withCategory(new CustomerCategory('cat1'))
+            .build()
+        ;
+
+        const queries = [
+            { value: { status: '' }, expected: true, description: 'Any status' },
         ];
 
         queries.forEach(function (query) {

@@ -75,7 +75,10 @@ class CustomerQuery {
             }
             if (this.has('status')) {
                 checks += 1;
-                result = result && customer.status().equals(this.get('status'));
+                result = result && (
+                    this.get('status') === ''
+                    || customer.status().equals(this.get('status'))
+                );
             }
             if (this.has('name')) {
                 checks += 1;
