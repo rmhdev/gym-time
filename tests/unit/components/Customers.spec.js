@@ -167,12 +167,12 @@ describe('Customers.vue', () => {
         ).to.eq('lorem');
     });
 
-    it('renders sort components', () => {
+    it('renders sort buttons', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
         expect(wrapper.findAll(Sort).length).eq(2);
     });
 
-    it('has the sort field by default', () => {
+    it('has the sort button active by default', () => {
         store.state.customerQuery = {
             sortBy: { name: 'asc' }
         };
