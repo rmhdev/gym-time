@@ -18,6 +18,20 @@
                     :value="$store.getters.getCustomerQuery.get('name', '')"
                     v-on:search:by="searchBy('name', $event)"
                 ></search-text>
+
+                <div class="btn-group" role="group" aria-label="Sort">
+                    <sort
+                        id="sort_name"
+                        label="name"
+                        :order="$store.getters.getCustomerQuery.getSortBy('name', '')"
+                    ></sort>
+                    <sort
+                        id="sort_checkin"
+                        label="checkin"
+                        :order="$store.getters.getCustomerQuery.getSortBy('checkin', '')"
+                    ></sort>
+                </div>
+
             </div>
 
             <div class="gym-customers">
@@ -56,6 +70,7 @@
     import Customer from "@/components/Customer";
     import Search from "@/components/Search";
     import SearchText from "@/components/SearchText";
+    import Sort from "@/components/Sort";
     import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
 
     export default {
@@ -63,7 +78,8 @@
         components: {
             Customer,
             Search,
-            SearchText
+            SearchText,
+            Sort
         },
         computed: {
             customers() {

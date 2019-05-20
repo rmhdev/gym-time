@@ -7,6 +7,7 @@ import cloneDeep from "lodash.clonedeep";
 import Vuex from "vuex";
 import Search from "@/components/Search";
 import SearchText from "@/components/SearchText";
+import Sort from "@/components/Sort";
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 const localVue = createLocalVue();
@@ -164,5 +165,27 @@ describe('Customers.vue', () => {
             wrapper.find(SearchText).props().value,
             'Filter by default status'
         ).to.eq('lorem');
+    });
+
+    it('renders sort components', () => {
+        const wrapper = shallowMount(Customers, {store, localVue});
+        expect(wrapper.findAll(Sort).length).eq(2);
+    });
+
+    it('has the sort field by default', () => {
+        store.state.customerQuery = {
+            sortBy: { name: 'asc' }
+        };
+        const wrapper = shallowMount(Customers, {store, localVue});
+
+        expect(
+            wrapper.find('#sort_name').props().order,
+            'Mark sort link'
+        ).to.contain('asc');
+
+        expect(
+            wrapper.find('#sort_checkin').props().order,
+            'Non used sort link should have no sort class'
+        ).to.not.contain(['asc', 'desc']);
     });
 });

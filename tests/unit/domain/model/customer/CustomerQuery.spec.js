@@ -58,6 +58,10 @@ describe('CustomerQuery', () => {
         expect(query.getSortBy('id'), 'Return direction for existing sort value').to.eq('asc');
         expect(query.getSortBy('lorem'), 'Return null when sort value is not in the query').to.eq(null);
     });
+    it('return a custom sort value by if it does not exist', () => {
+        const query = CustomerQuery.fromJSON({ value: { hello: 'world' }, sortBy: { id: 'asc' } });
+        expect(query.getSortBy('lorem', 'ipsum')).to.eq('ipsum');
+    });
     it('confirms if the query is sorted by a field name', () => {
         const query = CustomerQuery.fromJSON({ value: { hello: 'world' }, sortBy: { id: 'asc' } });
         expect(query.isSortedBy('id'), 'Sorting exists').to.eq(true);

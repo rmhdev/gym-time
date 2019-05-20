@@ -38,9 +38,9 @@ class CustomerQuery {
 
         return CustomerQuery.fromJSON(json);
     }
-    getSortBy(name) {
+    getSortBy(name, defaultValue = null) {
         if (undefined === this.sortBy[name]) {
-            return null;
+            return defaultValue;
         }
 
         return this.sortBy[name];
