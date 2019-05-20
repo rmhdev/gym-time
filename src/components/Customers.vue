@@ -16,6 +16,7 @@
                     placeholder="Search by name"
                     label="Name:"
                     :value="$store.getters.getCustomerQuery.get('name', '')"
+                    v-on:search:by="searchBy('name', $event)"
                 ></search-text>
             </div>
 
