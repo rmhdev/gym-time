@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form action="#" method="get" class="gym-search-text-form">
+        <form action="#" method="get" class="gym-search-text-form" @submit="submit">
             <div class="form-group">
                 <label :for="id + '_value'" v-if="label !== ''">{{ label }}</label>
                 <input
@@ -24,7 +24,7 @@
         name: 'SearchText',
         data() {
             return {
-                fieldValue: ''
+                fieldValue: this.value
             }
         },
         props: {
@@ -36,7 +36,8 @@
             },
             label: { type: String, default: '' },
             name: { type: String, default: '' },
-            placeholder: { type: String, default: '' }
+            placeholder: { type: String, default: '' },
+            value: { type: String, default: '' },
         },
         computed: {
             defaultName() {

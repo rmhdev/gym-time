@@ -122,16 +122,28 @@ describe('Customers.vue', () => {
     });
 
     it('has the customer search filters by default', () => {
+        store.state.customerQuery = {
+            value: {
+                category: 'cat3',
+                status: 'out',
+                name: 'lorem'
+            }
+        };
         const wrapper = shallowMount(Customers, {store, localVue});
 
         expect(
             wrapper.find('#search_category').props().value,
             'Filter by default category'
-        ).to.eq('');
+        ).to.eq('cat3');
 
         expect(
             wrapper.find('#search_status').props().value,
             'Filter by default status'
-        ).to.eq('active');
+        ).to.eq('out');
+
+        expect(
+            wrapper.find(SearchText).props().value,
+            'Filter by default status'
+        ).to.eq('lorem');
     });
 });

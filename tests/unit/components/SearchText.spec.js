@@ -61,4 +61,18 @@ describe('SearchText.vue', () => {
         expect(wrapper.emitted('search:by')[1], 'Emitted event when second letter is written').to.eql(['bb']);
     });
 
+    it('emits an event when the form is submitted', () => {
+        const wrapper = shallowMount(SearchText, {
+            propsData: {
+                id: 'customID',
+                name: 'search[custom]'
+            }
+        });
+        wrapper.find('input[name="search[custom]"]').setValue("hello");
+        wrapper.find('form').trigger('submit');
+
+        expect(wrapper.emitted('search:by').length, 'Event is emitted').eq(1);
+        expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['hello']);
+    });
+
 });
