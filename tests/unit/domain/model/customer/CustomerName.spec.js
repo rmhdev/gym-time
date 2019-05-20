@@ -55,12 +55,12 @@ describe('CustomerName', () => {
         const name = CustomerName.create('Name Surname');
 
         expect(name.isSimilar('Name Surname'), 'Same name').to.equal(true);
-        expect(name.isSimilar(''), 'Empty value').to.equal(false);
         expect(name.isSimilar('name surname'), 'Same name but different case').to.equal(true);
         expect(name.isSimilar('Ms Unknown'), 'Different name').to.equal(false);
         expect(name.isSimilar('NAME'), 'First part similar').to.equal(true);
         expect(name.isSimilar('SuRNamE'), 'Last part similar').to.equal(true);
         expect(name.isSimilar('  name  '), 'First part with extra spaces').to.equal(true);
         expect(name.isSimilar(new Date()), 'Incorrect name type').to.equal(false);
+        expect(name.isSimilar(''), 'Empty value').to.equal(true);
     });
 });

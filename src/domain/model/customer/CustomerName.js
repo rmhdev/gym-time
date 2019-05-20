@@ -32,7 +32,7 @@ class CustomerName {
         try {
             return this.value.toLowerCase().includes((new CustomerName(name)).value.trim().toLowerCase());
         } catch (e) {
-            return false;
+            return (e instanceof CustomerNameEmptyException);
         }
     }
     static create(value = null) {

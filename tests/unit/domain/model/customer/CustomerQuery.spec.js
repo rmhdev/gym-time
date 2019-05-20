@@ -103,6 +103,7 @@ describe('CustomerQuery', () => {
             { value: { name: 'lorem ipsum' }, expected: true, description: 'Same name' },
             { value: { name: 'LOREM' }, expected: true, description: 'First part of name' },
             { value: { name: 'iPSuM' }, expected: true, description: 'Last part of name' },
+            { value: { name: '' }, expected: true, description: 'Any name' },
             { value: { category: 'cat1' }, expected: true, description: 'Same category' },
             { value: { category: 'zero' }, expected: false, description: 'Different category' },
             { value: { category: '' }, expected: true, description: 'Any category' },
