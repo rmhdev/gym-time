@@ -75,4 +75,30 @@ describe('SearchText.vue', () => {
         expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['hello']);
     });
 
+    it('allows removing the text', () => {
+        const wrapper = shallowMount(SearchText, {
+            propsData: {
+                id: 'customID',
+                name: 'search[custom]'
+            }
+        });
+        wrapper.find('input[name="search[custom]"]').setValue("bb");
+        expect(
+            wrapper.findAll('.gym-search-restart').length,
+            'A button appears when the input has text'
+        ).eq(1);
+
+        wrapper.find('.gym-search-restart').trigger('click');
+        expect(
+            wrapper.find('input[name="search[custom]"]').element.value,
+            'Clicking the button removes the text'
+        ).eq('');
+        expect(
+            wrapper.findAll('.gym-search-restart').length,
+            'The button disappears if there is no text'
+        ).eq(0);
+        expect(wrapper.emitted('search:by').length, 'Event is emitted').eq(1);
+        expect(wrapper.emitted('search:by')[0], 'Emitted event sends the correct value').to.eql(['']);
+    });
+
 });

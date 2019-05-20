@@ -3,19 +3,30 @@
         <form action="#" method="get" class="gym-search-text-form" @submit="submit">
             <div class="form-group">
                 <label :for="id + '_value'" v-if="label !== ''">{{ label }}</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    :id="id + '_value'"
-                    :name="defaultName"
-                    :placeholder="placeholder"
-                    v-model="fieldValue"
-                    @keyup="submit"
-                >
+                <div :class="{ 'input-group mb-3': hasValue }">
+                    <input
+                        type="text"
+                        class="form-control"
+                        :id="id + '_value'"
+                        :name="defaultName"
+                        :placeholder="placeholder"
+                        v-model="fieldValue"
+                        @keyup="submit"
+                    >
+                    <div v-if="hasValue" class="input-group-append">
+                        <span class="input-group-text">
+                            <button type="button" class="close gym-search-restart" aria-label="Clear" @click="restart">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-success btn-sm sr-only">Search</button>
         </form>
+
+
     </div>
 </template>
 
@@ -40,6 +51,9 @@
             value: { type: String, default: '' },
         },
         computed: {
+            hasValue() {
+                return (this.fieldValue !== '');
+            },
             defaultName() {
                 if (this.name !== '') {
                     return this.name;
@@ -49,6 +63,10 @@
             },
         },
         methods: {
+            restart() {
+                this.fieldValue = '';
+                this.submit();
+            },
             submit() {
                 this.$emit('search:by', this.fieldValue);
             }
