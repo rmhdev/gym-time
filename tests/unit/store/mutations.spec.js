@@ -123,7 +123,25 @@ describe('store mutations', () => {
         ).to.eql({ value: { status: 'out', category: 'public' }, sortBy: { checkIn: 'desc' } });
     });
 
-    it('allows restarting the customer query value', () => {
+    it('allows updating a customer query sort', () => {
+        let state = {
+            customerQuery: { value: {}, sortBy: { checkIn: 'desc' } },
+        };
+
+        mutations.updateCustomerQuerySort(state, { name: 'checkIn', value: 'asc' });
+        expect(
+            state.customerQuery,
+            'The sort value should be empty'
+        ).to.eql({ value: {}, sortBy: { checkIn: 'asc' } });
+
+        mutations.updateCustomerQuerySort(state, { name: 'name', value: 'asc' });
+        expect(
+            state.customerQuery,
+            'The sort field should have changed'
+        ).to.eql({ value: {}, sortBy: { name: 'asc' } });
+    });
+
+    it('allows restarting the customer query', () => {
         let state = {
             customerQuery: { value: { one: '1' }, sortBy: { two: '2' }},
         };

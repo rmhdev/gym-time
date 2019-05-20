@@ -152,4 +152,65 @@ describe('CustomerQuery', () => {
         );
         expect(CustomerQuery.default(), 'Default query').to.eql(expected);
     });
+
+    it('allows comparing two customers based on query sortBy', () => {
+        const customer1 = CustomerDataBuilder.aCustomer()
+            .withId('1')
+            .withName('ABBA')
+            .withCheckIn('2019-03-19T12:00:00+0000')
+            .withCheckOut('2019-03-19T12:55:55+0000')
+            .build()
+        ;
+        const customer2 = CustomerDataBuilder.aCustomer()
+            .withId('2')
+            .withName('ZZ top')
+            .withCheckIn('2019-03-19T12:11:11+0000')
+            .withCheckOut('2019-03-19T12:44:44+0000')
+            .build()
+        ;
+
+        const queryNameAsc = CustomerQuery.fromJSON().addSortBy('name', 'asc');
+        expect(queryNameAsc.compare(customer1, customer2), 'Name asc, A < B').to.eq(-1);
+        expect(queryNameAsc.compare(customer1, customer1), 'Name asc, A = B').to.eq(0);
+        expect(queryNameAsc.compare(customer2, customer1), 'Name asc, A > B').to.eq(1);
+
+        const queryNameDesc = CustomerQuery.fromJSON().addSortBy('name', 'desc');
+        expect(queryNameDesc.compare(customer1, customer2), 'Name desc, A < B').to.eq(1);
+        expect(queryNameDesc.compare(customer1, customer1), 'Name desc, A = B').to.eq(0);
+        expect(queryNameDesc.compare(customer2, customer1), 'Name desc, A > B').to.eq(-1);
+
+        const queryIdAsc = CustomerQuery.fromJSON().addSortBy('id', 'asc');
+        expect(queryIdAsc.compare(customer1, customer2), 'Id asc, A < B').to.eq(-1);
+        expect(queryIdAsc.compare(customer1, customer1), 'Id asc, A = B').to.eq(0);
+        expect(queryIdAsc.compare(customer2, customer1), 'Id asc, A > B').to.eq(1);
+
+        const queryIdDesc = CustomerQuery.fromJSON().addSortBy('id', 'desc');
+        expect(queryIdDesc.compare(customer1, customer2), 'Id desc, A < B').to.eq(1);
+        expect(queryIdDesc.compare(customer1, customer1), 'Id desc, A = B').to.eq(0);
+        expect(queryIdDesc.compare(customer2, customer1), 'Id desc, A > B').to.eq(-1);
+
+        const queryCheckinAsc = CustomerQuery.fromJSON().addSortBy('checkIn', 'asc');
+        expect(queryCheckinAsc.compare(customer1, customer2), 'Checkin asc, A < B').to.eq(-1);
+        expect(queryCheckinAsc.compare(customer1, customer1), 'Checkin asc, A = B').to.eq(0);
+        expect(queryCheckinAsc.compare(customer2, customer1), 'Checkin asc, A > B').to.eq(1);
+
+        const queryCheckinDesc = CustomerQuery.fromJSON().addSortBy('checkIn', 'desc');
+        expect(queryCheckinDesc.compare(customer1, customer2), 'Checkin desc, A < B').to.eq(1);
+        expect(queryCheckinDesc.compare(customer1, customer1), 'Checkin desc, A = B').to.eq(0);
+        expect(queryCheckinDesc.compare(customer2, customer1), 'Checkin desc, A > B').to.eq(-1);
+
+        const queryDefaultAsc = CustomerQuery.fromJSON();
+        expect(queryDefaultAsc.compare(customer1, customer2), 'Default uses id asc, A < B').to.eq(-1);
+        expect(queryDefaultAsc.compare(customer1, customer1), 'Default uses id asc, A = B').to.eq(0);
+        expect(queryDefaultAsc.compare(customer2, customer1), 'Default uses id asc, A > B').to.eq(1);
+    });
+
+    it('throws exception when comparing two parameters that are not customers', () => {
+        const query = CustomerQuery.fromJSON();
+        const customer = CustomerDataBuilder.aCustomer().build();
+
+        expect(() => { query.compare('lorem', 'ipsum') }).to.throw(TypeError);
+        expect(() => { query.compare(customer, 'ipsum') }).to.throw(TypeError);
+        expect(() => { query.compare('lorem', customer) }).to.throw(TypeError);
+    });
 });

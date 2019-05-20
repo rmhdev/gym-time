@@ -106,6 +106,21 @@ describe('store actions', () => {
             done
         )
     });
+    it('should update a customer query sort', done => {
+        testAction(
+            actions.updateCustomerQuerySort,
+            {},
+            {
+                customerRepository: new CustomerRepository(),
+                checkoutCustomers: [],
+                customerQuery: {}
+            },
+            [
+                { type: 'updateCustomerQuerySort' }
+            ],
+            done
+        )
+    });
     it('should restart the customer query', done => {
         testAction(
             actions.restartCustomerQuery,

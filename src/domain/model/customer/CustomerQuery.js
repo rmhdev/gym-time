@@ -98,6 +98,30 @@ class CustomerQuery {
             return result;
         }
     }
+    compare(customerA, customerB) {
+        if (!(customerA instanceof Customer)) {
+            throw new TypeError('Compare: expected first parameter to be Customer')
+        }
+        if (!(customerB instanceof Customer)) {
+            throw new TypeError('Compare: expected second parameter to be Customer')
+        }
+        const orders = ['asc', 'desc'];
+
+        if ((this.sortBy['name'] !== undefined) && orders.includes(this.sortBy['name'])) {
+            return customerA.name.compareWith(customerB.name) * (this.sortBy['name'] === 'desc' ? -1 : 1);
+        }
+        if ((this.sortBy['checkIn'] !== undefined) && orders.includes(this.sortBy['checkIn'])) {
+            return customerA.checkIn().toISOString().localeCompare(
+                customerB.checkIn().toISOString()
+            ) * (this.sortBy['checkIn'] === 'desc' ? -1 : 1);
+        }
+        let order = 'asc';
+        if ((this.sortBy['id'] !== undefined) && orders.includes(this.sortBy['id'])) {
+            order = this.sortBy['id'];
+        }
+
+        return customerA.id.compareWith(customerB.id) * (order === 'desc' ? -1 : 1);
+    }
     static default() {
         return CustomerQuery.fromJSON({ value: { status: 'active' }, sortBy: { checkIn: 'desc' } });
     }

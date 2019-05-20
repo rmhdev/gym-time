@@ -50,4 +50,16 @@ describe('CustomerId', () => {
         expect(id.inArray([new Date()]), 'comparing different instance in array').to.equal(false);
         expect(id.inArray(new Date()), 'comparing different instance').to.equal(false);
     });
+    it('compares the value with other id', () => {
+        const id = CustomerId.create('bbb');
+        expect(id.compareWith('bba'), 'A > B').to.equal(1);
+        expect(id.compareWith(id), 'A = B').to.equal(0);
+        expect(id.compareWith('bbc'), 'A < B').to.equal(-1);
+    });
+    it('throws error when comparing with incorrect value', () => {
+        const id = CustomerId.create('bbb');
+        expect(() => {
+            id.compareWith(new Date('2019-03-19T12:00:00+0000'))
+        }).to.throw(TypeError);
+    });
 });

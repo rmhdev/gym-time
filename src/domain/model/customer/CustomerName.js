@@ -35,6 +35,9 @@ class CustomerName {
             return (e instanceof CustomerNameEmptyException);
         }
     }
+    compareWith(name) {
+        return this.value.toLowerCase().localeCompare((new CustomerName(name)).value.toLowerCase());
+    }
     static create(value = null) {
         return new CustomerName(value);
     }

@@ -9,6 +9,7 @@ import Search from "@/components/Search";
 import SearchText from "@/components/SearchText";
 import Sort from "@/components/Sort";
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
+import Customer from "../../../src/components/Customer";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -22,6 +23,7 @@ describe('Customers.vue', () => {
         localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.state.categories = ['cat1', 'cat2', 'cat3'];
         localStoreConfig.actions.updateCustomerQueryValue = chai.spy();
+        localStoreConfig.actions.updateCustomerQuerySort = chai.spy();
         store = new Vuex.Store(localStoreConfig);
     });
 
@@ -187,5 +189,58 @@ describe('Customers.vue', () => {
             wrapper.find('#sort_checkin').props().order,
             'Non used sort link should have no sort class'
         ).to.not.contain(['asc', 'desc']);
+    });
+
+    it('displays the list sorted by the default value', () => {
+        const checkin = '2019-03-16T01:00:11';
+        const category = new CustomerCategory('cat1');
+
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('AC DC').withCheckIn(checkin).withCategory(category).build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Melvins').withCheckIn(checkin).withCategory(category).build();
+        let customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('ZZ top').withCheckIn(checkin).withCategory(category).build();
+
+        store.state.customerRepository.add(customer1);
+        store.state.customerRepository.add(customer2);
+        store.state.customerRepository.add(customer3);
+
+        store.state.customerQuery = {
+            sortBy: { name: 'desc' }
+        };
+        const wrapper = shallowMount(Customers, {store, localVue});
+
+        let customers = wrapper.findAll(Customer);
+        expect(customers.at(0).props().customer, 'First element, sorted').to.eql(customer3);
+        expect(customers.at(1).props().customer, 'Second element, sorted').to.eql(customer2);
+        expect(customers.at(2).props().customer, 'Third element, sorted').to.eql(customer1);
+    });
+
+    it('sorts the list when clicking a sort button', () => {
+        const checkin = '2019-03-16T01:00:11';
+        const category = new CustomerCategory('cat1');
+
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('AC DC').withCheckIn(checkin).withCategory(category).build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Melvins').withCheckIn(checkin).withCategory(category).build();
+        let customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('ZZ top').withCheckIn(checkin).withCategory(category).build();
+
+        store.state.customerRepository.add(customer1);
+        store.state.customerRepository.add(customer2);
+        store.state.customerRepository.add(customer3);
+
+        store.state.customerQuery = {
+            sortBy: { checkIn: 'asc' }
+        };
+        const wrapper = shallowMount(Customers, {store, localVue});
+        wrapper.find('#sort_checkin').vm.$emit('sort:order', 'checkIn');
+
+        expect(
+            localStoreConfig.actions.updateCustomerQuerySort,
+            'Action should be dispatched'
+        ).to.have.been.called();
+        // TODO: test payload.
+
+        let customers = wrapper.findAll(Customer);
+        expect(customers.at(0).props().customer, 'First element, sorted by checkIn asc').to.eql(customer1);
+        expect(customers.at(1).props().customer, 'Second element, sorted by checkIn asc').to.eql(customer2);
+        expect(customers.at(2).props().customer, 'Third element, sorted by checkIn asc').to.eql(customer3);
     });
 });

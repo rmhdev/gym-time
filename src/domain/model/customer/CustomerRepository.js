@@ -75,7 +75,10 @@ class CustomerRepository {
     }
     find(customerQuery) {
         if (customerQuery instanceof CustomerQuery) {
-            return this.items.filter((customer) => customerQuery.isAccepted(customer));
+            return this.items
+                .filter((customer) => customerQuery.isAccepted(customer))
+                .sort((a, b) => customerQuery.compare(a, b))
+            ;
         }
         throw new TypeError('Find by query: expected CustomerType but `' + (typeof customerQuery) + '` received');
     }

@@ -39,6 +39,11 @@ export default {
         updatedValue[payload.name] = payload.value;
         state.customerQuery = { ...state.customerQuery, value: updatedValue };
     },
+    updateCustomerQuerySort(state, payload) {
+        let updatedSortBy = {};
+        updatedSortBy[payload.name] = payload.value;
+        state.customerQuery = { ...state.customerQuery, sortBy: updatedSortBy };
+    },
     restartCustomerQuery(state) {
         state.customerQuery = CustomerQuery.default().toJSON();
     }

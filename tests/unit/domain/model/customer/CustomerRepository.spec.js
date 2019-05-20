@@ -170,5 +170,27 @@ describe('CustomerRepository', () => {
 
         repository.remove(customer2.id);
         expect(repository.version, 'Remove second customer').equal(4);
-    })
+    });
+
+    it('allows sorting results by query', () => {
+        const customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('AC DC').withCheckIn('2019-03-19T12:10:00.000Z').build();
+        const customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Boston').withCheckIn('2019-03-19T12:20:00.000Z').withCheckOut('2019-03-19T12:45:00.000Z').build();
+        const customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('Cream').withCheckIn('2019-03-19T12:30:00.000Z').build();
+        const customer4 = CustomerDataBuilder.aCustomer().withId('4').withName('Dire Straits').withCheckIn('2019-03-19T12:40:00.000Z').build();
+        let repository = new CustomerRepository();
+        repository.add(customer1);
+        repository.add(customer2);
+        repository.add(customer3);
+        repository.add(customer4);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON({ sortBy: { name: 'desc' } })),
+            'Sorts by name: from Z to A'
+        ).to.eql([customer4, customer3, customer2, customer1]);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON({ sortBy: { checkIn: 'asc' } })),
+            'Sorts by checkin: first come first shown'
+        ).to.eql([customer1, customer2, customer3, customer4]);
+    });
 });

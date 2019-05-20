@@ -22,6 +22,11 @@ class CustomerId {
             return false;
         }
     }
+    compareWith(id) {
+        return this.value.toString().localeCompare(
+            CustomerId.create(id).value.toString()
+        );
+    }
     inArray(ids) {
         const searchIds = Array.isArray(ids) ? ids : [ids];
         let isInArray = false;

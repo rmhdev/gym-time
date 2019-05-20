@@ -63,4 +63,22 @@ describe('CustomerName', () => {
         expect(name.isSimilar(new Date()), 'Incorrect name type').to.equal(false);
         expect(name.isSimilar(''), 'Empty value').to.equal(true);
     });
+
+    it('compares with other names', () => {
+        const name = CustomerName.create('BBB');
+
+        expect(name.compareWith('BBB'), 'Same name').to.equal(0);
+        expect(name.compareWith('BBA'), 'Compare with lower name').to.equal(1);
+        expect(name.compareWith('BBC'), 'Compare with greater name').to.equal(-1);
+        expect(name.compareWith(CustomerName.create('BBB')), 'Compare with name object').to.equal(0);
+    });
+
+    it('throws error when comparing with incorrect type', () => {
+        const name = CustomerName.create('BBB');
+
+        expect(function () {
+            name.compareWith(new Date('2019-03-16T01:00:11'))
+        }).to.throw(TypeError);
+
+    });
 });

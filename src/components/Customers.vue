@@ -24,11 +24,13 @@
                         id="sort_name"
                         label="name"
                         :order="$store.getters.getCustomerQuery.getSortBy('name', '')"
+                        v-on:sort:order="sortBy('name', $event)"
                     ></sort>
                     <sort
                         id="sort_checkin"
                         label="checkin"
-                        :order="$store.getters.getCustomerQuery.getSortBy('checkin', '')"
+                        :order="$store.getters.getCustomerQuery.getSortBy('checkIn', '')"
+                        v-on:sort:order="sortBy('checkIn', $event)"
                     ></sort>
                 </div>
 
@@ -98,6 +100,9 @@
         methods: {
             searchBy(name, value) {
                 return this.$store.dispatch('updateCustomerQueryValue', { name: name, value: value });
+            },
+            sortBy(name, value) {
+                return this.$store.dispatch('updateCustomerQuerySort', { name: name, value: value });
             },
         }
     }
