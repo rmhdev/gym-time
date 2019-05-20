@@ -6,6 +6,7 @@ import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
 import Vuex from "vuex";
 import Search from "@/components/Search";
+import SearchText from "@/components/SearchText";
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 const localVue = createLocalVue();
@@ -80,6 +81,7 @@ describe('Customers.vue', () => {
     it('renders search components', () => {
         const wrapper = shallowMount(Customers, {store, localVue});
         expect(wrapper.findAll(Search).length).eq(2);
+        expect(wrapper.findAll(SearchText).length).eq(1);
     });
 
     it('updates the list when searching by category', () => {

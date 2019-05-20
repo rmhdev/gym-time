@@ -10,6 +10,13 @@
                     :value="$store.getters.getCustomerQuery.get('category', '')"
                     v-on:search:by="searchBy('category', $event)"
                 ></search>
+                <search-text
+                    id="search_name"
+                    name="search[name]"
+                    placeholder="Search by name"
+                    label="Name:"
+                    :value="$store.getters.getCustomerQuery.get('name', '')"
+                ></search-text>
             </div>
 
             <div class="gym-customers">
@@ -47,13 +54,15 @@
 <script>
     import Customer from "@/components/Customer";
     import Search from "@/components/Search";
+    import SearchText from "@/components/SearchText";
     import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
 
     export default {
         name: 'Customers',
         components: {
             Customer,
-            Search
+            Search,
+            SearchText
         },
         computed: {
             customers() {
