@@ -29,4 +29,17 @@ describe('store getters', () => {
 
         expect(getters.getCategories(state), 'List of custom categories').to.eql(expected);
     });
+
+    it('returns the defined date', () => {
+        const datetime = '2019-03-19T12:34:56+0000';
+        const state = { datetime: datetime };
+
+        expect(getters.getDate(state), 'Date object').to.eql(new Date(datetime));
+    });
+
+    it('returns the time format', () => {
+        expect(getters.isHour12({}), 'Boolean result').to.eql(false);
+        expect(getters.isHour12({ hour12: true }), 'Boolean result').to.eql(true);
+        expect(getters.isHour12({ hour12: null }), 'Boolean result').to.eql(false);
+    });
 });

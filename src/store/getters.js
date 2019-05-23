@@ -33,4 +33,14 @@ export default {
             CustomerQuery.fromJSON(state.customerQuery)
         );
     },
+    getDate: (state) => {
+        return new Date(state.datetime);
+    },
+    isHour12: (state) => {
+        if (undefined === state.hour12) {
+            return false;
+        }
+
+        return Boolean(state.hour12).valueOf();
+    },
 }
