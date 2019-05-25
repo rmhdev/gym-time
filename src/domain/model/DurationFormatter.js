@@ -63,4 +63,27 @@ class DurationFormatter {
             return unitParts[0] + (isShort ? unitParts[1].substring(0, 1) : ' ' + unitParts[1]);
         }).join(' ');
     }
+    duration(date) {
+        const json = this.toJSON(date);
+        let durationDate = [];
+        if (json.days !== undefined) {
+            durationDate.push(json.days + 'D');
+        }
+        let durationTime = [];
+        if (json.hours !== undefined) {
+            durationTime.push(json.hours + 'H');
+        }
+        if (json.minutes !== undefined) {
+            durationTime.push(json.minutes + 'M');
+        }
+        if (json.seconds !== undefined) {
+            durationTime.push(json.seconds + 'S');
+        }
+
+        return 'P'
+            + durationDate.join('')
+            + (durationTime.length > 0 ? 'T' : '')
+            + durationTime.join('')
+        ;
+    }
 }
