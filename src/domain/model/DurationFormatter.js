@@ -11,15 +11,56 @@ class DurationFormatter {
         return (new Date(date) - this.getDate()) / 1000;
     }
     minutes(date) {
-        return Math.floor(this.seconds(date) / 60);
+        return this.seconds(date) / 60;
     }
     hours(date) {
-        return Math.floor(this.minutes(date) / 60);
+        return this.minutes(date) / 60;
     }
     days(date) {
-        return Math.floor(this.hours(date) / 24);
+        return this.hours(date) / 24;
+    }
+    toJSON(date) {
+        let json = {};
+        let count = 0;
+        const days = Math.floor(this.days(date));
+        if (days > 0) {
+            json['days'] = days;
+            count++;
+        }
+        const hours = Math.floor(this.hours(date)) % 24;
+        if (hours > 0) {
+            json['hours'] = hours;
+            count++;
+        }
+        const minutes = Math.floor(this.minutes(date)) % 60;
+        if (minutes > 0) {
+            json['minutes'] = minutes;
+            count++;
+        }
+        const seconds = this.seconds(date) % 60;
+        if (seconds > 0) {
+            json['seconds'] = seconds;
+            count++;
+        }
+        if (count === 0) {
+            return { 'seconds': 0 };
+        }
+
+        return json;
     }
     format(date) {
-        return this.seconds(date) + ' sec' + (Math.abs(this.seconds(date)) === 1 ? '' : 's');
+        const json = this.toJSON(date);
+        let parts = [];
+        ['days', 'hours', 'minutes', 'seconds'].forEach((unit) => {
+            if (undefined !== json[unit]) {
+                parts.push(json[unit] + ' ' + (json[unit] === 1 ? unit.substring(0, unit.length - 1) : unit));
+            }
+        });
+        let isShort = parts.length > 1;
+
+        return parts.map((unit) => {
+            let unitParts = unit.split(' ');
+            return unitParts[0] + (isShort ? unitParts[1].substring(0, 1) : ' ' + unitParts[1]);
+        }).join(' ');
     }
 }
