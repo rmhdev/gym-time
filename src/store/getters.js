@@ -34,7 +34,7 @@ export default {
         );
     },
     getDate: (state) => {
-        return new Date(state.datetime);
+        return (state.datetime === null) ? new Date() : new Date(state.datetime);
     },
     isHour12: (state) => {
         if (undefined === state.hour12) {

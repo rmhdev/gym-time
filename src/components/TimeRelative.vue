@@ -1,5 +1,5 @@
 <template>
-    <time class="gym-time-relative" :datetime="renderDatetime">
+    <time class="gym-time-relative text-nowrap" :datetime="renderDatetime">
         {{ renderLabel }}
     </time>
 </template>

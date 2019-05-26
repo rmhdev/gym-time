@@ -128,6 +128,15 @@ describe('DurationFormatter', () => {
                     duration: 'PT59S'
                 }
             },
+            {
+                date: '2019-01-01T00:00:01.1+0000',
+                comment: 'seconds with decimal',
+                expected: {
+                    format: '1 second',
+                    json: { seconds: 1 },
+                    duration: 'PT1S'
+                }
+            },
 
             {
                 date: '2019-01-01T00:01:00+0000',

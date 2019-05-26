@@ -10,6 +10,7 @@ export default {
         customerQuery: CustomerQuery.default().toJSON(),
         checkoutCustomers: [],
         categories: ['public'],
+        datetime: null,
     },
     mutations,
     actions,

@@ -61,4 +61,10 @@ describe('store config', () => {
         });
         expect(store.getters.getCustomerQuery).to.eql(expected);
     });
+    it('should have a date', () => {
+        const localVue = createLocalVue();
+        localVue.use(Vuex);
+        const store = new Vuex.Store(cloneDeep(config));
+        expect(store.getters.getDate).to.be.an.instanceof(Date);
+    });
 });

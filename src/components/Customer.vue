@@ -14,27 +14,40 @@
                     {{ customer.category.name }}
                 </small>
             </div>
-            <time class="gym-customer-checkin text-nowrap" :datetime="customer.checkIn().toISOString()">
-                {{ renderCheckinTime }}
-            </time>
+
+            <div class="">
+                <time-relative
+                    :date="customer.checkIn().toISOString()"
+                    mode="time"
+                    class="gym-customer-checkin"
+                ></time-relative>
+                <!-- TODO: this should not be a time-relative component -->
+                <time-relative
+                    v-if="customer.checkOut() !== null"
+                    :date="customer.checkOut().toISOString()"
+                    mode="duration"
+                    class="gym-customer-duration display-block small text-muted w-100"
+                ></time-relative>
+            </div>
         </div>
     </a>
 </template>
 
 <script>
     import {Customer} from "@/domain/model/customer/Customer";
-    import {TimeFormatter} from "@/domain/model/TimeFormatter";
+    import TimeRelative from '@/components/TimeRelative.vue'
 
     export default {
         name: 'Customer',
+        components: {TimeRelative},
         props: {
             customer: Customer,
             customClass: String
         },
+        comments: {
+            TimeRelative
+        },
         computed: {
-            renderCheckinTime() {
-                return (new TimeFormatter()).format(this.customer.checkIn());
-            },
             isSelected() {
                 return this.$store.getters.isCheckoutCustomer({id: this.customer.id.value });
             },

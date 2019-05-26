@@ -8,7 +8,7 @@ class DurationFormatter {
         return new Date(this.datetime);
     }
     seconds(date) {
-        return (new Date(date) - this.getDate()) / 1000;
+        return  Math.round((new Date(date) - this.getDate()) / 1000);
     }
     minutes(date) {
         return this.seconds(date) / 60;
