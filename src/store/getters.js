@@ -1,6 +1,7 @@
 import {CustomerId} from "@/domain/model/customer/CustomerId";
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
 import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
+import {TimeFormatter} from "../domain/model/TimeFormatter";
 
 export default {
     getRepository: (state) => {
@@ -43,4 +44,12 @@ export default {
 
         return Boolean(state.hour12).valueOf();
     },
+    getTimeFormatter: (state) => {
+        let hour12 = false;
+        if (undefined !== state.hour12) {
+            hour12 = Boolean(state.hour12).valueOf();
+        }
+
+        return new TimeFormatter(hour12);
+    }
 }

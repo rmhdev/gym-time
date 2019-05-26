@@ -12,7 +12,7 @@ describe('TimeRelative.vue', () => {
 
     it('renders the time in 24H format by default', () => {
         let localStoreConfig = cloneDeep(storeConfig);
-        localStoreConfig.state.datetime = '2019-03-19 19:34:56';
+        localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         let store = new Vuex.Store(localStoreConfig);
 
         const wrapper = shallowMount(TimeRelative, { store, localVue });
@@ -22,7 +22,7 @@ describe('TimeRelative.vue', () => {
 
     it('renders the time in AM/PM format when defined', () => {
         let localStoreConfig = cloneDeep(storeConfig);
-        localStoreConfig.state.datetime = '2019-03-19 19:34:56';
+        localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         localStoreConfig.state.hour12 = true;
         let store = new Vuex.Store(localStoreConfig);
         const wrapper = shallowMount(TimeRelative, { store, localVue });
@@ -32,53 +32,122 @@ describe('TimeRelative.vue', () => {
 
     it('renders a custom time if defined', () => {
         let localStoreConfig = cloneDeep(storeConfig);
-        localStoreConfig.state.datetime = '2019-03-19 19:34:56';
+        localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         let store = new Vuex.Store(localStoreConfig);
         const wrapper = shallowMount(TimeRelative, { store, localVue, propsData: {
-            date: '2019-03-19 07:11:22'
+            from: '2019-03-19T07:11:22'
         }});
 
         expect(wrapper.find('.gym-time-relative').text()).eq('07:11');
     });
 
-    it('renders a duration', () => {
+    it('renders depending on the mode defined', () => {
+        const fromDatetime = '2019-03-19T18:00:00';
+        const toDatetime = '2019-03-19T18:22:33';
+        const data = [
+            {
+                propsData: {
+                    mode: 'auto'
+                },
+                expected: '18:30',
+                comment: 'mode auto, no dates defined'
+            },
+            {
+                propsData: {
+                    mode: 'auto',
+                    from: fromDatetime
+                },
+                expected: '18:00',
+                comment: 'mode auto, with date from',
+            },
+            {
+                propsData: {
+                    mode: 'auto',
+                    from: fromDatetime,
+                    to: toDatetime
+                },
+                expected: '22m 33s',
+                comment: 'mode auto, with dates from and to',
+            },
+            {
+                propsData: {
+                    mode: 'from',
+                    from: fromDatetime,
+                    to: toDatetime
+                },
+                expected: '18:00',
+                comment: 'mode from, with dates from and to',
+            },
+            {
+                propsData: {
+                    mode: 'duration',
+                    from: fromDatetime,
+                    to: toDatetime
+                },
+                expected: '22m 33s',
+                comment: 'mode duration, with dates from and to',
+            },
+            {
+                propsData: {
+                    mode: 'duration',
+                    from: fromDatetime
+                },
+                expected: '30m 45s',
+                comment: 'mode duration, with date from',
+            },
+        ];
+
         let localStoreConfig = cloneDeep(storeConfig);
-        localStoreConfig.state.datetime = '2019-03-19 12:00:00';
+        localStoreConfig.state.datetime = '2019-03-19T18:30:45';
+        let store = new Vuex.Store(localStoreConfig);
+
+        data.forEach(function (testData) {
+            const wrapper = shallowMount(TimeRelative, { store, localVue, propsData: testData.propsData });
+
+            expect(wrapper.find('.gym-time-relative').text(), testData.comment).eq(testData.expected);
+        });
+    });
+
+    it('renders a fixed duration', () => {
+        let localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig.state.datetime = '2019-03-19T12:44:55';
         let store = new Vuex.Store(localStoreConfig);
         const wrapper = shallowMount(TimeRelative, { store, localVue, propsData: {
-                date: '2019-03-19 12:30:45',
+                from: '2019-03-19T12:00:00',
+                to: '2019-03-19T12:22:33',
                 mode: 'duration'
             }});
 
-        expect(wrapper.find('.gym-time-relative').text()).eq('30m 45s');
+        expect(wrapper.find('.gym-time-relative').text()).eq('22m 33s');
     });
 
     it('renders time related attributes', () => {
-        const datetime = '2019-03-19T12:00:00.000Z';
+        const datetime = '2019-03-19T12:30:45.000Z';
         let localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.state.datetime = datetime;
         let store = new Vuex.Store(localStoreConfig);
 
-        const wrapperA = shallowMount(TimeRelative, { store, localVue,
-            propsData: {}
-        });
-        expect(wrapperA.find('time').attributes('datetime'), 'Datetime related to store date').eq(datetime);
+        const wrapperA = shallowMount(TimeRelative, { store, localVue, propsData: {}});
+        expect(
+            wrapperA.find('time').attributes('datetime'),
+            'Datetime related to store date'
+        ).eq(datetime);
 
-        const customDatetime = '2019-03-19T12:30:45.000Z';
+        const fromDatetime = '2019-03-19T12:00:00.000Z';
         const wrapperB = shallowMount(TimeRelative, { store, localVue,
             propsData: {
-                date: customDatetime,
-                mode: 'time'
+                from: fromDatetime,
+                mode: 'from'
             }
         });
         expect(
             wrapperB.find('time').attributes('datetime'),
-            'Datetime related to custom date'
-        ).eq(customDatetime);
+            'Datetime related to from date'
+        ).eq(fromDatetime);
 
         const wrapperC = shallowMount(TimeRelative, { store, localVue,
             propsData: {
-                date: customDatetime,
+                from: fromDatetime,
                 mode: 'duration'
             }
         });

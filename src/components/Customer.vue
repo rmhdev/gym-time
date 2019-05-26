@@ -15,18 +15,18 @@
                 </small>
             </div>
 
-            <div class="">
+            <div class="gym-customer-times">
                 <time-relative
-                    :date="customer.checkIn().toISOString()"
-                    mode="time"
+                    :from="customer.checkIn().toISOString()"
+                    mode="from"
                     class="gym-customer-checkin"
                 ></time-relative>
-                <!-- TODO: this should not be a time-relative component -->
                 <time-relative
                     v-if="customer.checkOut() !== null"
-                    :date="customer.checkOut().toISOString()"
+                    :from="customer.checkIn().toISOString()"
+                    :to="customer.checkOut().toISOString()"
                     mode="duration"
-                    class="gym-customer-duration display-block small text-muted w-100"
+                    class="gym-customer-duration small text-muted d-block"
                 ></time-relative>
             </div>
         </div>

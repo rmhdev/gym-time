@@ -36,8 +36,8 @@ describe('Customer.vue', () => {
     it('shows the checkin time of the customer', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
 
-        expect(wrapper.find(TimeRelative).props('date')).eq(customer.checkIn().toISOString());
-        expect(wrapper.find(TimeRelative).props('mode')).eq('time');
+        expect(wrapper.find(TimeRelative).props('from')).eq(customer.checkIn().toISOString());
+        expect(wrapper.find(TimeRelative).props('mode')).eq('from');
     });
 
     it('shows the checkin time and the duration of the stay when the customer has checked out', () => {
@@ -52,9 +52,9 @@ describe('Customer.vue', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: checkoutCustomer }});
 
         expect(wrapper.findAll(TimeRelative).length).eq(2);
-        expect(wrapper.find('.gym-customer-checkin').props('date'), 'checkin date').eq(checkin);
-        expect(wrapper.find('.gym-customer-checkin').props('mode'), 'checkin date, show date').eq('time');
-        expect(wrapper.find('.gym-customer-duration').props('date'), 'checkout date').eq(checkout);
+        expect(wrapper.find('.gym-customer-checkin').props('from'), 'checkin date').eq(checkin);
+        expect(wrapper.find('.gym-customer-checkin').props('mode'), 'checkin date, show date').eq('from');
+        expect(wrapper.find('.gym-customer-duration').props('to'), 'checkout date').eq(checkout);
         expect(wrapper.find('.gym-customer-duration').props('mode'), 'checkout date, show duration').eq('duration');
     });
 

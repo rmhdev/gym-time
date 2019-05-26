@@ -6,9 +6,17 @@ class TimeFormatter {
         this.hour12 = hour12;
     }
     format(date) {
+        // TODO: take into account the timezone?
         if (this.hour12) {
-            return date.toLocaleTimeString(this.locales, { 'hour12': this.hour12 }).replace(/:\d{2}\s/,' ');
+            return date.toLocaleTimeString(this.locales, {
+                hour12: this.hour12
+            }).replace(/:\d{2}\s/,' ');
         }
-        return date.toLocaleTimeString(this.locales, { 'hour12': this.hour12, hour: '2-digit', minute: '2-digit', second: undefined });
+        return date.toLocaleTimeString(this.locales, {
+            hour12: this.hour12,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: undefined
+        });
     }
 }

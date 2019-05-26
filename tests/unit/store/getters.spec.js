@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import getters from '@/store/getters'
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
+import {TimeFormatter} from "../../../src/domain/model/TimeFormatter";
 
 describe('store getters', () => {
     it('should return if a customer is in the checkout list', () => {
@@ -41,5 +42,11 @@ describe('store getters', () => {
         expect(getters.isHour12({}), 'Boolean result').to.eql(false);
         expect(getters.isHour12({ hour12: true }), 'Boolean result').to.eql(true);
         expect(getters.isHour12({ hour12: null }), 'Boolean result').to.eql(false);
+    });
+
+    it('returns the default time formatter', () => {
+        expect(getters.getTimeFormatter({}), 'No hour12 info').to.eql(new TimeFormatter(false));
+        expect(getters.getTimeFormatter({ hour12: true }), 'Boolean result').to.eql(new TimeFormatter(true));
+        expect(getters.getTimeFormatter({ hour12: null }), 'Boolean result').to.eql(new TimeFormatter(false));
     });
 });
