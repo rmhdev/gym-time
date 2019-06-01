@@ -23,4 +23,7 @@ export default {
     restartCustomerQuery({ commit }) {
         commit('restartCustomerQuery');
     },
+    updateDatetime({ commit }, datetime) {
+        commit('updateDatetime', datetime);
+    },
 }

@@ -3,7 +3,7 @@ import mutations from '@/store/mutations'
 import { CustomerRepository } from "@/domain/model/customer/CustomerRepository";
 import { CustomerDataBuilder } from "../domain/model/customer/CustomerDataBuilder";
 import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
-import {CustomerQuery} from "../../../src/domain/model/customer/CustomerQuery";
+import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 
 describe('store mutations', () => {
     it('should add a new customer in the repository', () => {
@@ -151,5 +151,25 @@ describe('store mutations', () => {
             state.customerQuery,
             'The status should have default values'
         ).to.eql(CustomerQuery.default().toJSON());
+    });
+
+    it('allows updating the datetime', () => {
+        let state = {
+            datetime: null
+        };
+        mutations.updateDatetime(state, '2019-03-19T19:34:56.000Z');
+        expect(
+            state.datetime,
+            'The datetime should be updated'
+        ).to.eq('2019-03-19T19:34:56.000Z');
+
+        state = {
+            datetime: null
+        };
+        mutations.updateDatetime(state);
+        expect(
+            state.datetime,
+            'The datetime should be the actual one if not defined'
+        ).to.be.a('string');
     });
 });

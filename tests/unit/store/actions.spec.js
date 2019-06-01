@@ -136,4 +136,17 @@ describe('store actions', () => {
             done
         )
     });
+    it('should update the datetime', done => {
+        testAction(
+            actions.updateDatetime,
+            {},
+            {
+                datetime: null
+            },
+            [
+                { type: 'updateDatetime' }
+            ],
+            done
+        )
+    });
 });

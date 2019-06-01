@@ -46,5 +46,8 @@ export default {
     },
     restartCustomerQuery(state) {
         state.customerQuery = CustomerQuery.default().toJSON();
+    },
+    updateDatetime(state, datetime) {
+        state.datetime = (datetime === undefined) ? (new Date()).toISOString() : datetime;
     }
 }
