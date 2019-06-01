@@ -28,7 +28,7 @@
                 type: String,
                 default: 'auto',
                 validator: function (value) {
-                    return ['auto', 'from', 'duration'].indexOf(value) !== -1
+                    return ['auto', 'from', 'duration', 'date', 'time'].indexOf(value) !== -1
                 }
             },
         },
@@ -42,6 +42,9 @@
                 }
                 if (this.getMode === 'from' && this.getFrom) {
                     return this.$store.getters.getTimeFormatter.format(this.getFrom);
+                }
+                if (this.getMode === 'date') {
+                    return this.$store.getters.getDateFormatter.format(this.getDate);
                 }
 
                 return (new TimeFormatter(this.$store.getters.isHour12)).format(this.getDate);
@@ -68,7 +71,7 @@
                 if (this.from) {
                     return 'from';
                 }
-                return 'date';
+                return 'time';
             },
             getDate() {
                 return this.$store.getters.getDate;

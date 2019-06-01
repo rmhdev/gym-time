@@ -95,6 +95,38 @@ describe('TimeRelative.vue', () => {
                 expected: '30m 45s',
                 comment: 'mode duration, with date from',
             },
+            {
+                propsData: {
+                    mode: 'time'
+                },
+                expected: '18:30',
+                comment: 'mode time, no dates defined'
+            },
+            {
+                propsData: {
+                    mode: 'time',
+                    from: fromDatetime,
+                    to: toDatetime
+                },
+                expected: '18:30',
+                comment: 'mode time, must ignore dates "from" and "to"',
+            },
+            {
+                propsData: {
+                    mode: 'date'
+                },
+                expected: 'Tuesday, March 19, 2019',
+                comment: 'mode date, no dates defined'
+            },
+            {
+                propsData: {
+                    mode: 'date',
+                    from: fromDatetime,
+                    to: toDatetime
+                },
+                expected: 'Tuesday, March 19, 2019',
+                comment: 'mode date, must ignore dates "from" and "to"',
+            },
         ];
 
         let localStoreConfig = cloneDeep(storeConfig);

@@ -2,6 +2,7 @@ import {CustomerId} from "@/domain/model/customer/CustomerId";
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
 import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
 import {TimeFormatter} from "../domain/model/TimeFormatter";
+import {DateFormatter} from "../domain/model/DateFormatter";
 
 export default {
     getRepository: (state) => {
@@ -51,5 +52,8 @@ export default {
         }
 
         return new TimeFormatter(hour12);
+    },
+    getDateFormatter: () => {
+        return new DateFormatter();
     }
 }
