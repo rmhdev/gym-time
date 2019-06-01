@@ -1,38 +1,23 @@
 <template>
-  <div class="clock">
-    <h2 class="local-time">{{ renderTime }}</h2>
-    <p class="local-date">{{ renderDate }}</p>
-  </div>
+    <section class="gym-clock">
+        <h2 class="gym-clock-title">
+            <time-relative mode="time" class="gym-clock-time"></time-relative>
+        </h2>
+
+        <time-relative mode="date" class="gym-clock-date"></time-relative>
+    </section>
 </template>
 
-<script>
-import { TimeFormatter } from '@/domain/model/TimeFormatter'
-import { DateFormatter } from '@/domain/model/DateFormatter'
 
-export default {
-  name: 'Clock',
-  props: {
-    date: {
-      type: Date,
-      default: function () {
-        return new Date();
-      }
+<script>
+    import TimeRelative from '@/components/TimeRelative.vue'
+
+    export default {
+        name: 'Clock',
+        components: {TimeRelative},
     }
-  },
-  computed: {
-    renderTime() {
-      return (new TimeFormatter()).format(this.date);
-    },
-    renderDate() {
-      return (new DateFormatter()).format(this.date);
-    }
-  }
-}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h2 {
-  margin: 40px 0 0;
-}
+
+<style>
 </style>
