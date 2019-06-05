@@ -1,21 +1,33 @@
 <template>
-  <div class="welcome">
-    <h1>{{ msg }}</h1>
-  </div>
+    <div>
+        <header>
+            <h1>{{ msg }}</h1>
+        </header>
+
+        <Clock/>
+
+        <a class="btn btn-lg btn-primary" href="#" @click.prevent="close">Enter</a>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'Welcome',
-  props: {
-    msg: String
-  }
-}
+    import Clock from "@/components/Clock";
+
+    export default {
+        name: 'Welcome',
+        props: {
+            msg: String
+        },
+        components: {
+            Clock
+        },
+        methods: {
+            close() {
+                this.$emit('close');
+            }
+        }
+    }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-h1 {
-  margin: 40px 0 0;
-}
 </style>

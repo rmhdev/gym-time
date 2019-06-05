@@ -1,12 +1,9 @@
 <template>
     <div id="app" class="container">
 
-        <div class="text-center">
-            <Welcome msg="Welcome!"/>
-            <Clock/>
-        </div>
+        <Welcome v-if="isWelcome" msg="Welcome!" class="gym-welcome" @close="isWelcome = false"/>
 
-        <div class="row justify-content-md-center">
+        <div v-else class="row justify-content-md-center">
             <div class="col-5">
                 <checkout
                     v-if="hasCheckoutCustomer"
@@ -15,6 +12,7 @@
                 <checkin
                     v-else
                 ></checkin>
+                <Clock/>
             </div>
             <div class="col-1"></div>
             <div class="col-6">
@@ -32,7 +30,12 @@
     import Customers from "./components/Customers";
 
     export default {
-        name: 'app',
+        name: 'App',
+        data() {
+            return {
+                isWelcome: true
+            }
+        },
         computed: {
             hasCheckoutCustomer() {
                 return this.$store.getters.getCheckoutCustomers.length > 0;
