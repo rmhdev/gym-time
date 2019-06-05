@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="gym-welcome">
         <header>
-            <h1>{{ msg }}</h1>
+            <h1 class="gym-welcome-title">{{ msg }}</h1>
         </header>
 
-        <Clock/>
+        <a class="gym-welcome-button" href="#" @click.prevent="close">Enter</a>
 
-        <a class="btn btn-lg btn-primary" href="#" @click.prevent="close">Enter</a>
+        <Clock class="gym-welcome-clock"/>
     </div>
 </template>
 

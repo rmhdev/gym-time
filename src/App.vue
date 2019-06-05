@@ -1,7 +1,9 @@
 <template>
     <div id="app" class="container">
 
-        <Welcome v-if="isWelcome" msg="Welcome!" class="gym-welcome" @close="isWelcome = false"/>
+        <div v-if="isWelcome" class="gym-welcome-container">
+            <Welcome msg="Hello!" @close="isWelcome = false"/>
+        </div>
 
         <div v-else class="row justify-content-md-center">
             <div class="col-5">

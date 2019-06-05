@@ -4,6 +4,43 @@ body {
   background-color: pink;
 }
 
+.gym-welcome {
+
+  &-container {
+    border: 1px solid red;
+    height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  > header {
+    margin-bottom: map-get($spacers, 3);
+  }
+  &-title {
+    @extend .display-1;
+    @extend .text-break;
+  }
+  &-subtitle {
+    @extend .text-muted;
+    @extend .lead
+  }
+
+  &-clock {
+    .gym-clock-date {
+      @extend .lead
+    }
+  }
+
+  &-button {
+    @extend .btn;
+    @extend .btn-lg;
+    @extend .btn-primary;
+    margin-bottom: map-get($spacers, 4);
+  }
+}
+
 .gym-customers {
 
   .alert {
