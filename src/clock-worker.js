@@ -76,6 +76,7 @@
         }
         if ('start' === event.data[1]) {
             start();
+            return;
         }
         stop();
     };
