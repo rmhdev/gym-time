@@ -7,58 +7,40 @@
         ></checkin-success>
 
         <form v-else @submit.prevent="submit" class="needs-validation" autocomplete="off">
-            <div class="form-group">
-                <label for="checkin_name">Your name is</label>
+            <div class="input-group input-group-lg">
+                <label for="checkin_name" class="sr-only">Your name is</label>
                 <input
                     id="checkin_name"
                     type="text"
                     value=""
-                    class="form-control form-control-lg"
+                    class="form-control"
                     :class="inputClass"
                     name="checkin[name]"
                     v-model="customerName"
                     @keyup="preValidate"
                     ref="customerName"
                 >
-                <div class="feedback" :class="feedbackClass">{{ feedback }}</div>
+                <div class="input-group-append">
+                    <label for="checkin_category" class="sr-only">Category</label>
+                    <select
+                        id="checkin_category"
+                        class="gym-checkin-category form-control form-control-lg"
+                        name="checkin[category]"
+                        required="required"
+                    >
+                        <option
+                            v-for="category in categories"
+                            :key="category.value"
+                            :selected="customerCategory === category.value"
+                            :value="category.value"
+                            @change="customerCategory = category.value"
+                        >{{ category.name }}</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="checkin_category">Category:</label>
-                <select
-                    id="checkin_category"
-                    class="gym-checkin-category"
-                    name="checkin[category]"
-                    required="required"
-                >
-                    <option
-                        v-for="category in categories"
-                        :key="category.value"
-                        :selected="customerCategory === category.value"
-                        :value="category.value"
-                        @change="customerCategory = category.value"
-                    >{{ category.name }}</option>
-                </select>
-
-<!--                <div-->
-<!--                    v-for="category in categories"-->
-<!--                    :key="category.value"-->
-<!--                    class="form-check form-check-inline gym-checkin-category"-->
-<!--                >-->
-<!--                    <input-->
-<!--                        type="radio"-->
-<!--                        class="form-check-input"-->
-<!--                        :id="'checkin_category_' + category.value"-->
-<!--                        name="checkin[category]"-->
-<!--                        :value="category.value"-->
-<!--                        :checked="customerCategory === category.value"-->
-<!--                        required="required"-->
-<!--                        @change="customerCategory = category.value"-->
-<!--                    ><label-->
-<!--                        class="form-check-label"-->
-<!--                        :for="'checkin_category_' + category.value"-->
-<!--                    >{{ category.name }}</label>-->
-<!--                </div>-->
+            <div class="gym-feedback-container">
+                <div class="gym-feedback" :class="feedbackClass">{{ feedback }}</div>
             </div>
 
             <button type="submit" class="btn btn-block btn-success btn-lg">Check-in</button>
@@ -93,7 +75,7 @@
             feedbackClass() {
                 switch (this.status) {
                     case 'valid':
-                        return 'invalid-feedback';
+                        return 'valid-feedback';
                     case 'invalid':
                         return 'invalid-feedback';
                     default:

@@ -122,3 +122,17 @@ body {
     margin-bottom: 0;
   }
 }
+
+.gym-feedback-container {
+  min-height: 2.3rem;
+  line-height: 2rem;
+
+  .gym-feedback {
+    margin-top: 0;
+    display: none;
+
+    &.invalid-feedback {
+      display: block;
+    }
+  }
+}
