@@ -32,13 +32,13 @@ describe('Checkin.vue', () => {
         expect(wrapper.findAll('form').length).eq(1);
         expect(wrapper.findAll('form input[name="checkin[name]"]').length).eq(1);
         expect(wrapper.findAll('form input[name="checkin[name]"]:focus').length, 'Focused by default').eq(1);
-        expect(wrapper.findAll('form input[name="checkin[category]"]').length).eq(3);
+        expect(wrapper.findAll('form select[name="checkin[category]"]').length).eq(1);
+        expect(wrapper.findAll('form select[name="checkin[category]"] option').length).eq(3);
         expect(wrapper.findAll('form button[type=submit]').length).eq(1);
     });
 
     it('should have the first category selected by default', () => {
-        expect(wrapper.findAll('form input[name="checkin[category]"]:checked').length).eq(1);
-        expect(wrapper.find('form input[name="checkin[category]"]:checked').element.value).eq('one');
+        expect(wrapper.find('form select[name="checkin[category]"] option:checked').element.value).eq('one');
     });
 
     it('shows a error when trying submit an empty name', () => {
@@ -90,9 +90,9 @@ describe('Checkin.vue', () => {
         wrapper.find('input[name="checkin[name]"]').setValue('Lorem Ipsum');
         // "hacky" way to check a radio input.
         // See https://medium.com/@stefanledin/tdd-trigger-a-radio-button-click-with-vue-test-utils-4ad1377e78a9
-        const radio = wrapper.find('input[value="two"]');
-        radio.element.selected = true;
-        radio.trigger('change');
+        const categoryField = wrapper.find('option[value="two"]');
+        categoryField.element.selected = true;
+        categoryField.trigger('change');
 
         wrapper.find("form").trigger("submit");
 

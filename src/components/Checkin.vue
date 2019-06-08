@@ -24,25 +24,41 @@
             </div>
 
             <div class="form-group">
-                <div
-                    v-for="category in categories"
-                    :key="category.value"
-                    class="form-check form-check-inline gym-checkin-category"
+                <label for="checkin_category">Category:</label>
+                <select
+                    id="checkin_category"
+                    class="gym-checkin-category"
+                    name="checkin[category]"
+                    required="required"
                 >
-                    <input
-                        type="radio"
-                        class="form-check-input"
-                        :id="'checkin_category_' + category.value"
-                        name="checkin[category]"
+                    <option
+                        v-for="category in categories"
+                        :key="category.value"
+                        :selected="customerCategory === category.value"
                         :value="category.value"
-                        :checked="customerCategory === category.value"
-                        required="required"
                         @change="customerCategory = category.value"
-                    ><label
-                        class="form-check-label"
-                        :for="'checkin_category_' + category.value"
-                    >{{ category.name }}</label>
-                </div>
+                    >{{ category.name }}</option>
+                </select>
+
+<!--                <div-->
+<!--                    v-for="category in categories"-->
+<!--                    :key="category.value"-->
+<!--                    class="form-check form-check-inline gym-checkin-category"-->
+<!--                >-->
+<!--                    <input-->
+<!--                        type="radio"-->
+<!--                        class="form-check-input"-->
+<!--                        :id="'checkin_category_' + category.value"-->
+<!--                        name="checkin[category]"-->
+<!--                        :value="category.value"-->
+<!--                        :checked="customerCategory === category.value"-->
+<!--                        required="required"-->
+<!--                        @change="customerCategory = category.value"-->
+<!--                    ><label-->
+<!--                        class="form-check-label"-->
+<!--                        :for="'checkin_category_' + category.value"-->
+<!--                    >{{ category.name }}</label>-->
+<!--                </div>-->
             </div>
 
             <button type="submit" class="btn btn-block btn-success btn-lg">Check-in</button>
