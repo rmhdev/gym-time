@@ -10,6 +10,7 @@ import SearchText from "@/components/SearchText";
 import Sort from "@/components/Sort";
 import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 import Customer from "../../../src/components/Customer";
+import {CustomerStatus} from "../../../src/domain/model/customer/CustomerStatus";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -242,5 +243,30 @@ describe('Customers.vue', () => {
         expect(customers.at(0).props().customer, 'First element, sorted by checkIn asc').to.eql(customer1);
         expect(customers.at(1).props().customer, 'Second element, sorted by checkIn asc').to.eql(customer2);
         expect(customers.at(2).props().customer, 'Third element, sorted by checkIn asc').to.eql(customer3);
+    });
+
+    it('has a default list of statuses for selectable customers', () => {
+        const wrapper = shallowMount(Customers, {store, localVue});
+        const statusActive = CustomerStatus.createActive().value;
+
+        expect(wrapper.props('statuses'), 'default list of statuses').to.eql([statusActive]);
+    });
+
+    it('defines if customers are disabled based on statuses list', () => {
+        const customer = CustomerDataBuilder.aCustomer()
+            .withId('1')
+            .withName('One')
+            .withCheckIn('2019-03-16T01:00:11')
+            .build();
+        store.state.customerRepository.add(customer);
+        const statuses = [CustomerStatus.createOut().value, CustomerStatus.createDeleted().value];
+        const wrapper = shallowMount(Customers, {store, localVue, propsData : {
+            statuses: statuses
+        }});
+
+        expect(
+            wrapper.find(Customer).props('disabled'),
+            'Customer is disabled (' + customer.status().value + ' is not in [' + statuses.join(', ') + ']'
+        ).eq(true);
     });
 });

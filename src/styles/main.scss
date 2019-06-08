@@ -72,18 +72,19 @@ body {
       text-align: center;
       background-color: lightgrey;
     }
+    &.gym-customer-enabled {
+      &:hover {
+        .gym-customer-initials {
+          background-color: $secondary;
+          color: $white;
 
-    &:hover {
-      .gym-customer-initials {
-        background-color: $secondary;
-        color: $white;
-
-        .gym-customer-initials-value {
-          display: none;
-        }
-        &:after {
-          content: '✓';
-          color: white;
+          .gym-customer-initials-value {
+            display: none;
+          }
+          &:after {
+            content: '✓';
+            color: white;
+          }
         }
       }
     }

@@ -49,6 +49,7 @@
                             v-for="customer in customers"
                             :key="customer.id.value"
                             :customer="customer"
+                            :disabled="isDisabled(customer.status().value)"
                         ></customer>
                     </div>
                 </template>
@@ -58,7 +59,7 @@
                 <search
                     id="search_status"
                     name="search[status]"
-                    :choices="statuses"
+                    :choices="allStatuses"
                     :value="$store.getters.getCustomerQuery.get('status', '')"
                     placeholder="all"
                     v-on:search:by="searchBy('status', $event)"
@@ -77,6 +78,14 @@
 
     export default {
         name: 'Customers',
+        props: {
+            statuses: {
+                type: Array,
+                default: function () {
+                    return [CustomerStatus.createActive().value];
+                }
+            }
+        },
         components: {
             Customer,
             Search,
@@ -93,7 +102,7 @@
             categories() {
                 return this.$store.getters.getCategories;
             },
-            statuses() {
+            allStatuses() {
                 return CustomerStatus.all();
             }
         },
@@ -104,6 +113,9 @@
             sortBy(name, value) {
                 return this.$store.dispatch('updateCustomerQuerySort', { name: name, value: value });
             },
+            isDisabled(status) {
+                return !this.statuses.includes(status);
+            }
         }
     }
 </script>

@@ -42,7 +42,11 @@
         components: {TimeRelative},
         props: {
             customer: Customer,
-            customClass: String
+            customClass: String,
+            disabled: {
+                type: Boolean,
+                default: false
+            }
         },
         comments: {
             TimeRelative
@@ -53,13 +57,16 @@
             },
             customerClass() {
                 return this.customClass
+                    + (this.disabled ?  '' : ' gym-customer-enabled')
                     + (this.isSelected ? ' gym-customer-selected' : '')
                 ;
             }
         },
         methods: {
             toggle() {
-                this.$store.dispatch('toggleCheckoutCustomer', { id: this.customer.id.value });
+                if (!this.disabled) {
+                    this.$store.dispatch('toggleCheckoutCustomer', { id: this.customer.id.value });
+                }
             }
         }
     }

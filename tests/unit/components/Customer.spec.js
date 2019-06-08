@@ -1,11 +1,11 @@
 import {expect} from 'chai'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Customer from '@/components/Customer.vue'
+import TimeRelative from "@/components/TimeRelative";
 import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder";
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
-import TimeRelative from "@/components/TimeRelative";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -71,5 +71,22 @@ describe('Customer.vue', () => {
             wrapper.findAll('.gym-customer-selected').length,
             'The customer should be marked as selected'
         ).eq(1);
+    });
+
+    it('allows marking if status is disabled', () => {
+        const wrapper = shallowMount(Customer, {
+            store,
+            localVue,
+            propsData : {
+                customer: customer,
+                disabled: true
+            }
+        });
+
+        wrapper.find('a').trigger('click');
+        expect(
+            wrapper.findAll('.gym-customer-selected').length,
+            'The customer should not be marked as selected'
+        ).eq(0);
     });
 });
