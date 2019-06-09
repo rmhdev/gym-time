@@ -7,7 +7,7 @@
         ></checkin-success>
 
         <form v-else @submit.prevent="submit" class="needs-validation" autocomplete="off">
-            <div class="input-group input-group-lg">
+            <div class="gym-input-group">
                 <label for="checkin_name" class="sr-only">Your name is</label>
                 <input
                     id="checkin_name"

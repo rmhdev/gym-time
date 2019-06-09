@@ -1,6 +1,11 @@
 <template>
     <a :class="customerClass" @click.prevent="toggle" href="#">
         <div class="d-flex w-100 justify-content-between">
+            <div class="gym-customer-status-container">
+                <span class="gym-customer-status" :class="'gym-customer-status-' + customer.status().value">
+                    <span class="gym-customer-status-name">{{ customer.status().value }}</span>
+                </span>
+            </div>
             <span class="gym-customer-initials" aria-hidden="true">
                 <span class="gym-customer-initials-value">
                     {{ customer.name.initials() }}
@@ -10,9 +15,9 @@
                 <h5 class="gym-customer-name">
                     {{ customer.name.value }}
                 </h5>
-                <small v-if="customer.category" class="badge badge-pill badge-secondary gym-customer-category">
-                    {{ customer.category.name }}
-                </small>
+                <div v-if="customer.category" class="gym-customer-category">
+                    <small class="gym-customer-category-name">{{ customer.category.name }}</small>
+                </div>
             </div>
 
             <div class="gym-customer-times">

@@ -49,8 +49,7 @@ body {
   }
 
   .list-group-item {
-    padding: 0.50rem 1.00rem;
-    line-height: 1.90rem;
+    padding: 0.50rem 0.50rem;
   }
 
   .gym-customer {
@@ -134,5 +133,68 @@ body {
     &.invalid-feedback {
       display: block;
     }
+  }
+}
+
+.gym-input-group {
+  @extend .input-group;
+  @extend .input-group-lg;
+
+  select {
+    border-radius: 0;
+  }
+}
+
+.gym-customer-status,
+.gym-customer-times {
+  width: 4rem;
+}
+
+.gym-customer-status {
+  @extend .badge;
+
+  &:before {
+    margin-right: 0.3rem;
+  }
+  &-active {
+    @extend .badge-success;
+  }
+  &-out {
+    @extend .badge-warning;
+  }
+  &-deleted {
+    @extend .badge-danger;
+  }
+}
+
+.gym-customer-category {
+  display: block;
+
+  @extend code;
+  @extend small;
+
+  .gym-customer-category-name {
+    &:before {
+      content: '@';
+      margin-right: 0.1rem;
+    }
+  }
+}
+
+.gym-sort {
+  &.desc,
+  &.asc {
+    @extend .active;
+  }
+  &.desc:after,
+  &.asc:after {
+    padding-left: 0.3rem;
+
+  }
+  &.desc:after {
+    content: '↓';
+  }
+  &.asc:after {
+    content: '↑';
   }
 }
