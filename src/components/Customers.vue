@@ -18,22 +18,13 @@
                     :value="$store.getters.getCustomerQuery.get('name', '')"
                     v-on:search:by="searchBy('name', $event)"
                 ></search-text>
-
-                <div class="btn-group" role="group" aria-label="Sort">
-                    <sort
-                        id="sort_name"
-                        label="name"
-                        :order="$store.getters.getCustomerQuery.getSortBy('name', '')"
-                        v-on:sort:order="sortBy('name', $event)"
-                    ></sort>
-                    <sort
-                        id="sort_checkin"
-                        label="checkin"
-                        :order="$store.getters.getCustomerQuery.getSortBy('checkIn', '')"
-                        v-on:sort:order="sortBy('checkIn', $event)"
-                    ></sort>
-                </div>
-
+                <sort
+                    id="sort"
+                    label="name"
+                    :fields="['name', 'checkIn']"
+                    :selected="$store.getters.getCustomerQuery.isSortedBy('name') ? 'name' : 'checkIn'"
+                    v-on:sort:by="sortBy"
+                ></sort>
             </div>
 
             <div class="gym-customers">

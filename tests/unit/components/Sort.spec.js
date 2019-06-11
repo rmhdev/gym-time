@@ -4,52 +4,115 @@ import Sort from "@/components/Sort";
 
 describe('Sort.vue', () => {
 
-    it('renders a sort link', () => {
+    it('renders nothing when no fields are defined', () => {
         const wrapper = shallowMount(Sort, {});
 
-        expect(wrapper.find('a').classes()).to.not.contain(['asc', 'desc']);
-        expect(wrapper.find('a').text()).eq('?');
+        expect(wrapper.findAll('a').length).eq(0);
     });
 
-    it('renders a sort link with a custom label', () => {
+    it('renders as many buttons as defined in fields', () => {
         const wrapper = shallowMount(Sort, {
             propsData: {
-                label: 'hello'
+                fields: [ 'name', 'phone' ]
             }
         });
 
-        expect(wrapper.find('a').text()).eq('hello');
+        expect(wrapper.findAll('a').length).eq(2);
     });
 
-    it('toggles default classes when clicking on it', () => {
-        const wrapper = shallowMount(Sort, {});
-
-        wrapper.find('a').trigger('click');
-        expect(wrapper.find('a').classes()).to.contain('asc');
-
-        wrapper.find('a').trigger('click');
-        expect(wrapper.find('a').classes()).to.contain('desc');
-    });
-
-    it('renders the sort link with a predefined order', () => {
+    it('selects the first element as active', () => {
         const wrapper = shallowMount(Sort, {
             propsData: {
+                fields: [ 'name', 'phone' ]
+            }
+        });
+
+        expect(wrapper.findAll('a[data-active=true]').length).eq(1);
+        expect(wrapper.find('a[data-active=true]').attributes('data-value')).eq('name');
+    });
+
+    it('selects custom element as active', () => {
+        const wrapper = shallowMount(Sort, {
+            propsData: {
+                fields: [ 'name', 'phone' ],
+                selected: 'phone'
+            }
+        });
+
+        expect(wrapper.findAll('a[data-active=true]').length).eq(1);
+        expect(wrapper.find('a[data-active=true]').attributes('data-value')).eq('phone');
+    });
+
+    it('sets the default sorting order as asc', () => {
+        const wrapper = shallowMount(Sort, {
+            propsData: {
+                fields: [ 'name', 'phone' ]
+            }
+        });
+
+        expect(wrapper.find('a[data-active=true]').attributes('data-order')).eq('asc');
+    });
+
+    it('sets the defined sorting order', () => {
+        const wrapper = shallowMount(Sort, {
+            propsData: {
+                fields: [ 'name', 'phone' ],
                 order: 'desc'
             }
         });
 
-        expect(wrapper.find('a').classes()).to.contain('desc');
+        expect(wrapper.find('a[data-active=true]').attributes('data-order')).eq('desc');
     });
 
-    it('emits an event when clicked', () => {
+    it('changes the class when active button is clicked', () => {
         const wrapper = shallowMount(Sort, {
             propsData: {
+                fields: [ 'name', 'phone' ],
+                selected: 'phone',
+                order: 'asc'
+            }
+        });
+        wrapper.find('a.active').trigger('click');
+
+        expect(wrapper.findAll('a[data-active=true]').length).eq(1);
+        expect(wrapper.find('a[data-active=true]').attributes('data-value')).eq('phone');
+        expect(wrapper.find('a[data-active=true]').attributes('data-order')).eq('desc');
+    });
+
+    it('changes the class when active button is clicked', () => {
+        const wrapper = shallowMount(Sort, {
+            propsData: {
+                fields: [ 'name', 'phone' ],
+                selected: 'phone',
+                order: 'desc'
+            }
+        });
+        wrapper.find('a[data-value="name"]').trigger('click');
+
+        expect(wrapper.findAll('a[data-active=true]').length).eq(1);
+        expect(wrapper.find('a[data-active=true]').attributes('data-value')).eq('name');
+        expect(wrapper.find('a[data-active=true]').attributes('data-order')).eq('asc');
+    });
+
+    it('emits an event with sorting info when button is clicked', () => {
+        const wrapper = shallowMount(Sort, {
+            propsData: {
+                fields: [ 'name', 'phone' ],
+                selected: 'phone',
                 order: 'asc'
             }
         });
 
-        wrapper.find('a').trigger('click');
-        expect(wrapper.emitted('sort:order').length, 'Event is emitted').eq(1);
-        expect(wrapper.emitted('sort:order')[0], 'Emitted event sends the correct value').to.eql(['desc']);
+        wrapper.find('a[data-value="phone"]').trigger('click');
+        expect(wrapper.emitted('sort:by').length, 'Event is emitted').eq(1);
+        expect(wrapper.emitted('sort:by')[0], 'Emitted event sends the correct value').to.eql(['phone', 'desc']);
+
+        wrapper.find('a[data-value="phone"]').trigger('click');
+        expect(wrapper.emitted('sort:by').length, 'Event is emitted').eq(2);
+        expect(wrapper.emitted('sort:by')[1], 'Clicking the same button emits with changed order').to.eql(['phone', 'asc']);
+
+        wrapper.find('a[data-value="name"]').trigger('click');
+        expect(wrapper.emitted('sort:by').length, 'Event is emitted').eq(3);
+        expect(wrapper.emitted('sort:by')[2], 'Clicking other button emits default order').to.eql(['name', 'asc']);
     });
 });
