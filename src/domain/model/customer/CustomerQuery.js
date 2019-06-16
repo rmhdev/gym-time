@@ -91,6 +91,17 @@ class CustomerQuery {
                     || customer.category.equals(this.get('category'))
                 );
             }
+            if (this.has('date')) {
+                checks += 1;
+                result = result && (
+                    customer.checkIn().toISOString().substring(0, 10) === this.get('date')
+                    || (
+                        customer.checkOut()
+                        &&
+                        customer.checkOut().toISOString().substring(0, 10) === this.get('date')
+                    )
+                );
+            }
             if (0 === checks) {
                 return false;
             }

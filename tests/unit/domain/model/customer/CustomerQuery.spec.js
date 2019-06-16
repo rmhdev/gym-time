@@ -1,7 +1,7 @@
 import { expect } from 'chai'
+import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
-import {CustomerCategory} from "../../../../../src/domain/model/customer/CustomerCategory";
 
 describe('CustomerQuery', () => {
     it('is empty by default', () => {
@@ -115,6 +115,31 @@ describe('CustomerQuery', () => {
             { value: { status: 'active', category: 'cat1' }, expected: true, description: 'Both' },
             { value: { status: 'active', category: 'zero' }, expected: false, description: 'Only first' },
             { value: { status: 'out', category: 'cat1' }, expected: false, description: 'Only second' },
+        ];
+
+        queries.forEach(function (query) {
+            expect(
+                CustomerQuery.fromJSON({ value: query.value }).isAccepted(customer),
+                query.description
+            ).eq(query.expected);
+        });
+    });
+
+    it('checks if a customer complies with the date defined in the query', () => {
+        const customer = CustomerDataBuilder.aCustomer()
+            .withId('123')
+            .withName('Lorem Ipsum')
+            .withCheckIn('2019-03-19T23:59:00+0000')
+            .withCheckOut('2019-03-20T00:35:00+0000')
+            .withCategory(new CustomerCategory('cat1'))
+            .build()
+        ;
+
+        const queries = [
+            { value: { date: '2019-03-18' }, expected: false, description: 'Date is before checkin' },
+            { value: { date: '2019-03-19' }, expected: true, description: 'Date is same as checkin' },
+            { value: { date: '2019-03-20' }, expected: true, description: 'Date is same as checkout' },
+            { value: { date: '2019-03-21' }, expected: false, description: 'Date is after checkout' },
         ];
 
         queries.forEach(function (query) {
