@@ -2,16 +2,16 @@
     <div v-if="hasFields">
         <div class="btn-group" role="group" aria-label="Sort">
             <a
-                v-for="field in fields"
-                v-bind:key="field"
+                v-for="choice in choices"
+                v-bind:key="choice.value"
                 href="#"
                 class="btn btn-sm btn-outline-secondary gym-sort"
-                :class="getClass(field)"
-                :data-active="isActive(field)"
-                :data-value="getValue(field)"
-                :data-order="getOrder(field)"
-                @click.prevent="toggle(field)"
-            >{{ field }}</a>
+                :class="getClass(choice.value)"
+                :data-active="choice.value === activeValue"
+                :data-value="choice.value"
+                :data-order="getOrder(choice.value)"
+                @click.prevent="toggle(choice.value)"
+            >{{ choice.label }}</a>
         </div>
     </div>
 </template>
@@ -43,50 +43,63 @@
         data() {
             return {
                 activeValue: this.selected,
-                activeOrder: this.order
+                choices: []
             }
         },
         computed: {
             hasFields() {
-                return this.fields.length > 0;
+                return this.choices !== {};
             }
         },
         methods: {
-            toggle(field) {
-                if (this.activeValue === this.getValue(field)) {
-                    this.activeOrder = (this.activeOrder === 'asc') ? 'desc' : 'asc';
-                } else {
-                    this.activeValue = this.getValue(field);
-                    this.activeOrder = 'asc';
-                }
-                this.$emit('sort:by', this.activeValue, this.activeOrder);
-            },
-            isActive(field) {
-                return this.activeValue === this.getValue(field);
-            },
-            getValue(field) {
-                return field;
-            },
-            getClass(field) {
-                let classes = [];
-                if (this.isActive(field)) {
-                    classes.push('active');
-                    classes.push(this.activeOrder);
-                }
-                return classes.join(' ');
-            },
-            getOrder(field) {
-                if (this.isActive(field)) {
-                    return this.activeOrder;
+            getClass(value) {
+                if (value === this.activeValue) {
+                    return 'active ' + this.getOrder(value);
                 }
                 return '';
+            },
+            getOrder(value) {
+                return this.choices[value].order;
+            },
+            toggle(value) {
+                if (this.activeValue !== value) {
+                    this.activeValue = value;
+                } else {
+                    this.choices[value].order = this.choices[value].order === 'asc' ? 'desc' : 'asc';
+                }
+
+                this.$emit('sort:by', value, this.choices[value].order);
             }
         },
         mounted() {
-            if (!this.activeValue) {
-                if (this.hasFields) {
-                    return this.activeValue = this.getValue(this.fields[0]);
+            let defaultValue = null;
+            let choices = {};
+            this.fields.forEach(function (field) {
+                let value = (field.value === undefined) ? field.toString() : field.value;
+                let label = (field.label === undefined) ? '' : field.label;
+                if (label === '') {
+                    label = value
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/[_\-/]/g, ' ')
+                        .replace(/\s\s+/g, ' ')
+                        .trim()
+                    ;
+                    if (label) {
+                        label = label.charAt(0).toUpperCase() + label.slice(1);
+                    }
                 }
+                choices[value] = {
+                    value: value,
+                    label: label,
+                    order: this.order
+                };
+                if (defaultValue === null) {
+                    defaultValue = value;
+                }
+            }, this);
+            this.choices = choices;
+            if (!this.activeValue) {
+                this.activeValue = defaultValue;
             }
         }
     }
