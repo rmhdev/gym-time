@@ -193,4 +193,26 @@ describe('CustomerRepository', () => {
             'Sorts by checkin: first come first shown'
         ).to.eql([customer1, customer2, customer3, customer4]);
     });
+
+    it('allows filtering by date', () => {
+        const customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('First').withCheckIn('2019-03-19T12:10:00.000Z').build();
+        const customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Second').withCheckIn('2019-03-20T23:59:00.000Z').withCheckOut('2019-03-21T00:45:00.000Z').build();
+        const customer3 = CustomerDataBuilder.aCustomer().withId('3').withName('Third').withCheckIn('2019-03-21T12:30:00.000Z').build();
+        const customer4 = CustomerDataBuilder.aCustomer().withId('4').withName('Fourth').withCheckIn('2019-03-22T12:40:00.000Z').build();
+        let repository = new CustomerRepository();
+        repository.add(customer1);
+        repository.add(customer2);
+        repository.add(customer3);
+        repository.add(customer4);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON({ value: { date: '2019-03-19' } })),
+            'Filter by date'
+        ).to.eql([customer1]);
+
+        expect(
+            repository.find(CustomerQuery.fromJSON({ value: { date: '2019-03-21' } })),
+            'Filter by date, take also checkout date into account'
+        ).to.eql([customer2, customer3]);
+    });
 });
