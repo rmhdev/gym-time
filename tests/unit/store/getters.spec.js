@@ -49,4 +49,11 @@ describe('store getters', () => {
         expect(getters.getTimeFormatter({ hour12: true }), 'Boolean result').to.eql(new TimeFormatter(true));
         expect(getters.getTimeFormatter({ hour12: null }), 'Boolean result').to.eql(new TimeFormatter(false));
     });
+
+    it('returns the query with the current date', () => {
+        const datetime = '2019-03-19T12:34:56+0000';
+        const state = { customerQuery: {}, datetime: datetime };
+
+        expect(getters.getCustomerQuery(state).get('date'), 'Current date').equals('2019-03-19');
+    });
 });

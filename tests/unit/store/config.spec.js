@@ -56,7 +56,7 @@ describe('store config', () => {
         localVue.use(Vuex);
         const store = new Vuex.Store(cloneDeep(config));
         const expected = CustomerQuery.fromJSON({
-            value: { status: 'active' },
+            value: { status: 'active', date: null },
             sortBy: { checkIn: 'desc' },
         });
         expect(store.getters.getCustomerQuery).to.eql(expected);

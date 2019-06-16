@@ -24,7 +24,9 @@ export default {
         return state.categories.map(category => new CustomerCategory(category));
     },
     getCustomerQuery: (state) => {
-        return CustomerQuery.fromJSON(state.customerQuery);
+        let query = CustomerQuery.fromJSON(state.customerQuery);
+
+        return query.add('date', state.datetime ? state.datetime.substring(0, 10) : null);
     },
     getFilteredCustomers: (state) => {
         if (state.customerRepository.version || state.customerQuery) {
