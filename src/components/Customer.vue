@@ -1,23 +1,26 @@
 <template>
     <a :class="customerClass" @click.prevent="toggle" href="#">
-        <div class="d-flex w-100 justify-content-between">
+        <div class="gym-customer-info">
             <div class="gym-customer-status-container">
                 <span class="gym-customer-status" :class="'gym-customer-status-' + customer.status().value">
                     <span class="gym-customer-status-name">{{ customer.status().value }}</span>
                 </span>
             </div>
-            <span class="gym-customer-initials" aria-hidden="true">
-                <span class="gym-customer-initials-value">
-                    {{ customer.name.initials() }}
-                </span>
-            </span>
-            <div>
-                <h5 class="gym-customer-name">
-                    {{ customer.name.value }}
-                </h5>
-                <div v-if="customer.category" class="gym-customer-category">
-                    <small class="gym-customer-category-name">{{ customer.category.name }}</small>
+
+            <div class="gym-customer-profile">
+                <div class="gym-customer-initials" aria-hidden="true">
+                    <span class="gym-customer-initials-value">
+                        {{ customer.name.initials() }}
+                    </span>
                 </div>
+                <header>
+                    <h5 class="gym-customer-name">
+                        {{ customer.name.value }}
+                    </h5>
+                    <div v-if="customer.category" class="gym-customer-category">
+                        <small class="gym-customer-category-name">{{ customer.category.name }}</small>
+                    </div>
+                </header>
             </div>
 
             <div class="gym-customer-times">

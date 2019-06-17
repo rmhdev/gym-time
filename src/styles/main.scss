@@ -54,14 +54,46 @@ body {
 
   .gym-customer {
 
+    .gym-customer-info {
+      @extend .row;
+    }
+
+    .gym-customer-status-container {
+      @extend .col-sm-12;
+      @extend .col-md-3;
+      @extend .col-lg-2;
+
+
+    }
+    .gym-customer-times {
+      @extend .col-sm-12;
+      @extend .col-md-3;
+      @extend .col-lg-2;
+
+
+
+      @include media-breakpoint-up(md) {
+        text-align: right;
+      }
+
+    }
+    .gym-customer-profile {
+      @extend .col-sm-12;
+      @extend .col-md-6;
+      @extend .col-lg-8;
+
+      .gym-customer-initials {
+        float: left;
+        margin-right: 0.5rem;
+      }
+      .gym-customer-profile {
+        float: right;
+      }
+    }
 
     .gym-customer-name {
       margin-bottom: 0;
     }
-    .gym-customer-times {
-      text-align: right;
-    }
-
     .gym-customer-initials {
       border-radius: 50%;
       font-size: 1.4rem;
