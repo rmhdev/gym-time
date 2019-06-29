@@ -6,6 +6,7 @@ import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder"
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
+import CustomerEdit from "../../../src/components/CustomerEdit";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -94,5 +95,35 @@ describe('Customer.vue', () => {
             wrapper.findAll('.gym-customer-selected').length,
             'The customer should not be marked as selected'
         ).eq(0);
+    });
+
+    it('displays a form to edit the customer when clicked', () => {
+        const wrapper = shallowMount(Customer, {
+            store,
+            localVue,
+            propsData : {
+                customer: customer,
+            }
+        });
+        wrapper.find('a.gym-customer-edit').trigger('click');
+
+        expect(
+            wrapper.findAll(CustomerEdit).length,
+            'Customer edit component'
+        ).eq(1);
+        expect(
+            wrapper.findAll('.gym-customer-selectable').length,
+            'Customer cannot be selected when is being edited'
+        ).eq(0);
+
+        wrapper.find('a.gym-customer-edit-close').trigger('click');
+        expect(
+            wrapper.findAll(CustomerEdit).length,
+            'Customer edit component should be hidden'
+        ).eq(0);
+        expect(
+            wrapper.findAll('.gym-customer-selectable').length,
+            'Customer can be selected when edit form is closed'
+        ).eq(1);
     });
 });

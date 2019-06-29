@@ -2,7 +2,15 @@
     <div :class="customerClass">
         <div class="gym-customer-info">
             <div class="gym-customer-profile">
-                <header>
+                <header v-if="isEditing" class="gym-customer-editable">
+                    <customer-edit
+                        :customer="this.customer"
+                    ></customer-edit>
+
+                    &nbsp;<a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
+                </header>
+
+                <header v-else class="gym-customer-selectable">
                     <div class="custom-control custom-switch">
                         <input
                             class="custom-control-input"
@@ -15,7 +23,10 @@
                             @change="toggle"
                         >
                         <label class="custom-control-label gym-customer-name" :for="inputId">{{ customer.name.value }}</label>
+
+                        &nbsp;<a href="#" class="gym-customer-edit" @click.prevent="isEditing = true">edit</a>
                     </div>
+
 
                     <div v-if="customer.category" class="gym-customer-category">
                         <small class="gym-customer-category-name">{{ customer.category.name }}</small>
@@ -49,10 +60,14 @@
 <script>
     import {Customer} from "@/domain/model/customer/Customer";
     import TimeRelative from '@/components/TimeRelative.vue'
+    import CustomerEdit from '@/components/CustomerEdit.vue'
 
     export default {
         name: 'Customer',
-        components: {TimeRelative},
+        components: {
+            TimeRelative,
+            CustomerEdit
+        },
         props: {
             customer: Customer,
             customClass: String,
@@ -61,8 +76,10 @@
                 default: false
             }
         },
-        comments: {
-            TimeRelative
+        data() {
+            return {
+                isEditing: false
+            }
         },
         computed: {
             inputId() {
