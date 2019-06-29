@@ -60,17 +60,23 @@ describe('Customer.vue', () => {
 
     it('marks the customer when clicked', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
+        const checkbox = wrapper.find('input[type="checkbox"]');
 
         expect(
-            wrapper.findAll('.gym-customer-selected').length,
+            checkbox.attributes('checked'),
             'By default the customer should not be selected'
-        ).eq(0);
+        ).equal(undefined);
 
-        wrapper.find('a').trigger('click');
         expect(
-            wrapper.findAll('.gym-customer-selected').length,
-            'The customer should be marked as selected'
-        ).eq(1);
+            checkbox.classes('checked'),
+            'The customer name should not have the checked class'
+        ).equal(false);
+
+        checkbox.setChecked();
+        expect(
+            wrapper.classes('gym-customer-selected'),
+            'The customer should have the checked class'
+        ).equal(true);
     });
 
     it('allows marking if status is disabled', () => {
@@ -83,7 +89,7 @@ describe('Customer.vue', () => {
             }
         });
 
-        wrapper.find('a').trigger('click');
+        wrapper.find('input[type="checkbox"]').setChecked(true);
         expect(
             wrapper.findAll('.gym-customer-selected').length,
             'The customer should not be marked as selected'

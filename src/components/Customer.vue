@@ -1,22 +1,22 @@
 <template>
-    <a :class="customerClass" @click.prevent="toggle" href="#">
+    <div :class="customerClass">
         <div class="gym-customer-info">
-            <div class="gym-customer-status-container">
-                <span class="gym-customer-status" :class="'gym-customer-status-' + customer.status().value">
-                    <span class="gym-customer-status-name">{{ customer.status().value }}</span>
-                </span>
-            </div>
-
             <div class="gym-customer-profile">
-                <div class="gym-customer-initials" aria-hidden="true">
-                    <span class="gym-customer-initials-value">
-                        {{ customer.name.initials() }}
-                    </span>
-                </div>
                 <header>
-                    <h5 class="gym-customer-name">
-                        {{ customer.name.value }}
-                    </h5>
+                    <div class="custom-control custom-switch">
+                        <input
+                            class="custom-control-input"
+                            type="checkbox"
+                            :id="inputId"
+                            name="customer[id][]"
+                            :value="this.customer.id.value"
+                            :checked="isSelected"
+                            :disabled="disabled"
+                            @change="toggle"
+                        >
+                        <label class="custom-control-label gym-customer-name" :for="inputId">{{ customer.name.value }}</label>
+                    </div>
+
                     <div v-if="customer.category" class="gym-customer-category">
                         <small class="gym-customer-category-name">{{ customer.category.name }}</small>
                     </div>
@@ -36,9 +36,14 @@
                     mode="duration"
                     class="gym-customer-duration small text-muted d-block"
                 ></time-relative>
+                <div v-else>
+                    <span class="gym-customer-status" :class="'gym-customer-status-' + customer.status().value">
+                        <span class="gym-customer-status-name">{{ customer.status().value }}</span>
+                    </span>
+                </div>
             </div>
         </div>
-    </a>
+    </div>
 </template>
 
 <script>
@@ -60,6 +65,9 @@
             TimeRelative
         },
         computed: {
+            inputId() {
+                return 'customer_id_' + this.customer.id.value;
+            },
             isSelected() {
                 return this.$store.getters.isCheckoutCustomer({id: this.customer.id.value });
             },

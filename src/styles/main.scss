@@ -58,34 +58,21 @@ body {
       @extend .row;
     }
 
-    .gym-customer-status-container {
-      @extend .col-sm-12;
-      @extend .col-md-3;
-      @extend .col-lg-2;
 
-
-    }
     .gym-customer-times {
-      @extend .col-sm-12;
-      @extend .col-md-3;
-      @extend .col-lg-2;
-
-
+      @extend .col-sm-4;
+      @extend .col-md-4;
+      @extend .col-lg-4;
 
       @include media-breakpoint-up(md) {
         text-align: right;
       }
-
     }
     .gym-customer-profile {
-      @extend .col-sm-12;
-      @extend .col-md-6;
+      @extend .col-sm-8;
+      @extend .col-md-8;
       @extend .col-lg-8;
 
-      .gym-customer-initials {
-        float: left;
-        margin-right: 0.5rem;
-      }
       .gym-customer-profile {
         float: right;
       }
@@ -93,57 +80,6 @@ body {
 
     .gym-customer-name {
       margin-bottom: 0;
-    }
-    .gym-customer-initials {
-      border-radius: 50%;
-      font-size: 1.4rem;
-      width: 3.0rem;
-      height: 3.0rem;
-      line-height: 3.0rem;
-      text-align: center;
-      background-color: lightgrey;
-    }
-    &.gym-customer-enabled {
-      &:hover {
-        .gym-customer-initials {
-          background-color: $secondary;
-          color: $white;
-
-          .gym-customer-initials-value {
-            display: none;
-          }
-          &:after {
-            content: '✓';
-            color: white;
-          }
-        }
-      }
-    }
-
-    &.gym-customer-selected {
-      .gym-customer-initials {
-        background-color: $secondary;
-        color: $white;
-
-        &:after {
-          content: '✓';
-          color: white;
-        }
-      }
-      &:hover {
-        .gym-customer-initials {
-          background-color: $warning;
-          color: $white;
-
-          &:after {
-            content: '×';
-            color: $gray-700;
-          }
-        }
-      }
-      .gym-customer-initials-value {
-        display: none;
-      }
     }
   }
 }
@@ -183,19 +119,26 @@ body {
 }
 
 .gym-customer-status {
-  @extend .badge;
+  @extend .small;
+  @extend .text-muted;
 
   &:before {
-    margin-right: 0.3rem;
+    padding-right: 0.3rem;
   }
   &-active {
-    @extend .badge-success;
+    &:before {
+      content: "‣";
+    }
   }
   &-out {
-    @extend .badge-warning;
+    &:before {
+      content: "✓";
+    }
   }
   &-deleted {
-    @extend .badge-danger;
+    &:before {
+      content: "×";
+    }
   }
 }
 
@@ -206,6 +149,8 @@ body {
   @extend small;
 
   .gym-customer-category-name {
+    margin-left: 2.25rem;
+
     &:before {
       content: '@';
       margin-right: 0.1rem;
