@@ -5,6 +5,8 @@ import CustomerForm from '@/components/CustomerForm.vue'
 import { CustomerName } from "@/domain/model/customer/CustomerName";
 import storeConfig from "@/store/config";
 import cloneDeep from 'lodash.clonedeep'
+import { CustomerDataBuilder } from "../domain/model/customer/CustomerDataBuilder";
+import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 const localVue = createLocalVue();
 
@@ -13,12 +15,13 @@ localVue.use(Vuex);
 describe('CustomerForm.vue', () => {
 
     let localStoreConfig;
+    let store;
     let wrapper;
 
     beforeEach(() => {
         localStoreConfig = cloneDeep(storeConfig);
         localStoreConfig.state.categories = ['one', 'two', 'three'];
-        let store = new Vuex.Store(localStoreConfig);
+        store = new Vuex.Store(localStoreConfig);
 
         wrapper = shallowMount(CustomerForm, {store, localVue});
     });
@@ -85,5 +88,25 @@ describe('CustomerForm.vue', () => {
         expect(
             wrapper.emitted('submit:customer')[0], 'Emitted event sends the correct values'
         ).to.eql(['Lorem Ipsum', 'two']);
+    });
+
+    it('fills fields with the customer values', () => {
+        let customer = CustomerDataBuilder.aCustomer()
+            .withName('My Name')
+            .withCategory(new CustomerCategory('two'))
+            .build()
+        ;
+        let w = wrapper = shallowMount(CustomerForm, {store, localVue, propsData: {
+            customer: customer
+        }});
+
+        expect(
+            w.find('input[name="customer[name]"]').element.value,
+            'Input with default customer name'
+        ).eq(customer.name.value);
+        expect(
+            w.find('form select[name="customer[category]"] option:checked').element.value,
+            'Select with default customer category'
+        ).eq(customer.category.value);
     });
 });

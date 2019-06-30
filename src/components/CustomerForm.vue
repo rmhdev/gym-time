@@ -147,6 +147,10 @@
                 this.customerCategory = categories[0].value;
             }
             this.$refs.customerName.focus();
+            if (this.customer) {
+                this.customerName = this.customer.name.value;
+                this.customerCategory = this.customer.category.value;
+            }
         }
     }
 </script>
