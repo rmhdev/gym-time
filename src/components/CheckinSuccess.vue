@@ -22,13 +22,10 @@
         methods: {
             close() {
                 this.$emit('close');
-            },
-            focus: function () {
-                this.$refs.button.focus();
             }
         },
         mounted() {
-            this.focus();
+            this.$refs.button.focus();
         }
     }
 </script>

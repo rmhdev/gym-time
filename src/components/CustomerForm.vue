@@ -47,7 +47,7 @@
     import {Customer} from "@/domain/model/customer/Customer";
 
     export default {
-        name: 'Checkin',
+        name: 'CustomerForm',
         components: {},
         props: {
             customer: {
