@@ -97,7 +97,7 @@ describe('Customer.vue', () => {
         ).eq(0);
     });
 
-    it('displays a form to edit the customer when clicked', () => {
+    it('toggles the edit form when clicking open/close button', () => {
         const wrapper = shallowMount(Customer, {
             store,
             localVue,
