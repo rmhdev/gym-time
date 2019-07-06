@@ -29,7 +29,7 @@
 
 
                     <div v-if="customer.category" class="gym-customer-category">
-                        <small class="gym-customer-category-name">{{ customer.category.name }}</small>
+                        <small class="gym-customer-category-name">{{ customer.category }}</small>
                     </div>
                 </header>
             </div>

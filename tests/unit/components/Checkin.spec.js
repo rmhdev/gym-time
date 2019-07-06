@@ -33,14 +33,14 @@ describe('Checkin.vue', () => {
     });
 
     it('shows a success message when name is added correctly', () => {
-        wrapper.find(CustomerForm).vm.$emit('submit:customer', ['My Name', 'two']);
+        wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'My Name', category: 'two' });
 
         expect(wrapper.find(CustomerForm).exists(), 'Form disappears when adding a correct customer').eq(false);
         expect(wrapper.find('.gym-checkin-success').exists(), 'Checkin has feedback message when success').eq(true);
     });
 
     it('dispatches "createAndAddNewCustomer" when clicking on button', () => {
-        wrapper.find(CustomerForm).vm.$emit('submit:customer', 'Lorem Ipsum', 'two');
+        wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'Lorem Ipsum', category: 'two' });
 
         expect(localStoreConfig.actions.createAndAddNewCustomer).to.have.been.called.with(
             { name: 'Lorem Ipsum', category: 'two' }
@@ -48,7 +48,7 @@ describe('Checkin.vue', () => {
     });
 
     it('shows the form after closing the feedback message', () => {
-        wrapper.find(CustomerForm).vm.$emit('submit:customer', 'My Name', 'two');
+        wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'My Name', category: 'two' });
         wrapper.find('.gym-checkin-success').vm.$emit('close');
 
         expect(wrapper.find(CustomerForm).exists(), 'Form appears again').eq(true);

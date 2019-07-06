@@ -31,7 +31,7 @@ describe('Customer.vue', () => {
 
     it('shows the category of the customer', () => {
         const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
-        expect(wrapper.find('.gym-customer-category').text()).eq(customer.category.value);
+        expect(wrapper.find('.gym-customer-category').text()).eq(customer.category);
     });
 
     it('shows the checkin time of the customer', () => {

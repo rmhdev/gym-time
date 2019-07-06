@@ -172,4 +172,23 @@ describe('store mutations', () => {
             'The datetime should be the actual one if not defined'
         ).to.be.a('string');
     });
+
+    it('allows updating a customer', () => {
+        const customer = CustomerDataBuilder.aCustomer()
+            .withId('qwerty123')
+            .withName('Old Name')
+            .withCheckIn('2019-03-19T19:34:56.000Z')
+            .withCategory('one')
+            .build();
+        let repository = new CustomerRepository();
+        repository.add(customer);
+        let state = {
+            customerRepository: repository
+        };
+        mutations.updateCustomer(state, { id: 'qwerty123', name: 'New Name', category: 'two' });
+        let updatedCustomer = state.customerRepository.findById('qwerty123');
+
+        expect(updatedCustomer.name.value, 'Updated customer name').to.eq('New Name');
+        expect(updatedCustomer.category, 'Updated customer category').to.eq('two');
+    });
 });

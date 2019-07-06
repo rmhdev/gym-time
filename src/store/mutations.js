@@ -5,6 +5,10 @@ export default {
     addCustomer(state, customer) {
         state.customerRepository.add(customer);
     },
+    updateCustomer(state, payload) {
+        let customer = state.customerRepository.findById(CustomerId.create(payload.id));
+        state.customerRepository.update(customer.update(payload));
+    },
     toggleCheckoutCustomer(state, customer) {
         const id = CustomerId.create(customer.id);
         const position = state.checkoutCustomers.findIndex(function (item) {
@@ -23,7 +27,7 @@ export default {
             try {
                 customer = state.customerRepository.findById(element.id);
                 state.customerRepository.update(
-                    customer.updateCheckOut(new Date())
+                    customer.update({ checkout: new Date() })
                 );
             } catch (e) {
                 //return;

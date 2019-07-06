@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import { CustomerDataBuilder } from './CustomerDataBuilder'
 import { Customer } from "@/domain/model/customer/Customer";
 import { CustomerStatus } from "@/domain/model/customer/CustomerStatus";
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 describe('Customer', () => {
     it('defines a checkin date if left empty', () => {
@@ -16,10 +15,10 @@ describe('Customer', () => {
         expect(customer.checkIn().toISOString()).eq('2019-03-19T12:00:00.000Z');
     });
     it('creates a new customer info given by the user', () => {
-        const customer = Customer.create('Lorem Ipsum', new CustomerCategory('category'));
+        const customer = Customer.create('Lorem Ipsum', 'category');
         expect(customer).to.be.instanceOf(Customer);
         expect(customer.name.value).eq('Lorem Ipsum');
-        expect(customer.category.value).eq('category');
+        expect(customer.category).eq('category');
     });
     it('defines null as default checkout date', () => {
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(new Date()).build();
@@ -36,10 +35,44 @@ describe('Customer', () => {
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut({}).build();
         expect(customer.checkOut()).eq(null);
     });
-    it('sets category to null when type is incorrect', () => {
-        const customer = CustomerDataBuilder.aCustomer().withCategory(new Date()).build();
-        expect(customer.category).eq(null);
+    it('throws exception when the category type is incorrect', () => {
+        expect(function () {
+            CustomerDataBuilder.aCustomer().withCategory(new Date()).build();
+        }).to.throw(TypeError);
     });
+
+    it('allows updating values, maintaining immutability', () => {
+        let checkIn = new Date('2019-03-19T12:00:00+0000');
+        let checkOut = new Date('2019-03-19T12:45:12+0000');
+        const initialCustomer = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withName('Initial Name')
+            .withCheckIn(checkIn)
+            .withCheckOut(checkOut)
+            .withCategory('one')
+            .build();
+        const expectedCustomer = CustomerDataBuilder.aCustomer()
+            .withId('111')
+            .withCheckIn(checkIn)
+            .withName('Updated Name')
+            .withCheckOut(new Date('2019-03-19T12:59:59+0000'))
+            .withCategory('two')
+            .build();
+
+        const updatedCustomer = initialCustomer.update({
+            id: 'ignored',
+            checkin: 'ignored',
+            name: expectedCustomer.name,
+            checkout: expectedCustomer.checkOut(),
+            category: expectedCustomer.category
+        });
+
+        expect(updatedCustomer, 'it is the same customer, but with updated values').to.eql(expectedCustomer);
+        expect(initialCustomer.name.value, 'name of initial customer is immutable').to.eql('Initial Name');
+        expect(initialCustomer.checkOut(), 'checkout date of initial customer is immutable').to.eql(checkOut);
+        expect(initialCustomer.category, 'name of initial customer is immutable').to.eql('one');
+    });
+
     it('allows updating the checkout date, maintaining immutability', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
         let checkOut = new Date('2019-03-19T12:45:12+0000');
@@ -48,7 +81,7 @@ describe('Customer', () => {
             .withCheckIn(checkIn)
             .withCheckOut(null)
             .build();
-        const updatedCustomer = initialCustomer.updateCheckOut(checkOut);
+        const updatedCustomer = initialCustomer.update({ checkout: checkOut });
         const expected = CustomerDataBuilder.aCustomer()
             .withId('111')
             .withCheckIn(checkIn)
@@ -67,7 +100,7 @@ describe('Customer', () => {
             .withCheckIn(checkIn)
             .withCheckOut(checkOut)
             .build();
-        const updatedCustomer = initialCustomer.updateCheckOut(null);
+        const updatedCustomer = initialCustomer.update({ checkout: null });
         const expected = CustomerDataBuilder.aCustomer()
             .withId('111')
             .withCheckIn(checkIn)
@@ -81,17 +114,17 @@ describe('Customer', () => {
     it('throws exception when updating the checkout date with incorrect type', () => {
         const customer = CustomerDataBuilder.aCustomer().withCheckIn('2019-03-19T12:00:00+0000').withCheckOut(null).build();
 
-        expect(() => { customer.updateCheckOut('hello') }, 'Update checkout with string').to.throw(TypeError);
-        expect(() => { customer.updateCheckOut(123456) }, 'Update checkout with number').to.throw(TypeError);
-        expect(() => { customer.updateCheckOut({}) }, 'Update checkout with object').to.throw(TypeError);
+        expect(() => { customer.update({ checkout: 'hello' }) }, 'Update checkout with string').to.throw(TypeError);
+        expect(() => { customer.update({ checkout: 123456 }) }, 'Update checkout with number').to.throw(TypeError);
+        expect(() => { customer.update({ checkout: {} }) }, 'Update checkout with object').to.throw(TypeError);
     });
     it('throws exception when checkout not greater than checkin', () => {
         let checkIn = new Date('2019-03-19T12:00:00+0000');
         const customer = CustomerDataBuilder.aCustomer().withCheckIn(checkIn).withCheckOut(null).build();
-        expect(() => { customer.updateCheckOut(checkIn) }, 'Checkout and checkin are equal').to.throw(TypeError);
+        expect(() => { customer.update({ checkout: checkIn }) }, 'Checkout and checkin are equal').to.throw(TypeError);
 
-        let checkOut = new Date('2019-03-19T11:59:59+0000');
-        expect(() => { customer.updateCheckOut(checkOut) }, 'Checkout happens before checkin').to.throw(TypeError);
+        let checkout = new Date('2019-03-19T11:59:59+0000');
+        expect(() => { customer.update({ checkout: checkout }) }, 'Checkout happens before checkin').to.throw(TypeError);
     });
     it('returns the status', () => {
         const checkIn = new Date('2019-03-19T12:00:00+0000');
@@ -101,7 +134,7 @@ describe('Customer', () => {
             'Customer has active a default status'
         ).eq(true);
 
-        const checkoutCustomer = customer.updateCheckOut(new Date('2019-03-19T12:45:12+0000'));
+        const checkoutCustomer = customer.update({ checkout: new Date('2019-03-19T12:45:12+0000') });
         expect(
             checkoutCustomer.status().equals(CustomerStatus.createOut()),
             'Customer is out if it has defined the checkout date'

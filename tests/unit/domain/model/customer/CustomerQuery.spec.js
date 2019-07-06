@@ -1,5 +1,4 @@
 import { expect } from 'chai'
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 import { CustomerQuery } from "@/domain/model/customer/CustomerQuery";
 import { CustomerDataBuilder } from "./CustomerDataBuilder";
 
@@ -91,7 +90,7 @@ describe('CustomerQuery', () => {
             .withName('Lorem Ipsum')
             .withCheckIn('2019-03-19T12:00:00+0000')
             .withCheckOut(null)
-            .withCategory(new CustomerCategory('cat1'))
+            .withCategory('cat1')
             .build()
         ;
 
@@ -131,7 +130,7 @@ describe('CustomerQuery', () => {
             .withName('Lorem Ipsum')
             .withCheckIn('2019-03-19T23:59:00+0000')
             .withCheckOut('2019-03-20T00:35:00+0000')
-            .withCategory(new CustomerCategory('cat1'))
+            .withCategory('cat1')
             .build()
         ;
 
@@ -156,7 +155,7 @@ describe('CustomerQuery', () => {
             .withName('Lorem Ipsum')
             .withCheckIn('2019-03-19T12:00:00+0000')
             .withCheckOut('2019-03-19T12:45:00+0000')
-            .withCategory(new CustomerCategory('cat1'))
+            .withCategory('cat1')
             .build()
         ;
 

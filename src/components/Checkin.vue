@@ -35,12 +35,9 @@
             restartForm() {
                 this.isSubmitted = false;
             },
-            submit(name, category) {
+            submit(payload) {
                 this.isSubmitted = true;
-                this.$store.dispatch('createAndAddNewCustomer', {
-                    name: name,
-                    category: category
-                });
+                this.$store.dispatch('createAndAddNewCustomer', payload);
             }
         }
     }

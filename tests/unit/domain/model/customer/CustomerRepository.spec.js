@@ -104,7 +104,7 @@ describe('CustomerRepository', () => {
        repository.add(customer);
 
        const checkOut = new Date('2019-03-19T12:55:33.000Z');
-       const updatedCustomer = customer.updateCheckOut(checkOut);
+       const updatedCustomer = customer.update({ checkout: checkOut });
        repository.update(updatedCustomer);
 
         expect(repository.count()).eq(1);
@@ -165,7 +165,7 @@ describe('CustomerRepository', () => {
         repository.add(customer2);
         expect(repository.version, 'Add second customer').equal(2);
 
-        repository.update(customer2.updateCheckOut(new Date('2019-03-19T12:55:22.000Z')));
+        repository.update(customer2.update({ checkout: new Date('2019-03-19T12:55:22.000Z') }));
         expect(repository.version, 'Update second customer').equal(3);
 
         repository.remove(customer2.id);

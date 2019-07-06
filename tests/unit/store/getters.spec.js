@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import getters from '@/store/getters'
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
-import {TimeFormatter} from "../../../src/domain/model/TimeFormatter";
+import {TimeFormatter} from "@/domain/model/TimeFormatter";
 
 describe('store getters', () => {
     it('should return if a customer is in the checkout list', () => {
@@ -29,6 +29,19 @@ describe('store getters', () => {
         const state = { categories: ['one', 'two', 'three'] };
 
         expect(getters.getCategories(state), 'List of custom categories').to.eql(expected);
+    });
+    it('should return a category', () => {
+        const state = { categories: ['one', 'two', 'three'] };
+
+        expect(
+            getters.getCategory(state)('one'),
+            'Returns a defined category'
+        ).to.eql(new CustomerCategory('one'));
+    });
+    it('should return null when retrieving a non existing category', () => {
+        const state = { categories: ['one', 'two', 'three'] };
+
+        expect(getters.getCategory(state)('four'), 'Category does not exist').to.eql(null);
     });
 
     it('returns the defined date', () => {

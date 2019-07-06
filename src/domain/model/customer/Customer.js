@@ -1,12 +1,11 @@
 import { CustomerId } from "./CustomerId";
 import { CustomerName } from "./CustomerName";
 import {CustomerStatus} from "./CustomerStatus";
-import {CustomerCategory} from "./CustomerCategory";
 
 export { Customer }
 
 class Customer {
-    constructor(id, name = '', checkIn = null, checkOut = null, category = null) {
+    constructor(id, name = '', checkIn = null, checkOut = null, category = '') {
         this.id = new CustomerId(id);
         this.name = new CustomerName(name);
         this.checkInTimestamp = (checkIn instanceof Date) ? checkIn.getTime() : Date.now();
@@ -17,7 +16,11 @@ class Customer {
             out = (new Date(checkOut)).getTime();
         }
         this.checkOutTimestamp = out;
-        this.category = (category instanceof CustomerCategory) ? category : null;
+        if (typeof category !== 'string') {
+            throw new TypeError('Customer category: expected `string`, got `' + (typeof category) + '`');
+
+        }
+        this.category = category;
     }
     checkIn() {
         return new Date(this.checkInTimestamp);
@@ -25,20 +28,29 @@ class Customer {
     checkOut() {
         return this.checkOutTimestamp ? new Date(this.checkOutTimestamp) : null;
     }
-    updateCheckOut(checkoutDate) {
-        if (checkoutDate instanceof Date) {
-            if (checkoutDate <= this.checkIn()) {
+    update(values) {
+        let newValues = {
+            name: this.name,
+            checkout: this.checkOut(),
+            category: this.category
+            ,
+            ...values
+        };
+
+        if (newValues.checkout instanceof Date) {
+            if (newValues.checkout <= this.checkIn()) {
                 throw new TypeError(
                     'Customer: checkout must happen after checkin. '
-                    + '(out) ' + checkoutDate.toISOString()
+                    + '(out) ' + newValues.checkout.toISOString()
                     + ' <= '
                     + '(in) ' + this.checkIn().toISOString()
                 );
             }
-        } else if (null !== checkoutDate) {
-            throw new TypeError('UpdateCheckout: expected Date or null, got `' + (typeof name) + '`');
+        } else if (null !== newValues.checkout) {
+            throw new TypeError('Update checkout: expected Date or null, got `' + (typeof newValues.checkout) + '`');
         }
-        return new Customer(this.id, this.name, this.checkIn(), checkoutDate, this.category);
+
+        return new Customer(this.id, newValues.name, this.checkIn(), newValues.checkout, newValues.category);
     }
     status() {
         if (this.checkOutTimestamp) {

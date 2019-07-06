@@ -23,6 +23,12 @@ export default {
     getCategories: (state) => {
         return state.categories.map(category => new CustomerCategory(category));
     },
+    getCategory: (state) => (slug) => {
+        if (state.categories.includes(slug)) {
+            return new CustomerCategory(slug);
+        }
+        return null;
+    },
     getCustomerQuery: (state) => {
         let query = CustomerQuery.fromJSON(state.customerQuery);
 

@@ -1,9 +1,11 @@
 import { Customer } from "@/domain/model/customer/Customer";
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 export default {
     createAndAddNewCustomer({ commit }, payload) {
-        commit('addCustomer', Customer.create(payload.name, new CustomerCategory(payload.category)));
+        commit('addCustomer', Customer.create(payload.name, payload.category));
+    },
+    updateCustomer({ commit }, payload) {
+        commit('updateCustomer', payload);
     },
     toggleCheckoutCustomer({ commit }, payload) {
         commit('toggleCheckoutCustomer', payload);

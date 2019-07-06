@@ -6,7 +6,6 @@ import { CustomerName } from "@/domain/model/customer/CustomerName";
 import storeConfig from "@/store/config";
 import cloneDeep from 'lodash.clonedeep'
 import { CustomerDataBuilder } from "../domain/model/customer/CustomerDataBuilder";
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
 
 const localVue = createLocalVue();
 
@@ -87,13 +86,13 @@ describe('CustomerForm.vue', () => {
         ).eq(1);
         expect(
             wrapper.emitted('submit:customer')[0], 'Emitted event sends the correct values'
-        ).to.eql(['Lorem Ipsum', 'two']);
+        ).to.eql([{ name: 'Lorem Ipsum', category: 'two' }]);
     });
 
     it('fills fields with the customer values', () => {
         let customer = CustomerDataBuilder.aCustomer()
             .withName('My Name')
-            .withCategory(new CustomerCategory('two'))
+            .withCategory('two')
             .build()
         ;
         let w = wrapper = shallowMount(CustomerForm, {store, localVue, propsData: {
@@ -107,6 +106,6 @@ describe('CustomerForm.vue', () => {
         expect(
             w.find('form select[name="customer[category]"] option:checked').element.value,
             'Select with default customer category'
-        ).eq(customer.category.value);
+        ).eq(customer.category);
     });
 });

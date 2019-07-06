@@ -134,7 +134,7 @@
                 }
                 if (this.validate()) {
                     this.status = 'valid';
-                    this.$emit('submit:customer', this.customerName, this.customerCategory);
+                    this.$emit('submit:customer', { name: this.customerName, category: this.customerCategory });
 
                     return true;
                 }
@@ -149,7 +149,7 @@
             this.$refs.customerName.focus();
             if (this.customer) {
                 this.customerName = this.customer.name.value;
-                this.customerCategory = this.customer.category.value;
+                this.customerCategory = this.customer.category;
             }
         }
     }

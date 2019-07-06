@@ -8,9 +8,8 @@ import Vuex from "vuex";
 import Search from "@/components/Search";
 import SearchText from "@/components/SearchText";
 import Sort from "@/components/Sort";
-import { CustomerCategory } from "@/domain/model/customer/CustomerCategory";
-import Customer from "../../../src/components/Customer";
-import {CustomerStatus} from "../../../src/domain/model/customer/CustomerStatus";
+import Customer from "@/components/Customer";
+import {CustomerStatus} from "@/domain/model/customer/CustomerStatus";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -74,7 +73,7 @@ describe('Customers.vue', () => {
 
         const wrapper = shallowMount(Customers, {store, localVue});
         expect(wrapper.findAll('.gym-customer').length).eq(2);
-        store.state.customerRepository.update(customer2.updateCheckOut(new Date('2019-03-16T01:45:22')));
+        store.state.customerRepository.update(customer2.update({ checkout: new Date('2019-03-16T01:45:22') }));
 
         expect(
             wrapper.findAll('.gym-customer').length,
@@ -90,8 +89,8 @@ describe('Customers.vue', () => {
 
     it('updates the list when searching by category', () => {
         const checkin = '2019-03-16T01:00:11';
-        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).withCategory(new CustomerCategory('cat1')).build();
-        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).withCategory(new CustomerCategory('cat2')).build();
+        let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('One').withCheckIn(checkin).withCategory('cat1').build();
+        let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Two').withCheckIn(checkin).withCategory('cat2').build();
 
         store.state.customerRepository.add(customer1);
         store.state.customerRepository.add(customer2);
@@ -188,7 +187,7 @@ describe('Customers.vue', () => {
 
     it('displays the list sorted by the default value', () => {
         const checkin = '2019-03-16T01:00:11';
-        const category = new CustomerCategory('cat1');
+        const category = 'cat1';
 
         let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('AC DC').withCheckIn(checkin).withCategory(category).build();
         let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Melvins').withCheckIn(checkin).withCategory(category).build();
@@ -210,7 +209,7 @@ describe('Customers.vue', () => {
     });
 
     it('sorts the list when clicking a sort button', () => {
-        const category = new CustomerCategory('cat1');
+        const category = 'cat1';
 
         let customer1 = CustomerDataBuilder.aCustomer().withId('1').withName('AC DC').withCheckIn('2019-03-16T01:00:33').withCategory(category).build();
         let customer2 = CustomerDataBuilder.aCustomer().withId('2').withName('Melvins').withCheckIn('2019-03-16T01:00:22').withCategory(category).build();

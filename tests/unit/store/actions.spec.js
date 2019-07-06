@@ -149,4 +149,18 @@ describe('store actions', () => {
             done
         )
     });
+
+    it('should update the customer', done => {
+        testAction(
+            actions.updateCustomer,
+            {},
+            {
+                customerRepository: new CustomerRepository(),
+            },
+            [
+                { type: 'updateCustomer' }
+            ],
+            done
+        )
+    });
 });

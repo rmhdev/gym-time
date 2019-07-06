@@ -88,7 +88,7 @@ class CustomerQuery {
                 checks += 1;
                 result = result && (
                     this.get('category') === ''
-                    || customer.category.equals(this.get('category'))
+                    || customer.category === this.get('category')
                 );
             }
             if (this.has('date')) {
