@@ -6,7 +6,7 @@ import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder"
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
-import CustomerEdit from "../../../src/components/CustomerEdit";
+import CustomerEdit from "@/components/CustomerEdit";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -125,5 +125,31 @@ describe('Customer.vue', () => {
             wrapper.findAll('.gym-customer-selectable').length,
             'Customer can be selected when edit form is closed'
         ).eq(1);
+    });
+
+    it('closes the form and displays the new data after submitting it', () => {
+        const wrapper = shallowMount(Customer, {
+            store,
+            localVue,
+            propsData : {
+                customer: customer,
+            }
+        });
+        wrapper.find('a.gym-customer-edit').trigger('click');
+        wrapper.find(CustomerEdit).vm.$emit('submit:customer', { name: 'New Name', category: 'two'} );
+
+        expect(
+            wrapper.find(CustomerEdit).exists(),
+            'Form should be hidden'
+        ).eq(false);
+
+        expect(
+            wrapper.find('.gym-customer-name').text(),
+            'Display new data from updated customer'
+        ).eq('New Name');
+        expect(
+            wrapper.find('.gym-customer-category').attributes('data-category'),
+            'Display new category'
+        ).eq('two');
     });
 });

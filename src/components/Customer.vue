@@ -5,6 +5,7 @@
                 <header v-if="isEditing" class="gym-customer-editable">
                     <customer-edit
                         :customer="this.customer"
+                        v-on:submit:customer="onSubmitCustomer"
                     ></customer-edit>
 
                     &nbsp;<a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
@@ -22,14 +23,15 @@
                             :disabled="disabled"
                             @change="toggle"
                         >
-                        <label class="custom-control-label gym-customer-name" :for="inputId">{{ customer.name.value }}</label>
+                        <label class="custom-control-label gym-customer-name" :for="inputId">{{ customerName }}</label>
 
                         &nbsp;<a href="#" class="gym-customer-edit" @click.prevent="isEditing = true">edit</a>
                     </div>
 
-
-                    <div v-if="customer.category" class="gym-customer-category">
-                        <small class="gym-customer-category-name">{{ customer.category }}</small>
+                    <div v-if="customer.category" class="gym-customer-category" :data-category="customerCategory">
+                        <small class="gym-customer-category-name">
+                            {{ customerCategory }}
+                        </small>
                     </div>
                 </header>
             </div>
@@ -78,7 +80,9 @@
         },
         data() {
             return {
-                isEditing: false
+                isEditing: false,
+                customerName: this.customer.name.value,
+                customerCategory: this.customer.category
             }
         },
         computed: {
@@ -100,6 +104,13 @@
                 if (!this.disabled) {
                     this.$store.dispatch('toggleCheckoutCustomer', { id: this.customer.id.value });
                 }
+            },
+            onSubmitCustomer(payload) {
+                console.log('onSubmitCustomer');
+                console.log(payload);
+                this.isEditing = false;
+                this.customerName = payload.name;
+                this.customerCategory = payload.category;
             }
         }
     }

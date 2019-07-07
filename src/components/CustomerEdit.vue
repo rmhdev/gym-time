@@ -24,6 +24,7 @@
                     ...payload,
                     id: this.customer.id.value,
                 });
+                this.$emit('submit:customer', payload);
             }
         }
     }

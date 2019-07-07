@@ -42,4 +42,13 @@ describe('CustomerEdit.vue', () => {
             { id: '123abc', name: 'Lorem Ipsum', category: 'two' }
         );
     });
+
+    it('emits an event with the new data of th customer', () => {
+        wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'Lorem Ipsum', category: 'two' });
+
+        expect(
+            wrapper.emitted('submit:customer')[0],
+            'Emitted data from the form'
+        ).to.eql([{ name: 'Lorem Ipsum', category: 'two' }]);
+    });
 });
