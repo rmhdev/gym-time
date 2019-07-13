@@ -106,8 +106,6 @@
                 }
             },
             onSubmitCustomer(payload) {
-                console.log('onSubmitCustomer');
-                console.log(payload);
                 this.isEditing = false;
                 this.customerName = payload.name;
                 this.customerCategory = payload.category;
