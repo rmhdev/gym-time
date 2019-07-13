@@ -6,7 +6,7 @@ import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder"
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
 import cloneDeep from "lodash.clonedeep";
-import CustomerEdit from "@/components/CustomerEdit";
+import CustomerForm from "@/components/CustomerForm";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -108,7 +108,7 @@ describe('Customer.vue', () => {
         wrapper.find('a.gym-customer-edit').trigger('click');
 
         expect(
-            wrapper.findAll(CustomerEdit).length,
+            wrapper.findAll(CustomerForm).length,
             'Customer edit component'
         ).eq(1);
         expect(
@@ -118,7 +118,7 @@ describe('Customer.vue', () => {
 
         wrapper.find('a.gym-customer-edit-close').trigger('click');
         expect(
-            wrapper.findAll(CustomerEdit).length,
+            wrapper.findAll(CustomerForm).length,
             'Customer edit component should be hidden'
         ).eq(0);
         expect(
@@ -136,10 +136,10 @@ describe('Customer.vue', () => {
             }
         });
         wrapper.find('a.gym-customer-edit').trigger('click');
-        wrapper.find(CustomerEdit).vm.$emit('submit:customer', { name: 'New Name', category: 'two'} );
+        wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'New Name', category: 'two'} );
 
         expect(
-            wrapper.find(CustomerEdit).exists(),
+            wrapper.find(CustomerForm).exists(),
             'Form should be hidden'
         ).eq(false);
 
@@ -152,4 +152,7 @@ describe('Customer.vue', () => {
             'Display new category'
         ).eq('two');
     });
+
+    // TODO: user should not be edited when selected
+    // TODO: user should not be selected when editing
 });

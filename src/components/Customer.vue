@@ -3,12 +3,11 @@
         <div class="gym-customer-info">
             <div class="gym-customer-profile">
                 <header v-if="isEditing" class="gym-customer-editable">
-                    <customer-edit
+                    <customer-form
                         :customer="this.customer"
                         v-on:submit:customer="onSubmitCustomer"
-                    ></customer-edit>
-
-                    &nbsp;<a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
+                    ></customer-form>
+                    <a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
                 </header>
 
                 <header v-else class="gym-customer-selectable">
@@ -62,13 +61,13 @@
 <script>
     import {Customer} from "@/domain/model/customer/Customer";
     import TimeRelative from '@/components/TimeRelative.vue'
-    import CustomerEdit from '@/components/CustomerEdit.vue'
+    import CustomerForm from '@/components/CustomerForm.vue'
 
     export default {
         name: 'Customer',
         components: {
             TimeRelative,
-            CustomerEdit
+            CustomerForm
         },
         props: {
             customer: Customer,
