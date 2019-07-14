@@ -3,7 +3,7 @@ import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Customers from '@/components/Customers.vue'
 import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilder";
 import storeConfig from "@/store/config";
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 import Vuex from "vuex";
 import Search from "@/components/Search";
 import SearchText from "@/components/SearchText";
@@ -20,7 +20,7 @@ describe('Customers.vue', () => {
     let store;
 
     beforeEach(() => {
-        localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.categories = ['cat1', 'cat2', 'cat3'];
         localStoreConfig.actions.updateCustomerQueryValue = chai.spy();
         localStoreConfig.actions.updateCustomerQuerySort = chai.spy();

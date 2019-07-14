@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import config from '@/store/config'
-import cloneDeep from 'lodash.clonedeep'
+import lodash from "lodash";
 import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder";
 import {CustomerCategory} from "@/domain/model/customer/CustomerCategory";
 import {CustomerQuery} from "@/domain/model/customer/CustomerQuery";
@@ -11,13 +11,13 @@ describe('store config', () => {
     it('should have an empty repository of customers when created', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const store = new Vuex.Store(cloneDeep(config));
+        const store = new Vuex.Store(lodash.cloneDeep(config));
         expect(store.getters.getRepository.count()).eq(0);
     });
     it('should be able to dispatch the creation and addition of a new customer', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const localStore = new Vuex.Store(cloneDeep(config));
+        const localStore = new Vuex.Store(lodash.cloneDeep(config));
 
         expect(localStore.getters.getRepository.count(), 'Initial repository should be empty').eq(0);
         localStore.dispatch('createAndAddNewCustomer', {
@@ -30,7 +30,7 @@ describe('store config', () => {
     it('should be able to commit a new customer', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const localStore = new Vuex.Store(cloneDeep(config));
+        const localStore = new Vuex.Store(lodash.cloneDeep(config));
 
         expect(localStore.getters.getRepository.count(), 'Initial repository should be empty').eq(0);
         localStore.commit('addCustomer', CustomerDataBuilder.aCustomer().withName('Lorem Commit').build());
@@ -40,13 +40,13 @@ describe('store config', () => {
     it('should have an empty list of customer ready to be checked out', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const store = new Vuex.Store(cloneDeep(config));
+        const store = new Vuex.Store(lodash.cloneDeep(config));
         expect(store.getters.getCheckoutCustomers).to.eql([]);
     });
     it('should have default list of categories', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const store = new Vuex.Store(cloneDeep(config));
+        const store = new Vuex.Store(lodash.cloneDeep(config));
         expect(store.getters.getCategories).to.eql([
             new CustomerCategory('public')
         ]);
@@ -54,7 +54,7 @@ describe('store config', () => {
     it('should have default query', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const store = new Vuex.Store(cloneDeep(config));
+        const store = new Vuex.Store(lodash.cloneDeep(config));
         const expected = CustomerQuery.fromJSON({
             value: { status: 'active', date: null },
             sortBy: { checkIn: 'desc' },
@@ -64,7 +64,7 @@ describe('store config', () => {
     it('should have a date', () => {
         const localVue = createLocalVue();
         localVue.use(Vuex);
-        const store = new Vuex.Store(cloneDeep(config));
+        const store = new Vuex.Store(lodash.cloneDeep(config));
         expect(store.getters.getDate).to.be.an.instanceof(Date);
     });
 });

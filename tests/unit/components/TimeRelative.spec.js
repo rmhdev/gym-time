@@ -1,7 +1,7 @@
 import {expect} from 'chai'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 import TimeRelative from '@/components/TimeRelative.vue'
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 import Vuex from "vuex";
 const localVue = createLocalVue();
 import storeConfig from "@/store/config";
@@ -11,7 +11,7 @@ localVue.use(Vuex);
 describe('TimeRelative.vue', () => {
 
     it('renders the time in 24H format by default', () => {
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         let store = new Vuex.Store(localStoreConfig);
 
@@ -21,7 +21,7 @@ describe('TimeRelative.vue', () => {
     });
 
     it('renders the time in AM/PM format when defined', () => {
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         localStoreConfig.state.hour12 = true;
         let store = new Vuex.Store(localStoreConfig);
@@ -31,7 +31,7 @@ describe('TimeRelative.vue', () => {
     });
 
     it('renders a custom time if defined', () => {
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = '2019-03-19T19:34:56';
         let store = new Vuex.Store(localStoreConfig);
         const wrapper = shallowMount(TimeRelative, { store, localVue, propsData: {
@@ -129,7 +129,7 @@ describe('TimeRelative.vue', () => {
             },
         ];
 
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = '2019-03-19T18:30:45';
         let store = new Vuex.Store(localStoreConfig);
 
@@ -141,7 +141,7 @@ describe('TimeRelative.vue', () => {
     });
 
     it('renders a fixed duration', () => {
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = '2019-03-19T12:44:55';
         let store = new Vuex.Store(localStoreConfig);
         const wrapper = shallowMount(TimeRelative, { store, localVue, propsData: {
@@ -155,7 +155,7 @@ describe('TimeRelative.vue', () => {
 
     it('renders time related attributes', () => {
         const datetime = '2019-03-19T12:30:45.000Z';
-        let localStoreConfig = cloneDeep(storeConfig);
+        let localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.datetime = datetime;
         let store = new Vuex.Store(localStoreConfig);
 

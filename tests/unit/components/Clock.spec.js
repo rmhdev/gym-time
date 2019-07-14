@@ -4,7 +4,7 @@ import Welcome from '@/components/Clock.vue'
 import TimeRelative from "@/components/TimeRelative";
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -14,7 +14,7 @@ describe('Clock.vue', () => {
   let store;
 
   beforeEach(() => {
-    let localConfig = cloneDeep(storeConfig);
+    let localConfig = lodash.cloneDeep(storeConfig);
     localConfig.datetime = '2019-03-19T12:00:00.000Z';
     store = new Vuex.Store(localConfig);
   });

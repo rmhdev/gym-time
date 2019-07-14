@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import CustomerForm from '@/components/CustomerForm.vue'
 import { CustomerName } from "@/domain/model/customer/CustomerName";
 import storeConfig from "@/store/config";
-import cloneDeep from 'lodash.clonedeep'
+import lodash from 'lodash'
 import { CustomerDataBuilder } from "../domain/model/customer/CustomerDataBuilder";
 
 const localVue = createLocalVue();
@@ -18,7 +18,7 @@ describe('CustomerForm.vue', () => {
     let wrapper;
 
     beforeEach(() => {
-        localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.state.categories = ['one', 'two', 'three'];
         store = new Vuex.Store(localStoreConfig);
 

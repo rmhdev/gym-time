@@ -8,7 +8,7 @@ import Welcome from "@/components/Welcome";
 import storeConfig from "@/store/config";
 import {CustomerDataBuilder} from "./domain/model/customer/CustomerDataBuilder";
 import Vuex from "vuex";
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -16,7 +16,7 @@ localVue.use(Vuex);
 describe('App.vue', () => {
 
     it('shows a welcome message', () => {
-        let store = new Vuex.Store(cloneDeep(storeConfig));
+        let store = new Vuex.Store(lodash.cloneDeep(storeConfig));
         const customer = CustomerDataBuilder.aCustomer().withId('qwerty1').build();
         store.state.customerRepository.add(customer);
         store.state.checkoutCustomers.push({ id: 'qwerty1' });
@@ -44,7 +44,7 @@ describe('App.vue', () => {
     });
 
     it('shows a message for a customer ready to checkout', () => {
-        let store = new Vuex.Store(cloneDeep(storeConfig));
+        let store = new Vuex.Store(lodash.cloneDeep(storeConfig));
         const customer = CustomerDataBuilder.aCustomer().withId('qwerty1').build();
         store.state.customerRepository.add(customer);
         store.state.checkoutCustomers.push({ id: 'qwerty1' });

@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import Checkin from '@/components/Checkin.vue'
 import CustomerForm from "@/components/CustomerForm";
 import storeConfig from "@/store/config";
-import cloneDeep from 'lodash.clonedeep'
+import lodash from "lodash";
 import chai from 'chai';
 import spies from 'chai-spies';
 
@@ -20,7 +20,7 @@ describe('Checkin.vue', () => {
     let wrapper;
 
     beforeEach(() => {
-        localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.actions.createAndAddNewCustomer = chai.spy();
         localStoreConfig.state.categories = ['one', 'two', 'three'];
         let store = new Vuex.Store(localStoreConfig);

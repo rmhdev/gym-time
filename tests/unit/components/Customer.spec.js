@@ -5,7 +5,7 @@ import TimeRelative from "@/components/TimeRelative";
 import {CustomerDataBuilder} from "../domain/model/customer/CustomerDataBuilder";
 import Vuex from "vuex";
 import storeConfig from "@/store/config";
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 import CustomerForm from "@/components/CustomerForm";
 
 const localVue = createLocalVue();
@@ -21,7 +21,7 @@ describe('Customer.vue', () => {
             .withName('Ms Customer')
             .withCheckIn('2019-03-19T12:00:00.000Z')
             .build();
-        store = new Vuex.Store(cloneDeep(storeConfig));
+        store = new Vuex.Store(lodash.cloneDeep(storeConfig));
     });
 
     it('shows the name of the customer', () => {

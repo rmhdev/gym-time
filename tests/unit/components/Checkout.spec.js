@@ -4,7 +4,7 @@ import Checkout from '@/components/Checkout.vue'
 import storeConfig from "@/store/config";
 import {CustomerDataBuilder} from "./../domain/model/customer/CustomerDataBuilder";
 import Vuex from "vuex";
-import cloneDeep from "lodash.clonedeep";
+import lodash from "lodash";
 import chai from 'chai';
 import spies from 'chai-spies';
 
@@ -17,14 +17,14 @@ describe('Checkout.vue', () => {
     let localStoreConfig;
 
     beforeEach(() => {
-        localStoreConfig = cloneDeep(storeConfig);
+        localStoreConfig = lodash.cloneDeep(storeConfig);
         localStoreConfig.actions.toggleCheckoutCustomer = chai.spy();
         localStoreConfig.actions.initialiseCheckoutCustomers = chai.spy();
         localStoreConfig.actions.persistCheckoutCustomers = chai.spy();
     });
 
     it('shows a message when the checkout list is empty', () => {
-        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const store = new Vuex.Store(lodash.cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
 
         expect(
@@ -53,7 +53,7 @@ describe('Checkout.vue', () => {
                 .build()
         );
         localStoreConfig.state.checkoutCustomers.push({ id: 'qwerty1' });
-        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const store = new Vuex.Store(lodash.cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
 
         expect(
@@ -77,7 +77,7 @@ describe('Checkout.vue', () => {
                 .build()
         );
         localStoreConfig.state.checkoutCustomers.push({ id: 'cancel1' });
-        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const store = new Vuex.Store(lodash.cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
         wrapper.find(
             '#gym-customer-checkout-cancel1 .gym-customer-checkout-cancel'
@@ -98,7 +98,7 @@ describe('Checkout.vue', () => {
                 .build()
         );
         localStoreConfig.state.checkoutCustomers.push({ id: 'cancel1' });
-        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const store = new Vuex.Store(lodash.cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
         wrapper.find(
             '.gym-checkout-cancel'
@@ -119,7 +119,7 @@ describe('Checkout.vue', () => {
                 .build()
         );
         localStoreConfig.state.checkoutCustomers.push({ id: 'confirm1' });
-        const store = new Vuex.Store(cloneDeep(localStoreConfig));
+        const store = new Vuex.Store(lodash.cloneDeep(localStoreConfig));
         const wrapper = shallowMount(Checkout, {store, localVue});
         wrapper.find(
             '.gym-checkout-confirm'
