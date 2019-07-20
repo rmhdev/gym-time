@@ -24,7 +24,7 @@
                         >
                         <label class="custom-control-label gym-customer-name" :for="inputId">{{ customerName }}</label>
 
-                        &nbsp;<a href="#" class="gym-customer-edit" @click.prevent="isEditing = true">edit</a>
+                        &nbsp;<a v-if="!isSelected" href="#" class="gym-customer-edit" @click.prevent="isEditing = true">edit</a>
                     </div>
 
                     <div v-if="customer.category" class="gym-customer-category" :data-category="customerCategory">

@@ -153,6 +153,15 @@ describe('Customer.vue', () => {
         ).eq('two');
     });
 
-    // TODO: user should not be edited when selected
-    // TODO: user should not be selected when editing
+    it('hides the edit button when the customer is selected', () => {
+        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
+        expect(wrapper.find('a.gym-customer-edit').exists(), 'The edit button exists by default').eq(true);
+
+        const checkbox = wrapper.find('input[type="checkbox"]');
+        checkbox.setChecked(true);
+        expect(
+            wrapper.find('a.gym-customer-edit').exists(),
+            'The edit button disappears when the customer is selected'
+        ).eq(false);
+    });
 });
