@@ -15,6 +15,7 @@ describe('Customer.vue', () => {
 
     let store;
     let customer;
+    let wrapper;
 
     beforeEach(() => {
         customer = CustomerDataBuilder.aCustomer()
@@ -22,21 +23,18 @@ describe('Customer.vue', () => {
             .withCheckIn('2019-03-19T12:00:00.000Z')
             .build();
         store = new Vuex.Store(lodash.cloneDeep(storeConfig));
+        wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
     });
 
     it('shows the name of the customer', () => {
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
         expect(wrapper.find('.gym-customer-name').text()).eq('Ms Customer');
     });
 
     it('shows the category of the customer', () => {
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
         expect(wrapper.find('.gym-customer-category').text()).eq(customer.category);
     });
 
     it('shows the checkin time of the customer', () => {
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
-
         expect(wrapper.find(TimeRelative).props('from')).eq(customer.checkIn().toISOString());
         expect(wrapper.find(TimeRelative).props('mode')).eq('from');
     });
@@ -50,17 +48,16 @@ describe('Customer.vue', () => {
             .withCheckOut(checkout)
             .build()
         ;
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: checkoutCustomer }});
+        const customWrapper = shallowMount(Customer, {store, localVue, propsData : { customer: checkoutCustomer }});
 
-        expect(wrapper.findAll(TimeRelative).length).eq(2);
-        expect(wrapper.find('.gym-customer-checkin').props('from'), 'checkin date').eq(checkin);
-        expect(wrapper.find('.gym-customer-checkin').props('mode'), 'checkin date, show date').eq('from');
-        expect(wrapper.find('.gym-customer-duration').props('to'), 'checkout date').eq(checkout);
-        expect(wrapper.find('.gym-customer-duration').props('mode'), 'checkout date, show duration').eq('duration');
+        expect(customWrapper.findAll(TimeRelative).length).eq(2);
+        expect(customWrapper.find('.gym-customer-checkin').props('from'), 'checkin date').eq(checkin);
+        expect(customWrapper.find('.gym-customer-checkin').props('mode'), 'checkin date, show date').eq('from');
+        expect(customWrapper.find('.gym-customer-duration').props('to'), 'checkout date').eq(checkout);
+        expect(customWrapper.find('.gym-customer-duration').props('mode'), 'checkout date, show duration').eq('duration');
     });
 
     it('marks the customer when clicked', () => {
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
         const checkbox = wrapper.find('input[type="checkbox"]');
 
         expect(
@@ -81,7 +78,7 @@ describe('Customer.vue', () => {
     });
 
     it('allows marking if status is disabled', () => {
-        const wrapper = shallowMount(Customer, {
+        const customWrapper = shallowMount(Customer, {
             store,
             localVue,
             propsData : {
@@ -90,21 +87,14 @@ describe('Customer.vue', () => {
             }
         });
 
-        wrapper.find('input[type="checkbox"]').setChecked(true);
+        customWrapper.find('input[type="checkbox"]').setChecked(true);
         expect(
-            wrapper.findAll('.gym-customer-selected').length,
+            customWrapper.findAll('.gym-customer-selected').length,
             'The customer should not be marked as selected'
         ).eq(0);
     });
 
     it('toggles the edit form when clicking open/close button', () => {
-        const wrapper = shallowMount(Customer, {
-            store,
-            localVue,
-            propsData : {
-                customer: customer,
-            }
-        });
         wrapper.find('a.gym-customer-edit').trigger('click');
 
         expect(
@@ -128,13 +118,6 @@ describe('Customer.vue', () => {
     });
 
     it('closes the form and displays the new data after submitting it', () => {
-        const wrapper = shallowMount(Customer, {
-            store,
-            localVue,
-            propsData : {
-                customer: customer,
-            }
-        });
         wrapper.find('a.gym-customer-edit').trigger('click');
         wrapper.find(CustomerForm).vm.$emit('submit:customer', { name: 'New Name', category: 'two'} );
 
@@ -154,7 +137,6 @@ describe('Customer.vue', () => {
     });
 
     it('hides the edit button when the customer is selected', () => {
-        const wrapper = shallowMount(Customer, {store, localVue, propsData : { customer: customer }});
         expect(wrapper.find('a.gym-customer-edit').exists(), 'The edit button exists by default').eq(true);
 
         const checkbox = wrapper.find('input[type="checkbox"]');
