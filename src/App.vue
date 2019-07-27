@@ -1,12 +1,12 @@
 <template>
-    <div id="app" class="container">
+    <div id="app" class="gym-container">
 
         <div v-if="isWelcome" class="gym-welcome-container">
             <Welcome msg="Hello!" @close="isWelcome = false"/>
         </div>
 
-        <div v-else class="row justify-content-md-center">
-            <div class="col-5">
+        <div v-else class="gym-content">
+            <div class="gym-content-in-out">
                 <checkout
                     v-if="hasCheckoutCustomer"
                     class="gym-customer-confirm-checkout"
@@ -16,8 +16,8 @@
                 ></checkin>
                 <Clock/>
             </div>
-            <div class="col-1"></div>
-            <div class="col-6">
+
+            <div class="gym-content-customers">
                 <customers></customers>
             </div>
         </div>

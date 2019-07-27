@@ -6,42 +6,75 @@ body {
   background-color: pink;
 }
 
-.gym-welcome {
-
+.gym {
   &-container {
-    border: 1px solid red;
-    height: calc(100vh - 56px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    @extend .container;
   }
-
-  > header {
-    margin-bottom: map-get($spacers, 3);
-  }
-  &-title {
-    @extend .display-1;
-    @extend .text-break;
-  }
-  &-subtitle {
-    @extend .text-muted;
-    @extend .lead
-  }
-
-  &-clock {
-    .gym-clock-date {
+  &-welcome {
+    &-container {
+      border: 1px solid red;
+      height: calc(100vh - 56px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    > header {
+      margin-bottom: map-get($spacers, 3);
+    }
+    &-title {
+      @extend .display-1;
+      @extend .text-break;
+    }
+    &-subtitle {
+      @extend .text-muted;
       @extend .lead
+    }
+    &-clock {
+      .gym-clock-date {
+        @extend .lead
+      }
+    }
+    &-button {
+      @extend .btn;
+      @extend .btn-lg;
+      @extend .btn-primary;
+      margin-bottom: map-get($spacers, 4);
+    }
+  }
+  &-content {
+    @extend .row;
+    @extend .justify-content-md-center;
+
+    &-customers {
+      @extend .col-6;
+    }
+    &-in-out {
+      @extend .col-6;
     }
   }
 
-  &-button {
-    @extend .btn;
-    @extend .btn-lg;
-    @extend .btn-primary;
-    margin-bottom: map-get($spacers, 4);
+  // Filter: sorting
+  &-sort {
+    &.desc,
+    &.asc {
+      @extend .active;
+    }
+    &.desc:after,
+    &.asc:after {
+      padding-left: 0.3rem;
+
+    }
+    &.desc:after {
+      content: '↓';
+    }
+    &.asc:after {
+      content: '↑';
+    }
   }
 }
+
+
 
 .gym-customers {
 
@@ -254,21 +287,3 @@ body {
   }
 }
 
-
-.gym-sort {
-  &.desc,
-  &.asc {
-    @extend .active;
-  }
-  &.desc:after,
-  &.asc:after {
-    padding-left: 0.3rem;
-
-  }
-  &.desc:after {
-    content: '↓';
-  }
-  &.asc:after {
-    content: '↑';
-  }
-}
