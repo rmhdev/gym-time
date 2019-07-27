@@ -1,23 +1,25 @@
 <template>
-    <form @submit.prevent="submit" class="needs-validation" autocomplete="off">
-        <div class="gym-input-group">
-            <label for="customer_name" class="sr-only">Name</label>
-            <input
-                id="customer_name"
-                type="text"
-                value=""
-                class="form-control"
-                :class="inputClass"
-                name="customer[name]"
-                v-model="customerName"
-                @keyup="preValidate"
-                ref="customerName"
-            >
-            <div class="input-group-append">
-                <label for="customer_category" class="sr-only">Category</label>
+    <form @submit.prevent="submit" class="gym-customer-form" autocomplete="off">
+        <div class="gym-form-row">
+            <div class="gym-form-group gym-form-group-name">
+                <label for="customer_name">Name</label>
+                <input
+                        id="customer_name"
+                        type="text"
+                        value=""
+                        class="gym-customer-name"
+                        :class="inputClass"
+                        name="customer[name]"
+                        v-model="customerName"
+                        @keyup="preValidate"
+                        ref="customerName"
+                >
+            </div>
+            <div class="gym-form-group gym-form-group-category">
+                <label for="customer_category">Category</label>
                 <select
                     id="customer_category"
-                    class="gym-checkin-category form-control form-control-lg"
+                    class="gym-customer-category"
                     name="customer[category]"
                     required="required"
                 >
@@ -30,13 +32,20 @@
                     >{{ category.name }}</option>
                 </select>
             </div>
+            <div v-if="!isDefaultMode" class="gym-form-group gym-form-group-save">
+                <button type="submit" class="gym-button-save">
+                    <span class="gym-action">
+                        <span class="gym-action-name">Save</span>
+                    </span>
+                </button>
+            </div>
         </div>
 
-        <div class="gym-feedback-container">
+        <div class="gym-feedback-container" :class="{ 'gym-feedback-container-active': this.status === 'invalid' }">
             <div class="gym-feedback" :class="feedbackClass">{{ feedback }}</div>
         </div>
 
-        <button type="submit" class="btn btn-block btn-success btn-lg">Save</button>
+        <button v-if="isDefaultMode" type="submit" class="gym-button-save">Save</button>
     </form>
 </template>
 
@@ -53,6 +62,10 @@
             customer: {
                 type: Customer,
                 default: null
+            },
+            mode: {
+                type: String,
+                default: 'default'
             }
         },
         data() {
@@ -66,6 +79,9 @@
         computed: {
             isValid() {
                 return 'valid' === this.status;
+            },
+            isDefaultMode() {
+                return 'default' === this.mode;
             },
             feedbackClass() {
                 switch (this.status) {
@@ -155,6 +171,4 @@
     }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -1,5 +1,7 @@
 @import "./bootstrap";
 
+$feedback-container-height: 2.3rem;
+
 body {
   background-color: pink;
 }
@@ -73,9 +75,9 @@ body {
       @extend .col-md-8;
       @extend .col-lg-8;
 
-      .gym-customer-profile {
-        float: right;
-      }
+      //.gym-customer-profile {
+      //  float: right;
+      //}
     }
 
     .gym-customer-name {
@@ -91,7 +93,7 @@ body {
 }
 
 .gym-feedback-container {
-  min-height: 2.3rem;
+  min-height: $feedback-container-height;
   line-height: 2rem;
 
   .gym-feedback {
@@ -104,18 +106,98 @@ body {
   }
 }
 
-.gym-input-group {
-  @extend .input-group;
-  @extend .input-group-lg;
+.gym-customer-form {
+  //@extend .needs-validation;
 
-  select {
-    border-radius: 0;
+  .gym-customer-name,
+  .gym-customer-category {
+    @extend .form-control;
+    @extend .form-control-lg;
   }
+  .gym-button-save {
+    @extend .btn;
+    @extend .btn-block;
+    @extend .btn-success;
+    @extend .btn-lg;
+  }
+  .gym-form-row {
+    @extend .form-row;
+
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .gym-form-group {
+    @extend .form-group;
+    margin-bottom: 0;
+
+    &.gym-form-group-name {
+      @extend .col-8;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    &.gym-form-group-category {
+      @extend .col-4;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    label {
+      @extend .sr-only;
+    }
+  }
+  &.gym-customer-form-edit {
+    .gym-form-group {
+      &.gym-form-group-name {
+        @extend .col-6;
+        padding-left: 0;
+        padding-right: 5px;
+      }
+      &.gym-form-group-category {
+        @extend .col-4;
+        padding-left: 0;
+        padding-right: 5px;
+      }
+      &.gym-form-group-save {
+        @extend .col-2;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .gym-customer-name,
+      .gym-customer-category {
+        @extend .form-control-sm;
+      }
+      .gym-button-save {
+        @extend .btn-sm;
+        .gym-action:before {
+          content: '✓';
+        }
+        .gym-action-name {
+          @extend .sr-only;
+        }
+      }
+    }
+
+    .gym-feedback-container {
+      min-height: 0;
+
+      &.gym-feedback-container-active {
+        min-height: $feedback-container-height;
+      }
+    }
+  }
+
 }
 
 .gym-customer-status,
 .gym-customer-times {
   width: 4rem;
+}
+
+.gym-customer-times {
+  .gym-customer-duration {
+    @extend .small;
+    @extend .text-muted;
+    @extend .d-block;
+  }
 }
 
 .gym-customer-status {
@@ -142,21 +224,36 @@ body {
   }
 }
 
-.gym-customer-category {
-  display: block;
+.gym-customer-selectable {
+  .gym-customer-edit {
+    .gym-action {
+      &:before {
+        content: '✎';
+        margin-left: map-get($spacers, 1);
+      }
+    }
+    .gym-action-label {
+      @extend .small;
+      padding-left: map-get($spacers, 1);
+    }
+  }
+  .gym-customer-category {
+    display: block;
 
-  @extend code;
-  @extend small;
+    @extend code;
+    @extend small;
 
-  .gym-customer-category-name {
-    margin-left: 2.25rem;
+    .gym-customer-category-name {
+      margin-left: 2.25rem;
 
-    &:before {
-      content: '@';
-      margin-right: 0.1rem;
+      &:before {
+        content: '@';
+        margin-right: 0.1rem;
+      }
     }
   }
 }
+
 
 .gym-sort {
   &.desc,

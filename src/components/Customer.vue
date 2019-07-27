@@ -1,16 +1,17 @@
 <template>
     <div :class="customerClass">
-        <div class="gym-customer-info">
+        <div v-if="isEditing" class="gym-customer-editable">
+            <customer-form
+                    :customer="this.customer"
+                    v-on:submit:customer="onSubmitCustomer"
+                    mode="edit"
+                    class="gym-customer-form-edit"
+            ></customer-form>
+            <a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
+        </div>
+        <div v-else class="gym-customer-info">
             <div class="gym-customer-profile">
-                <header v-if="isEditing" class="gym-customer-editable">
-                    <customer-form
-                        :customer="this.customer"
-                        v-on:submit:customer="onSubmitCustomer"
-                    ></customer-form>
-                    <a href="#" class="gym-customer-edit-close" @click.prevent="isEditing = false">close</a>
-                </header>
-
-                <header v-else class="gym-customer-selectable">
+                <header class="gym-customer-selectable">
                     <div class="custom-control custom-switch">
                         <input
                             class="custom-control-input"
@@ -24,7 +25,11 @@
                         >
                         <label class="custom-control-label gym-customer-name" :for="inputId">{{ customerName }}</label>
 
-                        &nbsp;<a v-if="!isSelected" href="#" class="gym-customer-edit" @click.prevent="isEditing = true">edit</a>
+                        <a v-if="!isSelected" href="#" class="gym-customer-edit" @click.prevent="isEditing = true">
+                            <span class="gym-action">
+                                <span class="gym-action-label">edit</span>
+                            </span>
+                        </a>
                     </div>
 
                     <div v-if="customer.category" class="gym-customer-category" :data-category="customerCategory">
@@ -46,7 +51,7 @@
                     :from="customer.checkIn().toISOString()"
                     :to="customer.checkOut().toISOString()"
                     mode="duration"
-                    class="gym-customer-duration small text-muted d-block"
+                    class="gym-customer-duration"
                 ></time-relative>
                 <div v-else>
                     <span class="gym-customer-status" :class="'gym-customer-status-' + customer.status().value">
@@ -113,8 +118,4 @@
     }
 </script>
 
-<style lang="scss" scoped>
-    .gym-customer-name {
-        text-overflow: ellipsis;
-    }
-</style>
+<style lang="scss"></style>

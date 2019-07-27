@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="gym-checkin">
         <div v-if="isFormSubmitted">
             <checkin-success class="gym-checkin-success" @close="restartForm"></checkin-success>
         </div>
