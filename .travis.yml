@@ -6,12 +6,16 @@ cache:
     - node_modules
 stages:
   - lint
-  - test
+  - test_unit
+  - test_e2e
 jobs:
   include:
     - stage: lint
       script:
         yarn run lint
-    - stage: test
+    - stage: test_unit
       script:
         yarn run test:unit
+    - stage: test_e2e
+      script:
+        yarn run test:e2e --headless
