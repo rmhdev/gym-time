@@ -5,6 +5,8 @@ cache:
   directories:
     - ~/.npm
     - ~/.cache
+install:
+  - npm ci
 stages:
   - lint
   - test-unit
