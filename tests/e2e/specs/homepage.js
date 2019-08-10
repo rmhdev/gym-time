@@ -9,12 +9,11 @@ describe('Homepage', () => {
     cy.contains('h1', 'Hello')
   });
 
-  it('Allows accessing the app', () => {
+  it('displays the main app after clicking the home button', () => {
+    cy.get('.gym-content-in-out').should('not.exist');
+    cy.get('.gym-content-customers').should('not.exist');
     cy.get('.gym-welcome-button').click();
-    cy.contains('.gym-content');
-
-    //     .then(function () {
-    //
-    // })
+    cy.get('.gym-content-in-out').should('exist');
+    cy.get('.gym-content-customers').should('exist');
   });
 });
