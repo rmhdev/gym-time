@@ -4,18 +4,19 @@ node_js:
 cache:
   directories:
     - node_modules
+    - .cache/Cypress
 stages:
   - lint
-  - test_unit
-  - test_e2e
+  - test-unit
+  - test-e2e
 jobs:
   include:
     - stage: lint
       script:
         yarn run lint
-    - stage: test_unit
+    - stage: test-unit
       script:
         yarn run test:unit
-    - stage: test_e2e
+    - stage: test-e2e
       script:
         yarn run test:e2e --headless
