@@ -6,14 +6,14 @@ describe('Homepage', () => {
   });
 
   it('Visits the app root url', () => {
-    cy.contains('h1', 'Hello')
+    cy.contains('[data-text=welcome]', 'Hello')
   });
 
   it('displays the main app after clicking the home button', () => {
-    cy.get('.gym-content-in-out').should('not.exist');
-    cy.get('.gym-content-customers').should('not.exist');
-    cy.get('.gym-welcome-button').click();
-    cy.get('.gym-content-in-out').should('exist');
-    cy.get('.gym-content-customers').should('exist');
+    cy.get('[data-form=checkin]').should('not.exist');
+    cy.get('[data-list=customers]').should('not.exist');
+    cy.get('[data-button=welcome]').click();
+    cy.get('[data-form=checkin]').should('exist');
+    cy.get('[data-list=customers]').should('exist');
   });
 });

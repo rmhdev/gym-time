@@ -27,8 +27,13 @@
                 ></sort>
             </div>
 
-            <div class="gym-customers">
-                <div v-if="isEmpty" class="gym-empty alert alert-info text-center" role="alert">
+            <div class="gym-customers" data-list="customers">
+                <div
+                    v-if="isEmpty"
+                    class="gym-empty alert alert-info text-center"
+                    role="alert"
+                    data-alert="empty"
+                >
                     <h4 class="gym-title alert-heading">Gym is empty!</h4>
                     <p>Looks like you'll be the first one!</p>
                 </div>
@@ -41,6 +46,7 @@
                             :key="customer.id.value"
                             :customer="customer"
                             :disabled="isDisabled(customer.status().value)"
+                            data-item="customer"
                         ></customer>
                     </div>
                 </template>

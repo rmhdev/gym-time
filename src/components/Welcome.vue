@@ -1,10 +1,15 @@
 <template>
     <div class="gym-welcome">
         <header>
-            <h1 class="gym-welcome-title">{{ msg }}</h1>
+            <h1 class="gym-welcome-title" data-text="welcome">{{ msg }}</h1>
         </header>
 
-        <a class="gym-welcome-button" href="#" @click.prevent="close">Enter</a>
+        <a
+            class="gym-welcome-button"
+            href="#"
+            @click.prevent="close"
+            data-button="welcome"
+        >Enter</a>
 
         <Clock class="gym-welcome-clock"/>
     </div>

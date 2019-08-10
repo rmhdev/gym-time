@@ -5,7 +5,10 @@
         </div>
 
         <div v-else>
-            <customer-form v-on:submit:customer="submit"></customer-form>
+            <customer-form
+                v-on:submit:customer="submit"
+                data-form="checkin"
+            ></customer-form>
         </div>
     </section>
 </template>

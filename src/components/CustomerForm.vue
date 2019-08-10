@@ -13,6 +13,7 @@
                         v-model="customerName"
                         @keyup="preValidate"
                         ref="customerName"
+                        data-field="name"
                 >
             </div>
             <div class="gym-form-group gym-form-group-category">
@@ -22,6 +23,7 @@
                     class="gym-customer-category"
                     name="customer[category]"
                     required="required"
+                    data-field="category"
                 >
                     <option
                         v-for="category in categories"
@@ -29,6 +31,7 @@
                         :selected="customerCategory === category.value"
                         :value="category.value"
                         @change="customerCategory = category.value"
+                        :data-value="category.value"
                     >{{ category.name }}</option>
                 </select>
             </div>
@@ -45,7 +48,12 @@
             <div class="gym-feedback" :class="feedbackClass">{{ feedback }}</div>
         </div>
 
-        <button v-if="isDefaultMode" type="submit" class="gym-button-save">Save</button>
+        <button
+            v-if="isDefaultMode"
+            type="submit"
+            class="gym-button-save"
+            data-button="save"
+        >Save</button>
     </form>
 </template>
 

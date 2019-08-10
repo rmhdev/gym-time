@@ -1,5 +1,8 @@
 <template>
-    <div :class="customerClass">
+    <div
+        :class="customerClass"
+        :data-name="customerName"
+    >
         <div v-if="isEditing" class="gym-customer-editable">
             <customer-form
                     :customer="this.customer"
