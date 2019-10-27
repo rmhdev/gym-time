@@ -1,60 +1,28 @@
+import {StatsSummary} from "./StatsSummary";
+
 export { Stats };
 
 class Stats {
-    constructor(totals = {}) {
-        this.totals = totals;
+    constructor(statsRange, values = []) {
+        this.statsRange = statsRange;
+        this.values = values;
     }
-    checkIns(category = null) {
-        let totals = Object.assign({'checkIn': 0, 'byCategory': {}}, this.totals);
-        if (null !== category) {
-            totals = (typeof totals.byCategory[category] === 'undefined')
-                ? { 'checkIn': 0 }
-                : totals.byCategory[category]
-            ;
+    byHour(hour) {
+        if (typeof hour !== 'number') {
+            throw new TypeError('Parameter `hour`: received "' + (typeof hour) + '", expected a number');
         }
-
-        return totals.checkIn;
-    }
-    checkOuts(category = null) {
-        let totals = Object.assign({'checkOut': 0, 'byCategory': {}}, this.totals);
-        if (null !== category) {
-            totals = (typeof totals.byCategory[category] === 'undefined')
-                ? { 'checkOut': 0 }
-                : totals.byCategory[category]
-            ;
+        if (0 > hour || hour >= 24) {
+            throw new RangeError('Parameter `hour`: received "' + hour + '", expected value in [0..23] range')
         }
+        let from = this.statsRange.from();
+        from.setHours(hour, 0, 0, 0);
+        let to = this.statsRange.from();
+        to.setHours(hour + 1, 0, 0, 0);
 
-        return totals.checkOut;
-    }
-    categories() {
-        if (typeof this.totals.byCategory === 'undefined') {
-            return [];
-        }
+        return StatsSummary.create(this.values.filter(function (entry) {
+            const date = new Date(entry.date);
 
-        return Object.keys(this.totals.byCategory);
-    }
-    static create(values = []) {
-        let totals = {
-            'checkIn': 0,
-            'checkOut': 0,
-            'byCategory': {}
-        };
-        for (let i = 0; i < values.length; i++) {
-            let checkIn = values[i].checkIn;
-            let checkOut = values[i].checkOut;
-            let category = values[i].category;
-            if (typeof totals.byCategory[category] === 'undefined') {
-                totals.byCategory[category] = {
-                    'checkIn': 0,
-                    'checkOut': 0
-                }
-            }
-            totals.checkIn += checkIn;
-            totals.checkOut += checkOut;
-            totals.byCategory[category].checkIn += checkIn;
-            totals.byCategory[category].checkOut += checkOut;
-        }
-
-        return new Stats(totals);
+            return (from <= date) && (date < to);
+        }));
     }
 }

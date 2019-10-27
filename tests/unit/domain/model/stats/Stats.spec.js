@@ -1,50 +1,41 @@
 import { expect } from 'chai'
 import { Stats } from "@/domain/model/stats/Stats"
+import { StatsSummary } from "@/domain/model/stats/StatsSummary";
+import { StatsRangeDay } from "@/domain/model/stats/StatsRangeDay";
 
 describe('Stats', () => {
-    it('returns zero when no data is defined', () => {
-        let stats = new Stats();
+    it('returns the given stats range', () => {
+        const statsRange = new StatsRangeDay('2019-09-29T01:23:45');
+        const stats = new Stats(statsRange);
 
-        expect(stats.checkIns()).eq(0);
-        expect(stats.checkOuts()).eq(0);
-        expect(stats.categories()).to.eql([]);
+        expect(stats.statsRange).to.eql(statsRange);
     });
 
-    it('returns values when data is defined', () => {
-        let stats = new Stats({
-            'checkIn': 4,
-            'checkOut': 6,
-            'byCategory': {
-                'category1': {
-                    'checkIn': 1,
-                    'checkOut': 2,
-                },
-                'category2': {
-                    'checkIn': 3,
-                    'checkOut': 4,
-                },
-            }
-        });
+    it('returns empty stats fo a specific hour when no data is defined', () => {
+        const stats = new Stats(new StatsRangeDay('2019-09-29T01:23:45'));
 
-        expect(stats.checkIns(), 'Total of checkIns').eq(4);
-        expect(stats.checkOuts(), 'Total of checkOuts').eq(6);
-        expect(stats.categories(), 'List of category slugs').to.eql(['category1', 'category2']);
-        expect(stats.checkIns('category1'), 'CheckIns by category "category1"').eq(1);
-        expect(stats.checkOuts('category2'), 'CheckOuts by category "category2"').eq(4);
-        expect(stats.checkOuts('lorem'), 'CheckIns by unknown category').eq(0);
+        expect(stats.byHour(0)).to.eql(StatsSummary.create());
     });
 
-    it('allows being created based on raw data', () => {
-        const stats = Stats.create([
-            { 'date': '2019-09-29T00:00:00', 'checkIn': 3, 'checkOut': 2, 'category': 'categoryA' },
-            { 'date': '2019-09-29T00:00:00', 'checkIn': 1, 'checkOut': 3, 'category': 'categoryB' },
-            { 'date': '2019-09-29T01:23:45', 'checkIn': 4, 'checkOut': 1, 'category': 'categoryA' },
-        ]);
+    it('returns stats for a specific hour', () => {
+        const sameHourValues = [
+            { 'date': '2019-09-29T00:00:00', 'checkIn': 3, 'checkOut': 1, 'category': 'category1' },
+            { 'date': '2019-09-29T00:59:59', 'checkIn': 0, 'checkOut': 1, 'category': 'category2' },
+        ];
+        const stats = new Stats(new StatsRangeDay('2019-09-29T12:00:00'), sameHourValues.concat(
+            [{ 'date': '2019-09-29T01:23:45', 'checkIn': 1, 'checkOut': 4, 'category': 'category1' }],
+            [{ 'date': '2019-09-28T00:00:00', 'checkIn': 1, 'checkOut': 4, 'category': 'category1' }],
+            [{ 'date': '2019-09-30T00:00:00', 'checkIn': 1, 'checkOut': 4, 'category': 'category1' }],
+        ));
 
-        expect(stats.checkIns(), 'Total checkIns from raw data').eq(8);
-        expect(stats.checkOuts(), 'Total checkOuts from raw data').eq(6);
-        expect(stats.categories(), 'List of category slugs').to.eql(['categoryA', 'categoryB']);
-        expect(stats.checkIns('categoryA'), 'CheckIns from raw data by category "categoryA"').eq(7);
-        expect(stats.checkOuts('categoryB'), 'CheckOuts from raw data by category "categoryB"').eq(3);
+        expect(stats.byHour(0)).to.eql(StatsSummary.create(sameHourValues));
+    });
+
+    it('throws exception when passing unexpected hour values', () => {
+        const stats = new Stats(new Date('2019-09-29T12:00:00'));
+
+        expect(() => { stats.byHour(24)}, 'Date only accepts hours between 0 and 23').to.throw(RangeError);
+        expect(() => { stats.byHour(-1)}, 'Date does not accept negative hours').to.throw(RangeError);
+        expect(() => { stats.byHour('hello')}, 'Incorrect hour value').to.throw(TypeError);
     });
 });
