@@ -1,5 +1,9 @@
 # gym-time
 
+Single-page application that manages check-ins and check-outs of customers in a gym.
+
+[![Build Status](https://travis-ci.org/rmhdev/gym-time.svg?branch=master)](https://travis-ci.org/rmhdev/gym-time)
+
 ## Project setup
 ```
 yarn install
